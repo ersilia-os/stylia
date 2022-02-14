@@ -10,8 +10,10 @@ class FigureSize(object):
         self.aspect_ratio = aspect_ratio
         if self.support == "slide":
             self.set_width_slide()
+            self.set_height_slide()
         else:
             self.set_width_paper()
+            self.set_height_paper()
 
     @staticmethod
     def _mm_to_inch(x):
@@ -22,21 +24,25 @@ class FigureSize(object):
             self.width = self._mm_to_inch(183) # Nature
         else:
             self.width = self._mm_to_inch(89)
+        self.width = self.width*self.area_proportion
 
     def set_width_slide(self):
         if self.page_columns == 2:
-            self.width = self._mm_to_inch(25.4) # PowerPoint
+            self.width = 10 # PowerPoint standard screen. If widescreen, 13.3
         else:
-            self.width = self._mm_to_inch(25.4/2)
+            self.width = 10/2
+        self.width = self.width*self.area_proportion
 
     def set_height_paper(self):
-        pass
-
+        self.height = self.width*self.aspect_ratio[1]/self.aspect_ratio[0]
+        assert self.height <= self._mm_to_inch(275), "Specified aspect ratio cannot be fitted into the plotting area"
+            
     def set_height_slide(self):
-        pass
+        self.height = self.width*self.aspect_ratio[1]/self.aspect_ratio[0]
+        assert self.height <= 5.625, "Specified aspect ratio cannot be fitted into the plotting area" # Standard screen. If widescreen, 7.5
 
     def size(self):
-        pass
+        return self.width, self.height
 
 
 class AxisManager(object):
