@@ -24,25 +24,30 @@ pip install git+https://github.com/ersilia-os/stylia.git
 ### Create figures
 
 ```python
-import sytlia
+import stylia
+import numpy as np
 
 # create a figure to be used in a slide
 fig, axs = stylia.create_figure(nrows=2, ncols=1, support="slide")
 
 # define your plots with matplotlib
-def my_first_plot(ax, x, y):
-    ax.scatter(x, y)
-
-def my_second_histogram(ax, x):
+def my_histogram(ax, x):
     ax.histogram(x,y)
 
-# work on the first plot
+def my_scatter(ax, x, y):
+    ax.scatter(x, y)
+
+# get data
+x = np.random.normal(100)
+y = x**2
+
+# first plot
 ax = axs.next()
-my_first_plot(ax)
+my_histogram(ax, x)
 
 # work on the second plot
 ax = axs.next()
-my_second_plot(ax)
+my_scatter(ax, x)
 
 # save figure
 stylia.save_figure("my_first_figure.png")

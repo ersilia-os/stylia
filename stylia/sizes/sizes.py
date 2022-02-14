@@ -1,5 +1,4 @@
 class Sizes(object):
-
     def __init__(self, support="slide"):
         if support == "slide":
             self.linewidth = 1
@@ -18,7 +17,6 @@ class Sizes(object):
 
 
 class SymbolSize(Sizes):
-    
     def __init__(self, support):
         Sizes.__init__(self, support=support)
 
@@ -27,4 +25,3 @@ class SymbolSize(Sizes):
 
     def transform(self, data):
         pass
-

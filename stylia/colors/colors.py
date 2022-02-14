@@ -4,12 +4,10 @@ import matplotlib as mpl
 from matplotlib import cm
 import numpy as np
 from sklearn.preprocessing import QuantileTransformer
-import matpltolib.pyplot as plt
-
+import matplotlib.pyplot as plt
 
 
 class ColorIdeas(object):
-
     def __init__(self):
         pass
 
@@ -17,13 +15,12 @@ class ColorIdeas(object):
         ideas = {
             "diverging": ["Spectral", "coolwarm"],
             "uniform": ["viridis", "plasma"],
-            "sequential": ["YlGnBu"]
+            "sequential": ["YlGnBu"],
         }
         return ideas
 
 
 class ColorMaps(object):
-
     def __init__(self, scientific=True):
         self.scientific = scientific
 
@@ -38,21 +35,20 @@ class ColorMaps(object):
 
 
 class NamedColors(ColorIdeas):
-
     def __init__(self, palette, empty):
         ColorIdeas.__init__(self)
         self._set_bokeh()
         self._empty = empty
 
     def _set_bokeh(self):
-        self._red = '#EC1557'
-        self._orange = '#F05223'
-        self._yellow = '#F6A91B'
-        self._lightgreen = '#A5CD39'
-        self._green = '#20B254'
-        self._lightblue = '#00AAAE'
-        self._blue = '#4998D3'
-        self._purple = '#892889'
+        self._red = "#EC1557"
+        self._orange = "#F05223"
+        self._yellow = "#F6A91B"
+        self._lightgreen = "#A5CD39"
+        self._green = "#20B254"
+        self._lightblue = "#00AAAE"
+        self._blue = "#4998D3"
+        self._purple = "#892889"
 
     @property
     def red(self):
@@ -76,7 +72,6 @@ class NamedColors(ColorIdeas):
 
 
 class Colors(NamedColors):
-
     def __init__(self, cmap_name="Spectral", empty=None):
         NamedColors.__init__(self, empty=empty)
         self.cmap_name = cmap_name
@@ -89,11 +84,11 @@ class Colors(NamedColors):
         pass
 
     def fit_categorical(self, data, spread=True):
-        
+
         self.fit_type = "categorical"
-        
-    def fit_continuous(self, data)
-        
+
+    def fit_continuous(self, data):
+
         self.fit_type = "continuous"
 
     def fit_limits(self, vmin, vmax):
@@ -130,7 +125,7 @@ class Colors(NamedColors):
         return [cat2col[c] for c in categories]
 
     def from_values(self, values, method="uniform"):
-        values = np.array(values).reshape(-1,1)
+        values = np.array(values).reshape(-1, 1)
         if self.transformer is None:
             self.transformer = QuantileTransformer(output_distribution=method)
             self.transformer.fit(values)
