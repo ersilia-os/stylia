@@ -1,27 +1,24 @@
-class Sizes(object):
-    def __init__(self, support="slide"):
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+class FontSize(object):
+    def __init__(self, support):
         if support == "slide":
-            self.linewidth = 1
-            self.fontsize = 16
-            self.s = 30
-        elif support == "paper":
-            self.linewidth = 1
-            self.fontsize = 10
-            self.s = 50
+            self.SMALL_SIZE = 5
+            self.MEDIUM_SIZE = 7
+            self.BIGGER_SIZE = 8
         else:
-            pass
+            self.SMALL_SIZE = 8
+            self.MEDIUM_SIZE = 10
+            self.BIGGER_SIZE = 12
         self._set_rc_params()
 
     def _set_rc_params(self):
-        pass
-
-
-class SymbolSize(Sizes):
-    def __init__(self, support):
-        Sizes.__init__(self, support=support)
-
-    def fit(self, data):
-        pass
-
-    def transform(self, data):
-        pass
+        plt.rc("font", size=self.SMALL_SIZE)
+        plt.rc("axes", titlesize=self.MEDIUM_SIZE)
+        plt.rc("axes", labelsize=self.MEDIUM_SIZE)
+        plt.rc("xtick", labelsize=self.MEDIUM_SIZE)
+        plt.rc("ytick", labelsize=self.MEDIUM_SIZE)
+        plt.rc("legend", fontsize=self.MEDIUM_SIZE)
+        plt.rc("figure", titlesize=self.MEDIUM_SIZE)

@@ -1,4 +1,5 @@
 import palettable
+from ..sizes.sizes import FontSize
 
 
 class FigureSize(object):
@@ -24,6 +25,7 @@ class FigureSize(object):
         else:
             self.set_width_paper()
             self.set_height_paper()
+        FontSize(support=self.support)
 
     @staticmethod
     def _mm_to_inch(x):
@@ -42,7 +44,6 @@ class FigureSize(object):
         else:
             self.width = 10 / 2
         self.width = self.width * self.area_proportion
-        print(self.width)
 
     def set_height_paper(self):
         self.height = self.width * self.aspect_ratio[1] / self.aspect_ratio[0]
@@ -71,6 +72,9 @@ class AxisManager(object):
         ax.set_prop_cycle(
             "color", palettable.cartocolors.qualitative.Prism_10.mpl_colors
         )  # To-do decide a by-default palette
+        ax.set_xlabel("X-axis / Units")
+        ax.set_ylabel("Y-axis / Units")
+        ax.set_title("Plot title")
         return ax
 
     def get(self, xy=None):

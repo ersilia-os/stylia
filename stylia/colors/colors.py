@@ -1,4 +1,5 @@
 import collections
+import palettable
 
 import matplotlib as mpl
 from matplotlib import cm
@@ -7,68 +8,53 @@ from sklearn.preprocessing import QuantileTransformer
 import matplotlib.pyplot as plt
 
 
-class ColorIdeas(object):
+class NamedColors(object):
     def __init__(self):
-        pass
+        self._colors = palettable.cartocolors.qualitative.Prism_9.mpl_colors
+        self.red = self._colors[7]
+        self.blue = self._colors[1]
+        self.green = self._colors[3]
+        self.orange = self._colors[6]
+        self.purple = self._colors[8]
+        self.yellow = self._colors[5]
+        self.gray = (211, 211, 211)
 
-    def ideas(self):
-        ideas = {
-            "diverging": ["Spectral", "coolwarm"],
-            "uniform": ["viridis", "plasma"],
-            "sequential": ["YlGnBu"],
-        }
-        return ideas
+
+class Palette(object):
+    def __init__(self, shuffle=True):
+        self.colors = palettable.cartocolors.qualitative.Prism_10.mpl_colors
+        self.is_shuffled = shuffle
+        if shuffle:
+            idxs = [i for i in range(len(self.colors))]
+            self.colors = [self.colors[i] for i in idxs]
+        self.cur_i = 0
+
+    def next(self):
+        if self.cur_i > len(self.colors):
+            self.cur_i = 0
+        color = self.colors[self.cur_i]
+        self.cur_i += 1
+        return color
+
+    def sample(self, n):
+        colors = []
+        for _ in range(n):
+            colors += [self.next()]
+        return colors
 
 
-class ColorMaps(object):
+class ColorMap(object):
     def __init__(self, scientific=True):
         self.scientific = scientific
+
+    def uniform(self):
+        pass
 
     def sequential(self):
         pass
 
     def diverging(self):
         pass
-
-    def cyclic(self):
-        pass
-
-
-class NamedColors(ColorIdeas):
-    def __init__(self, palette, empty):
-        ColorIdeas.__init__(self)
-        self._set_bokeh()
-        self._empty = empty
-
-    def _set_bokeh(self):
-        self._red = "#EC1557"
-        self._orange = "#F05223"
-        self._yellow = "#F6A91B"
-        self._lightgreen = "#A5CD39"
-        self._green = "#20B254"
-        self._lightblue = "#00AAAE"
-        self._blue = "#4998D3"
-        self._purple = "#892889"
-
-    @property
-    def red(self):
-        return self._red()
-
-    @property
-    def orange(self):
-        return self._orange()
-
-    @property
-    def yellow(self):
-        return self._yellow()
-
-    @property
-    def green(self):
-        return self._green()
-
-    @property
-    def blue(self):
-        return self._blue()
 
 
 class Colors(NamedColors):

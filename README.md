@@ -28,17 +28,17 @@ import stylia
 import numpy as np
 
 # create a figure to be used in a slide
-fig, axs = stylia.create_figure(nrows=2, ncols=1, support="slide")
+fig, axs = stylia.create_figure(nrows=1, ncols=2, area_proportion=1, aspect_ratio=(2,1), support="paper")
 
 # define your plots with matplotlib
 def my_histogram(ax, x):
-    ax.histogram(x,y)
+    ax.hist(x)
 
-def my_scatter(ax, x, y):
+def my_scatterplot(ax, x, y):
     ax.scatter(x, y)
 
 # get data
-x = np.random.normal(100)
+x = np.random.normal(size=100)
 y = x**2
 
 # first plot
@@ -47,7 +47,7 @@ my_histogram(ax, x)
 
 # work on the second plot
 ax = axs.next()
-my_scatter(ax, x)
+my_scatterplot(ax, x, y)
 
 # save figure
 stylia.save_figure("my_first_figure.png")

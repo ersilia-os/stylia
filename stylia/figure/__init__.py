@@ -16,8 +16,8 @@ def create_figure(
         area_proportion=area_proportion,
         aspect_ratio=aspect_ratio,
     )
-    print(figsize.size())
     fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize.size())
+    fig.patch.set_facecolor("white")
     if nrows == 1 and ncols == 1:
         axs = [[axs]]
     else:
