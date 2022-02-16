@@ -1,10 +1,10 @@
-import palettable
 from ..sizes.sizes import FontSize
+from ..colors.colors import Palette
 
 
 class FigureSize(object):
     def __init__(
-        self, support="slide", page_columns=2, area_proportion=1, aspect_ratio=(1, 1)
+        self, support="slide", page_columns=2, area_proportion=1, aspect_ratio=(1,1)
     ):
         assert support in [
             "slide",
@@ -63,15 +63,18 @@ class FigureSize(object):
 
 class AxisManager(object):
     def __init__(self, axs):
-        self.axs_flat = axs.flatten()
+        if type(axs) is list:
+            self.axs_flat = axs[0]
+        else:
+            self.axs_flat = axs.flatten()
         self.current_i = 0
 
     def next(self):
         ax = self.axs_flat[self.current_i]
         self.current_i += 1
         ax.set_prop_cycle(
-            "color", palettable.cartocolors.qualitative.Prism_10.mpl_colors
-        )  # To-do decide a by-default palette
+            "color", Palette().colors
+        )
         ax.set_xlabel("X-axis / Units")
         ax.set_ylabel("Y-axis / Units")
         ax.set_title("Plot title")

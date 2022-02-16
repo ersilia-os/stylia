@@ -1,5 +1,6 @@
 import collections
 import palettable
+import random
 
 import matplotlib as mpl
 from matplotlib import cm
@@ -17,7 +18,7 @@ class NamedColors(object):
         self.orange = self._colors[6]
         self.purple = self._colors[8]
         self.yellow = self._colors[5]
-        self.gray = (211, 211, 211)
+        self.gray = "lightgray"
 
 
 class Palette(object):
@@ -26,6 +27,7 @@ class Palette(object):
         self.is_shuffled = shuffle
         if shuffle:
             idxs = [i for i in range(len(self.colors))]
+            random.shuffle(idxs)
             self.colors = [self.colors[i] for i in idxs]
         self.cur_i = 0
 

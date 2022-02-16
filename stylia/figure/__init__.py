@@ -8,8 +8,10 @@ def create_figure(
     support="slide",
     page_columns=2,
     area_proportion=1,
-    aspect_ratio=(1, 1),
+    aspect_ratio=None,
 ):
+    if aspect_ratio is None:
+        aspect_ratio = (ncols, nrows)
     figsize = FigureSize(
         support=support,
         page_columns=page_columns,
