@@ -1,12 +1,14 @@
 import collections
-import palettable
 import random
 
 import matplotlib as mpl
 from matplotlib import cm
+from cmcrameri import cm as cms  # scientific colormaps
+import palettable
+from matplotlib import colors
+
 import numpy as np
 from sklearn.preprocessing import QuantileTransformer
-import matplotlib.pyplot as plt
 
 
 class NamedColors(object):
@@ -18,7 +20,7 @@ class NamedColors(object):
         self.orange = self._colors[6]
         self.purple = self._colors[8]
         self.yellow = self._colors[5]
-        self.gray = "lightgray"
+        self.gray = tuple(list(colors.to_rgba("lightgray"))[:3])
 
 
 class Palette(object):
@@ -50,13 +52,28 @@ class ColorMap(object):
         self.scientific = scientific
 
     def uniform(self):
-        pass
+        if self.scientific:
+            self.cmap = cms.imola
+        else:
+            self.cmap = cm.get_cmap("viridis")
+        return self.cmap
 
     def sequential(self):
         pass
 
-    def diverging(self):
-        pass
+    def coolwarm(self):
+        if self.scientific:
+            self.cmap = cms.vik
+        else:
+            self.cmap = cm.get_cmap("coolwarm")
+        return self.cmap
+
+    def spectral(self):
+        if self.scientific:
+            self.cmap = cms.roma
+        else:
+            self.cmap = cm.get_cmap("Spectral")
+        return self.cmap
 
 
 class Colors(NamedColors):

@@ -4,7 +4,7 @@ import numpy as np
 
 class FontSize(object):
     def __init__(self, support):
-        if support == "slide":
+        if support == "paper":
             self.SMALL_SIZE = 5
             self.MEDIUM_SIZE = 7
             self.BIGGER_SIZE = 8
