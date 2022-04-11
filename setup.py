@@ -48,9 +48,7 @@ setup(
         "Topic :: Data Visualization",
     ),
     keywords="data_visualization",
-    project_urls={
-        "Source Code": "https://github.com/ersilia-os/stylia/",
-    },
+    project_urls={"Source Code": "https://github.com/ersilia-os/stylia/"},
     include_package_data=True,
     package_data={"": ["example/files/*.csv"]},
 )

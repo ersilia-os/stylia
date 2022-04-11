@@ -1,5 +1,6 @@
 import collections
 import random
+import numpy as np
 
 import matplotlib as mpl
 from matplotlib import cm
@@ -7,8 +8,10 @@ from cmcrameri import cm as cms  # scientific colormaps
 import palettable
 from matplotlib import colors
 
-import numpy as np
 from sklearn.preprocessing import QuantileTransformer
+
+
+CONTINUOUS_CMAP_PERCENITLE_CUTS = (1, 99)
 
 
 class NamedColors(object):
@@ -21,6 +24,19 @@ class NamedColors(object):
         self.purple = self._colors[8]
         self.yellow = self._colors[5]
         self.gray = tuple(list(colors.to_rgba("lightgray"))[:3])
+
+
+class NamedColorMaps(object):
+    def __init__(self, scientific=True):
+        self._scientific = scientific
+        if scientific:
+            self.viridis = cms.imola
+            self.spectral = cms.roma
+            self.coolwarm = cms.vik
+        else:
+            self.viridis = cm.get_cmap("viridis")
+            self.spectral = cm.get_cmap("Spectral")
+            self.coolwarm = cm.get_cmap("coolwarm")
 
 
 class Palette(object):
@@ -47,34 +63,51 @@ class Palette(object):
         return colors
 
 
-class ColorMap(object):
-    def __init__(self, scientific=True):
-        self.scientific = scientific
+class ContinuousColorMap(object):
+    def __init__(self, cmap, transformation="uniform"):
+        self.cmap = cmap
+        self.transformation = transformation
 
-    def uniform(self):
-        if self.scientific:
-            self.cmap = cms.imola
+    def fit(self, data):
+        if self.transformation is not None:
+            values = np.array(data).reshape(-1, 1)
+            self.transformer = QuantileTransformer(
+                output_distribution=self.transformation
+            )
+            self.transformer.fit(values)
+            if self.transformation == "uniform":
+                self.vmin = 0
+                self.vmax = 1
+            else:
+                values = self.transformer.transform(values).ravel()
+                self.vmin = np.percentile(values, CONTINUOUS_CMAP_PERCENITLE_CUTS[0])
+                self.vmax = np.percentile(values, CONTINUOUS_CMAP_PERCENITLE_CUTS[1])
         else:
-            self.cmap = cm.get_cmap("viridis")
-        return self.cmap
+            self.transformer = None
+            values = np.array(data)
+            self.vmin = np.percentile(values, CONTINUOUS_CMAP_PERCENITLE_CUTS[0])
+            self.vmax = np.percentile(values, CONTINUOUS_CMAP_PERCENITLE_CUTS[1])
+        self.color_normalizer = mpl.colors.Normalize(vmin=self.vmin, vmax=self.vmax)
 
-    def sequential(self):
-        pass
-
-    def coolwarm(self):
-        if self.scientific:
-            self.cmap = cms.vik
+    def transform(self, data):
+        if self.transformer:
+            values = np.array(data).reshape(-1, 1)
+            values = self.transformer.transform(values).ravel()
         else:
-            self.cmap = cm.get_cmap("coolwarm")
-        return self.cmap
+            values = np.array(data)
+        colors = [self.cmap(self.color_normalizer(v)) for v in values]
+        return colors
 
-    def spectral(self):
-        if self.scientific:
-            self.cmap = cms.roma
-        else:
-            self.cmap = cm.get_cmap("Spectral")
-        return self.cmap
+    def sample(self, n, shuffle=False):
+        values = np.linspace(0, 1, n)
+        norm = mpl.colors.Normalize(vmin=0, vmax=1)
+        values = [norm(x) for x in values]
+        if shuffle:
+            random.shuffle(values)
+        return [self.cmap(x) for x in values]
 
+
+""""
 
 class Colors(NamedColors):
     def __init__(self, cmap_name="Spectral", empty=None):
@@ -146,3 +179,5 @@ class Colors(NamedColors):
         values = [self.from_values_norm(x) for x in values]
         colors = self.cmap(values)
         return colors
+
+"""

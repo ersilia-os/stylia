@@ -1,6 +1,6 @@
 # Stylia: decent scientific plot styles
 
-This repository contains predefined MatPlotLib styles to be used by all projects within the [Ersilia Open Source Initiative](https://ersilia.io).
+This repository contains predefined [MatPlotLib](https://matplotlib.org/) styles to be used by all projects within the [Ersilia Open Source Initiative](https://ersilia.io).
 
 * By default, [scientific color schemes](https://www.nature.com/articles/s41467-020-19160-7) are used. Learn more [here](https://www.fabiocrameri.ch/colourmaps/).
 * Sizes are guided by *Nature* journals formats, as described in their [guidelines](https://www.nature.com/documents/nature-final-artwork.pdf).
@@ -55,17 +55,20 @@ stylia.save_figure("my_first_figure.png")
 
 ### Colors
 
-```python
-from stylia import Colors
+#### Color maps
 
+You can use color maps in [Scikit-Learn](https://scikit-learn.org/stable/) fit-transform style.
+
+```python
+from stylia.colors import ContinuousColorMap
+import numpy as np
+
+data = np.random.sample(100)
+
+cmap = ContinuousColorMap()
+cmap.fit(data)
+colors = cmap.transform(data)
 ```
 
-#### From categorical data
-
-
-#### From continuous data
-
-
-#### From 
-
-### Sizes
+## About us
+Learn more about the Ersilia Open Source Initiative [here](https://ersilia.io)!
