@@ -38,4 +38,4 @@ mpl.rcParams.update({"axes.grid": True})
 # Relative imports
 
 from .figure import create_figure, save_figure
-from .colors.colors import Colors
+from .colors.colors import NamedColors
