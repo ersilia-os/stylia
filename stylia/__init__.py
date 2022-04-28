@@ -8,24 +8,6 @@ import matplotlib.font_manager
 
 FONT = "Arial"
 
-
-def is_font_available():
-    flist = matplotlib.font_manager.get_fontconfig_fonts()
-    names = [
-        matplotlib.font_manager.FontProperties(fname=fname).get_name()
-        for fname in flist
-    ]
-    if FONT not in names:
-        return False
-    else:
-        return True
-
-
-if not is_font_available():
-    raise Exception(
-        "{0} font is not available! Please install it in your system".format(FONT)
-    )
-
 shutil.rmtree(mpl.get_cachedir())
 
 mpl.rcParams["font.family"] = "sans-serif"
