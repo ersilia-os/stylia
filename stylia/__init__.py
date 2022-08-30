@@ -21,4 +21,4 @@ mpl.rcParams.update({"axes.grid": True})
 
 from .figure import create_figure, save_figure
 
-from .colors.colors import NamedColors, NamedColorMaps
+from .colors.colors import NamedColors, NamedColorMaps, ContinuousColorMap
