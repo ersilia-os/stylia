@@ -6,7 +6,11 @@ This repository contains predefined [MatPlotLib](https://matplotlib.org/) styles
 * Sizes are guided by *Nature* journals formats, as described in their [guidelines](https://www.nature.com/documents/nature-final-artwork.pdf).
 
 ## Installation
-First make sure that you have the Arial font installed in your computer.
+First make sure that you have the Arial font installed in your computer (Linux systems do not have it preinstalled). The best is to install Arial in the conda environment you are using:
+
+```conda install -c conda-forge mscorefonts```
+
+You can read more about fonts and matplotlib in this excellent [blogpost](https://alexanderlabwhoi.github.io/post/2021-03-missingfont/) from the Alexander Lab
 
 ### From source
 ```bash
