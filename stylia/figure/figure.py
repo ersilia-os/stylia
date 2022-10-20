@@ -13,7 +13,6 @@ def stylize(ax):
 
 # predefined
 
-
 class FigureSize(object):
     def __init__(
         self, support="slide", page_columns=2, area_proportion=1, aspect_ratio=None
@@ -64,14 +63,18 @@ class AxisManager(object):
         self.axs = axs
         self.current_i = 0
 
+    def __getitem__(self, key):
+        if type(key) is int:
+            i = key
+            ax = self.axs_flat[i]
+        else:
+            i,j = key
+            ax = self.axs[i,j]
+        ax = stylize(ax)
+        return ax
+        
     def next(self):
         ax = self.axs_flat[self.current_i]
         self.current_i += 1
         ax = stylize(ax)
         return ax
-
-    def get(self, xy=None):
-        if xy is None:
-            return self.next()
-        else:
-            return self.axs[xy[0], xy[1]]

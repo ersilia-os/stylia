@@ -1,9 +1,11 @@
 import matplotlib as mpl
 import seaborn as sns
 import shutil
+import os
 
 sns.set_style("ticks")
 
+os.environ["LC_CTYPE"]="en_US.UTF-8"
 import matplotlib.font_manager
 
 FONT = "Arial"
@@ -19,6 +21,6 @@ mpl.rcParams.update({"axes.grid": True})
 
 # Relative imports
 
-from .figure import create_figure, save_figure
+from .figure import create_figure, save_figure, figure_size_limits
 
 from .colors.colors import NamedColors, NamedColorMaps, ContinuousColorMap
