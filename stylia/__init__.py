@@ -5,7 +5,7 @@ import os
 
 sns.set_style("ticks")
 
-os.environ["LC_CTYPE"]="en_US.UTF-8"
+os.environ["LC_CTYPE"] = "en_US.UTF-8"
 import matplotlib.font_manager
 
 FONT = "Arial"
