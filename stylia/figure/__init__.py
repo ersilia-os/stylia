@@ -1,5 +1,10 @@
 import matplotlib.pyplot as plt
 from .figure import FigureSize, AxisManager
+from ..sizes.sizes import SupportSize
+
+
+def get_size_limits(support):
+    return SupportSize(support).get_limits()
 
 
 def create_figure(

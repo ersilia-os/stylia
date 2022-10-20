@@ -23,6 +23,28 @@ class NamedColors(object):
         self.purple = self._colors[8]
         self.yellow = self._colors[5]
         self.gray = tuple(list(colors.to_rgba("lightgray"))[:3])
+        self.white = tuple(list(colors.to_rgba("white"))[:3])
+        self.black = tuple(list(colors.to_rgba("black"))[:3])
+
+    def get(self, color_name):
+        if color_name == "red":
+            return self.red
+        if color_name == "blue":
+            return self.blue
+        if color_name == "green":
+            return self.green
+        if color_name == "orange":
+            return self.orange
+        if color_name == "purple":
+            return self.purple
+        if color_name == "yellow":
+            return self.yellow
+        if color_name == "gray":
+            return self.gray
+        if color_name == "white":
+            return self.white
+        if color_name == "black":
+            return self.black
 
 
 class NamedColorMaps(object):
@@ -36,6 +58,14 @@ class NamedColorMaps(object):
             self.viridis = cm.get_cmap("viridis")
             self.spectral = cm.get_cmap("Spectral")
             self.coolwarm = cm.get_cmap("coolwarm")
+
+    def get(self, cmap_name):
+        if cmap_name == "viridis":
+            return self.viridis
+        if cmap_name == "spectral":
+            return self.spectral
+        if cmap_name == "coolwarm":
+            return self.coolwarm
 
 
 class Palette(object):
@@ -63,15 +93,23 @@ class Palette(object):
 
 
 class ContinuousColorMap(object):
-    def __init__(self, cmap, transformation="uniform"):
-        self.cmap = cmap
+    def __init__(self, cmap, transformation="uniform", ascending=True):
+        if type(cmap) is str:
+            self.cmap = NamedColorMaps().get(cmap)
+        else:
+            self.cmap = cmap
         self.transformation = transformation
+        self.ascending = ascending
 
     def fit(self, data):
+        data = np.array(data)
+        if not self.ascending:
+            data = -data
         if self.transformation is not None:
             values = np.array(data).reshape(-1, 1)
             self.transformer = QuantileTransformer(
-                output_distribution=self.transformation
+                n_quantiles=min(len(values), 1000),
+                output_distribution=self.transformation,
             )
             self.transformer.fit(values)
             if self.transformation == "uniform":
@@ -89,6 +127,9 @@ class ContinuousColorMap(object):
         self.color_normalizer = mpl.colors.Normalize(vmin=self.vmin, vmax=self.vmax)
 
     def transform(self, data):
+        data = np.array(data)
+        if not self.ascending:
+            data = -data
         if self.transformer:
             values = np.array(data).reshape(-1, 1)
             values = self.transformer.transform(values).ravel()
@@ -104,79 +145,3 @@ class ContinuousColorMap(object):
         if shuffle:
             random.shuffle(values)
         return [self.cmap(x) for x in values]
-
-
-""""
-
-class Colors(NamedColors):
-    def __init__(self, cmap_name="Spectral", empty=None):
-        NamedColors.__init__(self, empty=empty)
-        self.cmap_name = cmap_name
-        self.empty = empty
-        self.cmap = cm.get_cmap(self.cmap_name)
-        self.transformer = None
-        self.fit_type = None
-
-    def _maximally_different_values(self):
-        pass
-
-    def fit_categorical(self, data, spread=True):
-
-        self.fit_type = "categorical"
-
-    def fit_continuous(self, data):
-
-        self.fit_type = "continuous"
-
-    def fit_limits(self, vmin, vmax):
-
-        self.fit_type = "limits"
-
-    def sample(self, n, spread=True):
-        values = np.linspace(0, 1, n)
-        norm = mpl.colors.Normalize(vmin=0, vmax=1)
-        values = [norm(x) for x in values]
-        return [self.cmap(x) for x in values]
-
-    def transform(self, data):
-        pass
-
-    def sample(self, n):
-        values = np.linspace(0, 1, n)
-        norm = mpl.colors.Normalize(vmin=0, vmax=1)
-        values = [norm(x) for x in values]
-        return [self.cmap(x) for x in values]
-
-    def from_categories(self, categories, spread_by_counts=True, empty_category=-1):
-        categories_counts = collections.defaultdict(int)
-        for c in categories:
-            categories_counts[c] += 1
-        cats = sorted(categories_counts.keys())
-        colors = self.sample(len(cats))
-        cat2col = {}
-        for cat, col in zip(cats, colors):
-            if cat == empty_category:
-                cat2col[cat] = self.empty
-            else:
-                cat2col[cat] = col
-        return [cat2col[c] for c in categories]
-
-    def from_values(self, values, method="uniform"):
-        values = np.array(values).reshape(-1, 1)
-        if self.transformer is None:
-            self.transformer = QuantileTransformer(output_distribution=method)
-            self.transformer.fit(values)
-            if method == "uniform":
-                vmin = 0
-                vmax = 1
-            else:
-                values = self.transformer.transform(values).ravel()
-                vmin = np.percentile(values, 1)
-                vmax = np.percentile(values, 99)
-            self.from_values_norm = mpl.colors.Normalize(vmin=vmin, vmax=vmax)
-        values = self.transformer.transform(values).ravel()
-        values = [self.from_values_norm(x) for x in values]
-        colors = self.cmap(values)
-        return colors
-
-"""

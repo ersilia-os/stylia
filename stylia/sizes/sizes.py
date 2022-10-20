@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 
+from . import SUPPORT_TWO_COLUMN_LIMITS
+
 
 class FontSize(object):
     def __init__(self, support):
@@ -21,3 +23,11 @@ class FontSize(object):
         plt.rc("ytick", labelsize=self.MEDIUM_SIZE)
         plt.rc("legend", fontsize=self.MEDIUM_SIZE)
         plt.rc("figure", titlesize=self.MEDIUM_SIZE)
+
+
+class SupportSize(object):
+    def __init__(self, support):
+        self.support = support
+
+    def get_limits(self):
+        return SUPPORT_TWO_COLUMN_LIMITS[self.support]

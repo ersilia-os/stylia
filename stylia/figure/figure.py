@@ -1,21 +1,17 @@
 from ..sizes.sizes import FontSize
+from ..sizes import SUPPORT_TWO_COLUMN_LIMITS, to_one_column
 from ..colors.colors import Palette
 
 
-def mm_to_inch(x):
-    return x * 0.0393701
+def stylize(ax):
+    ax.set_prop_cycle("color", Palette().colors)
+    ax.set_xlabel("X-axis / Units")
+    ax.set_ylabel("Y-axis / Units")
+    ax.set_title("Plot title")
+    return ax
 
 
-def to_one_column(width):
-    return width * 89 / 183  # Nature two:one column ratio
-
-
-SUPPORT_TWO_COLUMN_LIMITS = {
-    "paper": (mm_to_inch(183), mm_to_inch(275)),  # Nature
-    "slide": (10, 5.625),  # Standard slide
-    "widescreen": (13.3, 7.5),  # Widescreen
-    "poster": (mm_to_inch(420), mm_to_inch(594)),  # A2
-}
+# predefined
 
 
 class FigureSize(object):
@@ -65,6 +61,7 @@ class AxisManager(object):
             self.axs_flat = axs[0]
         else:
             self.axs_flat = axs.flatten()
+        self.axs = axs
         self.current_i = 0
 
     def next(self):
@@ -78,11 +75,3 @@ class AxisManager(object):
             return self.next()
         else:
             return self.axs[xy[0], xy[1]]
-
-
-def stylize(ax):
-    ax.set_prop_cycle("color", Palette().colors)
-    ax.set_xlabel("X-axis / Units")
-    ax.set_ylabel("Y-axis / Units")
-    ax.set_title("Plot title")
-    return ax
