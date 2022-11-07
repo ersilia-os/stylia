@@ -15,6 +15,8 @@ def create_figure(
     page_columns=2,
     area_proportion=1,
     aspect_ratio=None,
+    subplot_width_ratio=None,
+    subplot_height_ratio=None
 ):
     if figsize is None:
         if aspect_ratio is None:
@@ -28,7 +30,7 @@ def create_figure(
         figsize = figsize.size()
     else:
         FontSize(support=None)
-    fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize)
+    fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize, gridspec_kw={'width_ratios': subplot_width_ratio, 'height_ratios': subplot_height_ratio})
     fig.patch.set_facecolor("white")
     if nrows == 1 and ncols == 1:
         axs = [[axs]]
