@@ -1,33 +1,29 @@
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+import numpy as np
 
-from . import SUPPORT_TWO_COLUMN_LIMITS
+from ..vars import FONTSIZE_SMALL, FONTSIZE, LINEWIDTH, MARKERSIZE
 
 
 class FontSize(object):
-    def __init__(self, support):
-        if support == "paper":
-            self.SMALL_SIZE = 5
-            self.MEDIUM_SIZE = 7
-            self.BIGGER_SIZE = 8
-        else:
-            self.SMALL_SIZE = 8
-            self.MEDIUM_SIZE = 10
-            self.BIGGER_SIZE = 12
+    def __init__(self):
         self._set_rc_params()
 
     def _set_rc_params(self):
-        plt.rc("font", size=self.SMALL_SIZE)
-        plt.rc("axes", titlesize=self.MEDIUM_SIZE)
-        plt.rc("axes", labelsize=self.MEDIUM_SIZE)
-        plt.rc("xtick", labelsize=self.MEDIUM_SIZE)
-        plt.rc("ytick", labelsize=self.MEDIUM_SIZE)
-        plt.rc("legend", fontsize=self.MEDIUM_SIZE)
-        plt.rc("figure", titlesize=self.MEDIUM_SIZE)
+        plt.rc("font", size=FONTSIZE_SMALL)
+        plt.rc("axes", titlesize=FONTSIZE)
+        plt.rc("axes", labelsize=FONTSIZE)
+        plt.rc("xtick", labelsize=FONTSIZE)
+        plt.rc("ytick", labelsize=FONTSIZE)
+        plt.rc("legend", fontsize=FONTSIZE)
+        plt.rc("figure", titlesize=FONTSIZE)
 
 
-class SupportSize(object):
-    def __init__(self, support):
-        self.support = support
+class MarkerSize(object):
+    def __init__(self):
+        self._set_rc_params()
 
-    def get_limits(self):
-        return SUPPORT_TWO_COLUMN_LIMITS[self.support]
+    def _set_rc_params(self):
+        mpl.rcParams["axes.linewidth"] = LINEWIDTH
+        mpl.rcParams["lines.markersize"] = np.sqrt(MARKERSIZE)
+        mpl.rcParams["lines.linewidth"] = LINEWIDTH

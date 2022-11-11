@@ -1,6 +1,5 @@
-from ..sizes.sizes import FontSize
-from ..sizes import SUPPORT_TWO_COLUMN_LIMITS, to_one_column
 from ..colors.colors import Palette
+from ..vars import LINEWIDTH, FONTSIZE_BIG
 
 
 def stylize(ax):
@@ -8,51 +7,21 @@ def stylize(ax):
     ax.set_xlabel("X-axis / Units")
     ax.set_ylabel("Y-axis / Units")
     ax.set_title("Plot title")
+    ax.grid(linewidth=LINEWIDTH)
+    ax.xaxis.set_tick_params(width=LINEWIDTH)
+    ax.yaxis.set_tick_params(width=LINEWIDTH)
     return ax
 
 
-# predefined
-
-
-class FigureSize(object):
-    def __init__(
-        self, support="slide", page_columns=2, area_proportion=1, aspect_ratio=None
-    ):
-        assert support in [
-            "slide",
-            "widescreen",
-            "paper",
-            "poster",
-        ], "Available supports are 'slide', 'widescreen', 'paper', 'poster'"
-        assert page_columns in [
-            1,
-            2,
-        ], "Page columns can only be 1 (half the width) or 2 (full width)"
-        self.support = support
-        self.page_columns = page_columns
-        self.area_proportion = area_proportion
-        self.aspect_ratio = aspect_ratio
-        width, height = SUPPORT_TWO_COLUMN_LIMITS[support]
-        if page_columns == 1:
-            width = to_one_column(width)
-        width = width * area_proportion
-        if area_proportion > 1:
-            height = height * area_proportion
-        if aspect_ratio is None:
-            self.width = width
-            self.height = height
-        else:
-            height_ = width * aspect_ratio[1] / aspect_ratio[0]
-            if height_ < height:
-                self.width = width
-                self.height = height_
-            else:
-                self.height = height
-                self.width = height * aspect_ratio[0] / aspect_ratio[1]
-        FontSize(support=self.support)
-
-    def size(self):
-        return self.width, self.height
+def label(ax, xlabel=None, ylabel=None, title=None, abc=None):
+    if xlabel is not None:
+        ax.set_xlabel(xlabel)
+    if xlabel is not None:
+        ax.set_ylabel(ylabel)
+    if title is not None:
+        ax.set_title(title)
+    if abc is not None:
+        ax.set_title(abc, loc="left", fontweight="bold", fontsize=FONTSIZE_BIG)
 
 
 class AxisManager(object):
@@ -68,11 +37,16 @@ class AxisManager(object):
         if type(key) is int:
             i = key
             ax = self.axs_flat[i]
+            self.current_i = i + 1
         else:
             i, j = key
             ax = self.axs[i, j]
+            self.current_i = j*(i+1) + 1
         ax = stylize(ax)
         return ax
+
+    def restart(self):
+        self.current_i = 0
 
     def next(self):
         ax = self.axs_flat[self.current_i]

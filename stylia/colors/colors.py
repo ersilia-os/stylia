@@ -3,11 +3,13 @@ import numpy as np
 
 import matplotlib as mpl
 from matplotlib import cm
-from cmcrameri import cm as cms  # scientific colormaps
+from cmcrameri import cm as cms
 import palettable
 from matplotlib import colors
 
 from sklearn.preprocessing import QuantileTransformer
+
+from ..utils import lighten_color, set_transparency
 
 
 CONTINUOUS_CMAP_PERCENITLE_CUTS = (1, 99)
@@ -26,7 +28,7 @@ class NamedColors(object):
         self.white = tuple(list(colors.to_rgba("white"))[:3])
         self.black = tuple(list(colors.to_rgba("black"))[:3])
 
-    def get(self, color_name):
+    def _get(self, color_name, alpha=None, lighten=None):
         if color_name == "red":
             return self.red
         if color_name == "blue":
@@ -45,6 +47,14 @@ class NamedColors(object):
             return self.white
         if color_name == "black":
             return self.black
+
+    def get(self, color_name, alpha=None, lighten=None):
+        color = self._get(color_name)
+        if lighten is not None:
+            color = lighten_color(color, factor=lighten)
+        if alpha is not None:
+            color = set_transparency(color, alpha)
+        return color
 
 
 class NamedColorMaps(object):
@@ -69,7 +79,7 @@ class NamedColorMaps(object):
 
 
 class Palette(object):
-    def __init__(self, shuffle=True):
+    def __init__(self, shuffle=False):
         self.colors = palettable.cartocolors.qualitative.Prism_10.mpl_colors
         self.is_shuffled = shuffle
         if shuffle:
@@ -93,7 +103,7 @@ class Palette(object):
 
 
 class ContinuousColorMap(object):
-    def __init__(self, cmap, transformation="uniform", ascending=True):
+    def __init__(self, cmap="spectral", transformation="uniform", ascending=True):
         if type(cmap) is str:
             self.cmap = NamedColorMaps().get(cmap)
         else:
@@ -138,6 +148,14 @@ class ContinuousColorMap(object):
         colors = [self.cmap(self.color_normalizer(v)) for v in values]
         return colors
 
+    def get(self, data, alpha=None, lighten=None):
+        colors = self.transform(data)
+        if lighten is not None:
+            colors = [lighten_color(c) for c in colors]
+        if alpha is not None:
+            colors = [set_transparency(c) for c in colors]
+        return colors
+
     def sample(self, n, shuffle=False):
         values = np.linspace(0, 1, n)
         norm = mpl.colors.Normalize(vmin=0, vmax=1)
@@ -145,3 +163,7 @@ class ContinuousColorMap(object):
         if shuffle:
             random.shuffle(values)
         return [self.cmap(x) for x in values]
+
+
+class CategoricalColorMap(object):
+    pass
