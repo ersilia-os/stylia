@@ -5,18 +5,12 @@ from ..vars import ONE_COLUMN_WIDTH, TWO_COLUMNS_WIDTH
 
 
 def create_figure(
-    nrows=1,
-    ncols=1,
-    height=None,
-    width=None,
-    one_column=False,
-    width_ratios=None,
-    height_ratios=None,
+    nrows=1, ncols=1, height=None, width=None, width_ratios=None, height_ratios=None,
 ):
     if height is None:
         height = ONE_COLUMN_WIDTH
     if width is None:
-        if one_column:
+        if ncols == 1:
             width = ONE_COLUMN_WIDTH
         else:
             width = TWO_COLUMNS_WIDTH

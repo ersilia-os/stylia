@@ -7,7 +7,7 @@ def stylize(ax):
     ax.set_xlabel("X-axis / Units")
     ax.set_ylabel("Y-axis / Units")
     ax.set_title("Plot title")
-    ax.grid(linewidth=LINEWIDTH)
+    ax.grid(b=True, linewidth=LINEWIDTH)
     ax.xaxis.set_tick_params(width=LINEWIDTH)
     ax.yaxis.set_tick_params(width=LINEWIDTH)
     return ax
@@ -41,7 +41,7 @@ class AxisManager(object):
         else:
             i, j = key
             ax = self.axs[i, j]
-            self.current_i = j*(i+1) + 1
+            self.current_i = j * (i + 1) + 1
         ax = stylize(ax)
         return ax
 
