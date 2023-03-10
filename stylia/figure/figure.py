@@ -7,7 +7,10 @@ def stylize(ax):
     ax.set_xlabel("X-axis / Units")
     ax.set_ylabel("Y-axis / Units")
     ax.set_title("Plot title")
-    ax.grid(b=True, linewidth=LINEWIDTH)
+    try:
+        ax.grid(b=True, linewidth=LINEWIDTH)
+    except:
+        ax.grid(visible=True, linewidth=LINEWIDTH)
     ax.xaxis.set_tick_params(width=LINEWIDTH)
     ax.yaxis.set_tick_params(width=LINEWIDTH)
     return ax
