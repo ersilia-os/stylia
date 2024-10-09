@@ -11,17 +11,20 @@ authors = [
 description = "Helper functions used by Ersilia to produce presentable plots with MatPlotLib"
 readme = "README.md"
 license = {text = "MIT"}
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 dependencies = [
-    "seaborn",
-    "matplotlib",
-    "scikit-learn",
-    "cmcrameri",
-    "palettable"
+    "seaborn>=0.12.2",
+    "matplotlib>=3.7.1",
+    "scikit-learn>=1.2.2",
+    "cmcrameri>=1.7",
+    "palettable>=3.3.2"
 ]
 
 classifiers = [
-    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Data Visualization",
