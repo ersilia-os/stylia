@@ -1,5 +1,0 @@
-seaborn
-matplotlib
-scikit-learn
-cmcrameri
-palettable
