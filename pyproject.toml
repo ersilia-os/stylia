@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "stylia"
-version = "0.0.1"
+version = "0.0.2"
 description = "Acceptable figure styles for scientific publications"
 authors = ["Miquel Duran-Frigola <miquel@ersilia.io>"]
 license = "MIT"
