@@ -1,44 +1,20 @@
-[build-system]
-requires = ["setuptools>=64.0.0", "wheel"]
-build-backend = "setuptools.build_meta"
-
-[project]
+[tool.poetry]
 name = "stylia"
-dynamic = ["version"]
-authors = [
-    {name = "Miquel Duran-Frigola, Ersilia Open Source Initiative", email = "miquel@ersilia.io"},
-]
-description = "Helper functions used by Ersilia to produce presentable plots with MatPlotLib"
+version = "0.0.1"
+description = "Acceptable figure styles for scientific publications"
+authors = ["Miquel Duran-Frigola <miquel@ersilia.io>"]
+license = "MIT"
 readme = "README.md"
-license = {text = "MIT"}
-requires-python = ">=3.8"
-dependencies = [
-    "seaborn>=0.12.2",
-    "matplotlib>=3.7.1",
-    "scikit-learn>=1.2.2",
-    "cmcrameri>=1.7",
-    "palettable>=3.3.2"
-]
+packages = [{ include = "stylia" }]
 
-classifiers = [
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Topic :: Data Visualization",
-]
-keywords = ["data_visualization"]
+[tool.poetry.dependencies]
+python = ">=3.8"
+seaborn = ">=0.12.2"
+matplotlib = ">=3.7.1"
+scikit-learn = ">=1.2.2"
+cmcrameri = ">=1.7"
+palettable = ">=3.3.2"
 
-[project.urls]
-"Source Code" = "https://github.com/ersilia-os/stylia/"
-
-[tool.setuptools]
-packages = {find = {exclude = ["utilities"]}}
-
-[tool.setuptools.package-data]
-"stylia" = ["example/files/*.csv"]
-
-[tool.setuptools.dynamic]
-version = {attr = "stylia._clean_version.__version__"}
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
