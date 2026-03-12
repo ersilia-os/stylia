@@ -12,15 +12,7 @@ Stylia provides predefined [Matplotlib](https://matplotlib.org/) styles, color p
 pip install stylia
 ```
 
-Or from source:
-
-```bash
-git clone https://github.com/ersilia-os/stylia.git
-cd stylia
-pip install -e .
-```
-
-Importing `stylia` automatically applies global Matplotlib style settings (font, grid, DPI-ready PDF output):
+Importing `stylia` automatically applies global Matplotlib style settings:
 
 ```python
 import stylia
@@ -41,23 +33,15 @@ import stylia
 
 ## Format and style
 
-Two orthogonal settings control the global appearance of all figures.
-
-**Format** sets the size and density suited to the output medium:
-
 ```python
-stylia.set_format("print")   # default — 7.09 in wide, compact fonts and thin lines
-stylia.set_format("slide")   # 13 in wide, slightly larger fonts for screen
+stylia.set_format("print")   # default — compact, 7.09 in wide
+stylia.set_format("slide")   # larger fonts and markers, 13 in wide
+
+stylia.set_style("article")  # default — structural elements in black
+stylia.set_style("ersilia")  # structural elements in Ersilia plum
 ```
 
-**Style** sets the color theme for structural elements (axes, ticks, text):
-
-```python
-stylia.set_style("article")  # default — all structural elements in black
-stylia.set_style("ersilia")  # structural elements in Ersilia plum (#50285A)
-```
-
-Both settings update `matplotlib.rcParams` globally and can be changed at any point.
+Both update `matplotlib.rcParams` globally and can be changed at any point.
 
 ---
 
@@ -65,7 +49,7 @@ Both settings update `matplotlib.rcParams` globally and can be changed at any po
 
 ### ArticleColors
 
-NPG-derived palette with evocative names, suited for annotating specific plot elements in publications. Also aliased as `PaperColors`.
+NPG-derived palette. Also aliased as `PaperColors`.
 
 | | Name | Hex |
 |---|---|---|
@@ -84,33 +68,9 @@ NPG-derived palette with evocative names, suited for annotating specific plot el
 from stylia import ArticleColors
 
 nc = ArticleColors()
-
-nc.crimson     # #E64B35
-nc.cobalt      # #3C5488
-nc.sky         # #4DBBD5
-nc.jade        # #00A087
-nc.coral       # #F39B7F
-nc.periwinkle  # #8491B4
-nc.seafoam     # #91D1C2
-nc.scarlet     # #DC0000
-nc.umber       # #7E6148
-nc.sand        # #B09C85
-nc.white       # #FFFFFF
-nc.black       # #2C3E50
-
-# index or slice (palette order, excludes white/black)
-nc[0]          # crimson
-nc[-1]         # sand
-nc[0:3]        # [crimson, cobalt, sky]
-len(nc)        # 10
-list(nc)       # all 10 as a list
-
-# modifiers
-nc.get("crimson", alpha=0.4)    # semi-transparent
-nc.get("cobalt",  lighten=0.3)  # lightened
-
-# all hex values
-nc.hex   # {'crimson': '#E64B35', 'cobalt': '#3C5488', ...}
+ax.scatter(x, y, color=nc.crimson)
+ax.scatter(x, y, color=nc.get("cobalt", alpha=0.4))
+ax.scatter(x, y, color=nc.get("jade", lighten=0.3))
 ```
 
 ### ErsiliaColors
@@ -128,66 +88,30 @@ Official [Ersilia brand palette](https://ersilia.gitbook.io/ersilia-book/styles/
 | ![](https://placehold.co/40x18/FAA08C/FAA08C.png) | `orange` | `#FAA08C` |
 | ![](https://placehold.co/40x18/D2D2D0/D2D2D0.png) | `gray` | `#D2D2D0` |
 
-```python
-from stylia import ErsiliaColors
-
-ec = ErsiliaColors()
-
-ec.plum    # #50285A – Ersilia primary
-ec.purple  # #AA96FA – Ersilia accent
-ec.mint    # #BEE6B4
-ec.blue    # #8CC8FA
-ec.yellow  # #FAD782
-ec.pink    # #DCA0DC
-ec.orange  # #FAA08C
-ec.gray    # #D2D2D0
-```
-
 ### NamedColors (style-aware)
 
-`NamedColors` resolves dynamically to the palette that matches the active style — `ArticleColors` for `"article"`, `ErsiliaColors` for `"ersilia"`:
+`NamedColors` resolves to `ArticleColors` or `ErsiliaColors` based on the active style:
 
 ```python
-import stylia
-
-stylia.set_style("article")
-nc = stylia.NamedColors()   # → ArticleColors
-
-stylia.set_style("ersilia")
-nc = stylia.NamedColors()   # → ErsiliaColors
+nc = stylia.NamedColors()   # ArticleColors or ErsiliaColors depending on set_style()
 ```
 
 ---
 
 ## Categorical palettes
 
-`CategoricalPalette` cycles through a set of distinct colors for categorical data.
-
 ```python
 from stylia import CategoricalPalette
 
-pal = CategoricalPalette()             # default: npg
-pal = CategoricalPalette("npg")
+pal = CategoricalPalette()              # default: npg
 pal = CategoricalPalette("ersilia")
-pal = CategoricalPalette("okabe")   # colorblind-safe
-pal = CategoricalPalette("tol")     # colorblind-safe, ≤7
+pal = CategoricalPalette("okabe")       # colorblind-safe
+pal = CategoricalPalette("tol")         # colorblind-safe, ≤7
 pal = CategoricalPalette("pastel")
 
-# usage
-colors = pal.get(5)    # 5 maximally distinguishable colors
-colors = pal.get(20)   # >palette size: interpolated from palette as a colormap
-color  = pal.next()    # draw one (advances internal counter)
-pal.reset()            # restart counter
-
-# shuffle order on creation
-pal = CategoricalPalette("npg", shuffle=True)
-
-# custom list of hex colors
-pal = CategoricalPalette(["#E64B35", "#4DBBD5", "#00A087"])
-
-# list all presets
-CategoricalPalette.available()
-# ['npg', 'ersilia', 'okabe', 'tol', 'pastel']
+colors = pal.get(5)     # 5 maximally distinguishable colors
+colors = pal.get(20)    # >palette size: interpolated as a colormap
+color  = pal.next()     # draw one (advances internal counter)
 ```
 
 **npg** — Nature Publishing Group
@@ -210,23 +134,15 @@ CategoricalPalette.available()
 
 ![](https://placehold.co/40x18/AEC6CF/AEC6CF.png) ![](https://placehold.co/40x18/FFD1DC/FFD1DC.png) ![](https://placehold.co/40x18/B5EAD7/B5EAD7.png) ![](https://placehold.co/40x18/FFDAC1/FFDAC1.png) ![](https://placehold.co/40x18/C7CEEA/C7CEEA.png) ![](https://placehold.co/40x18/E2F0CB/E2F0CB.png) ![](https://placehold.co/40x18/F3E5F5/F3E5F5.png) ![](https://placehold.co/40x18/FFF9C4/FFF9C4.png)
 
-| Preset | Colors | Notes |
-|---|---|---|
-| `npg` | 10 | Nature Publishing Group standard |
-| `ersilia` | 8 | Official Ersilia brand palette |
-| `okabe` | 8 | Colorblind-safe (Okabe–Ito) |
-| `tol` | 7 | Colorblind-safe (Paul Tol Bright) |
-| `pastel` | 8 | Soft pastels for low-emphasis use |
-
 ---
 
 ## Continuous colormaps
 
-Four colormap families, all built from PaperColors tones. Each supports the same `fit` / `transform` / `get` / `sample` interface.
+Four families, all built from ArticleColors tones. All share `fit(data)` / `transform(data)` / `get(data, alpha=)` / `sample(n)`.
 
 ### FadingColormap
 
-Fades from near-white to a single PaperColors hue — good for density, intensity, or any strictly positive value.
+Near-white → single hue. Good for density or strictly positive data.
 
 | | Preset | Range |
 |---|---|---|
@@ -236,162 +152,75 @@ Fades from near-white to a single PaperColors hue — good for density, intensit
 | ![](https://placehold.co/20x18/E5F6FB/E5F6FB.png)![](https://placehold.co/20x18/79D5E5/79D5E5.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png) | `sky` | near-white → sky teal |
 | ![](https://placehold.co/20x18/F0EDE8/F0EDE8.png)![](https://placehold.co/20x18/B4A898/B4A898.png)![](https://placehold.co/20x18/7E6148/7E6148.png) | `umber` | warm cream → umber brown |
 
-```python
-from stylia import FadingColormap
-
-ccm = FadingColormap()              # default: "cobalt"
-ccm = FadingColormap("crimson")
-ccm = FadingColormap("jade")
-ccm = FadingColormap("sky")
-ccm = FadingColormap("umber")
-```
-
 ### SpectralColormap
 
-Walks through multiple PaperColors hues warm → cool — good for ordered continuous data where the full range matters.
+Multi-hue warm → cool. Good for ordered data where the full range matters.
 
 | | Preset | Range |
 |---|---|---|
 | ![](https://placehold.co/20x18/E64B35/E64B35.png)![](https://placehold.co/20x18/F39B7F/F39B7F.png)![](https://placehold.co/20x18/91D1C2/91D1C2.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png)![](https://placehold.co/20x18/3C5488/3C5488.png) | `npg` | crimson → coral → seafoam → sky → cobalt |
 
-```python
-from stylia import SpectralColormap
-
-scm = SpectralColormap()   # default: "npg"
-```
-
 ### DivergingColormap
 
-Two PaperColors hues through a light center — suited for data that diverges around a meaningful midpoint.
+Two hues through a light center. Good for data diverging around a meaningful midpoint.
 
 | | Preset | Range |
 |---|---|---|
-| ![](https://placehold.co/20x18/E64B35/E64B35.png)![](https://placehold.co/20x18/F8F8F8/F8F8F8.png)![](https://placehold.co/20x18/3C5488/3C5488.png) | `crimson_cobalt` | vermillion ↔ navy through near-white |
-| ![](https://placehold.co/20x18/F39B7F/F39B7F.png)![](https://placehold.co/20x18/FAFAFA/FAFAFA.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png) | `coral_sky` | coral ↔ sky teal through near-white |
-
-```python
-from stylia import DivergingColormap
-
-dcm = DivergingColormap()                      # default: "crimson_cobalt"
-dcm = DivergingColormap("coral_sky")
-```
+| ![](https://placehold.co/20x18/E64B35/E64B35.png)![](https://placehold.co/20x18/F8F8F8/F8F8F8.png)![](https://placehold.co/20x18/3C5488/3C5488.png) | `crimson_cobalt` | vermillion ↔ navy |
+| ![](https://placehold.co/20x18/F39B7F/F39B7F.png)![](https://placehold.co/20x18/FAFAFA/FAFAFA.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png) | `coral_sky` | coral ↔ sky teal |
 
 ### CyclicColormap
 
-Wraps smoothly back to its starting color — for phase, angle, or periodic data.
+Wraps back to its starting color. Good for phase or angle data.
 
 | | Preset | Cycle |
 |---|---|---|
 | ![](https://placehold.co/20x18/E64B35/E64B35.png)![](https://placehold.co/20x18/8491B4/8491B4.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png)![](https://placehold.co/20x18/00A087/00A087.png)![](https://placehold.co/20x18/F39B7F/F39B7F.png) | `npg` | crimson → periwinkle → sky → jade → coral → crimson |
 
-```python
-from stylia import CyclicColormap
-
-ccm = CyclicColormap()   # default: "npg"
-```
-
-### Fitting to data
-
-All four classes share the same interface:
+### Usage
 
 ```python
-import numpy as np
 from stylia import FadingColormap, DivergingColormap
 
-data = np.random.randn(200)
-
-ccm = FadingColormap("cobalt")                             # uniform quantile (default)
-ccm = FadingColormap("jade", transformation="normal")     # normal quantile
-ccm = FadingColormap("sky",  transformation=None)         # raw percentile clip
-dcm = DivergingColormap("crimson_cobalt", ascending=False)
-
+ccm = FadingColormap("cobalt")
 ccm.fit(data)
-colors   = ccm.transform(data)     # list of RGBA tuples, one per point
-colors   = ccm.get(data, alpha=0.6)
-swatches = ccm.sample(8)           # 8 evenly-spaced swatches
+colors = ccm.transform(data)        # list of RGBA tuples
+colors = ccm.get(data, alpha=0.6)   # with alpha modifier
+swatches = ccm.sample(8)            # 8 evenly-spaced swatches
+
+dcm = DivergingColormap("crimson_cobalt", ascending=False)
+dcm.fit(data)
+colors = dcm.transform(data)
 ```
 
 ---
 
 ## Figures
 
-### Creating a figure
-
-`create_figure` returns a styled `(fig, axes)` pair with Stylia rcParams applied.
-
 ```python
-from stylia import create_figure, save_figure
-
-# single panel
-fig, axes = create_figure()
-ax = axes[0]
-
-# multi-panel
-fig, axes = create_figure(nrows=1, ncols=3)
-
-# two-column width (7.09 in) instead of one-column (3.45 in)
-fig, axes = create_figure(ncols=2, one_column=False)
-
-# custom width ratios
-fig, axes = create_figure(ncols=3, width_ratios=[2, 1, 1])
-```
-
-### Labels and styling
-
-```python
-from stylia.figure.axes import label, stylize
-
-label(ax, xlabel="Time (h)", ylabel="OD600", title="Growth curve")
-stylize(ax)   # removes top/right spines, tightens tick padding
-```
-
-### Saving
-
-```python
-save_figure(fig, "figure1.pdf")    # 600 DPI, tight layout, PDF-safe fonts
-save_figure(fig, "figure1.png")
-```
-
----
-
-## Quick start
-
-```python
-import numpy as np
 import stylia
-from stylia import PaperColors, CategoricalPalette, ContinuousColormap
-from stylia import create_figure, save_figure
 
-nc  = PaperColors()
-pal = CategoricalPalette()        # NPG by default
+stylia.set_format("print")
+stylia.set_style("article")
 
-fig, axes = create_figure(nrows=1, ncols=3)
+fig, axs = stylia.create_figure(2, 1, width=0.8, height=0.3)
 
-# scatter – single named color
-ax = axes[0]
-ax.scatter(np.random.randn(50), np.random.randn(50), color=nc.crimson)
+ax = axs.next()
+ax.scatter(x, y, color=nc.crimson, s=stylia.get_markersize())
 
-# bar – categorical palette
-ax = axes[1]
-groups = ["A", "B", "C", "D", "E"]
-values = np.random.rand(5)
-ax.bar(groups, values, color=pal.sample(len(groups)))
+ax = axs.next()
+ax.bar(groups, values, color=pal.get(len(groups)))
 
-# scatter – continuous colormap
-ax = axes[2]
-data = np.random.randn(200)
-ccm  = ContinuousColormap("cobalt")
-ccm.fit(data)
-ax.scatter(range(len(data)), data, c=ccm.transform(data))
-
-save_figure(fig, "quickstart.pdf")
+stylia.save_figure("figure.pdf")
 ```
+
+`create_figure` accepts `width` and `height` as fractions of the format's base size. `axs.next()` steps through panels in order.
 
 ---
 
 ## Sizes and constants
 
-All parameters have explicit `print` and `slide` variants. `set_format()` applies the correct set globally. You can also read the format-aware value at runtime with helpers like `get_markersize()`.
+All parameters have `print` and `slide` variants applied automatically by `set_format()`.
 
 | Constant | print | slide | Use |
 |---|---|---|---|
@@ -406,18 +235,7 @@ All parameters have explicit `print` and `slide` variants. `set_format()` applie
 | `ONE_COLUMN_WIDTH` | 3.45 in | — | single-column journal figure |
 | `TWO_COLUMNS_WIDTH` | 7.09 in | — | double-column journal figure |
 
-```python
-import stylia
-
-stylia.set_format("slide")
-
-# get the right markersize for the current format
-s = stylia.get_markersize()          # "normal" → 15
-s = stylia.get_markersize("small")   # → 8
-s = stylia.get_markersize("big")     # → 45
-
-ax.scatter(x, y, s=s)
-```
+Use `stylia.get_markersize()` to get the format-aware value at runtime (`"small"`, `"normal"`, or `"big"`).
 
 ---
 
