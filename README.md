@@ -174,9 +174,10 @@ pal = CategoricalPalette("tol")     # colorblind-safe, ≤7
 pal = CategoricalPalette("pastel")
 
 # usage
-colors = pal.sample(5)    # list of 5 RGB tuples
-color  = pal.next()       # draw one (advances internal counter)
-pal.reset()               # restart counter
+colors = pal.get(5)    # 5 maximally distinguishable colors
+colors = pal.get(20)   # >palette size: interpolated from palette as a colormap
+color  = pal.next()    # draw one (advances internal counter)
+pal.reset()            # restart counter
 
 # shuffle order on creation
 pal = CategoricalPalette("npg", shuffle=True)

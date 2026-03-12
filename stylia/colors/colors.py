@@ -235,9 +235,12 @@ class CategoricalPalette:
     Example
     -------
     >>> pal = CategoricalPalette("npg")
-    >>> colors = pal.sample(5)
+    >>> colors = pal.get(5)
     >>> color  = pal.next()
     """
+
+    # Perceptual luminance weights for distance in RGB space
+    _W = np.array([0.299, 0.587, 0.114])
 
     def __init__(self, palette="npg", shuffle=False):
         if isinstance(palette, str):
@@ -255,13 +258,45 @@ class CategoricalPalette:
             random.shuffle(self.colors)
         self._cur = 0
 
+    def get(self, n):
+        """Return n maximally distinguishable colors.
+
+        For n <= palette size: greedy farthest-point selection in perceptual
+        RGB space — each successive pick maximises its minimum distance to all
+        already-chosen colors.
+
+        For n > palette size: the palette is treated as a continuous colormap
+        and n evenly-spaced points are sampled from it, giving the original
+        hues plus perceptually interpolated in-betweens.
+        """
+        if n <= len(self.colors):
+            return self._greedy_farthest(n)
+        return self._interpolated(n)
+
+    def _greedy_farthest(self, n):
+        pts = np.array(self.colors)  # shape (k, 3)
+        selected = [0]
+        for _ in range(n - 1):
+            remaining = [i for i in range(len(pts)) if i not in selected]
+            # distance of each candidate to its nearest already-selected color
+            dists = [
+                min(
+                    np.sqrt(np.sum(self._W * (pts[i] - pts[j]) ** 2))
+                    for j in selected
+                )
+                for i in remaining
+            ]
+            selected.append(remaining[int(np.argmax(dists))])
+        return [self.colors[i] for i in selected]
+
+    def _interpolated(self, n):
+        cmap = mcolors.LinearSegmentedColormap.from_list("_pal", self.colors, N=256)
+        return [cmap(v)[:3] for v in np.linspace(0, 1, n)]
+
     def next(self):
         color = self.colors[self._cur % len(self.colors)]
         self._cur += 1
         return color
-
-    def sample(self, n):
-        return [self.colors[i % len(self.colors)] for i in range(n)]
 
     def reset(self):
         self._cur = 0
