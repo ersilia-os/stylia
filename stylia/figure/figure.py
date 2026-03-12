@@ -8,7 +8,6 @@ def stylize(ax):
     ax.set_prop_cycle("color", get_color_cycle())
     ax.set_xlabel("X-axis / Units")
     ax.set_ylabel("Y-axis / Units")
-    ax.set_title("Plot title")
 
     # Light grid so it doesn't compete with data
     try:

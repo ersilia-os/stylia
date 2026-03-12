@@ -14,10 +14,10 @@ x = np.linspace(0, 4 * np.pi, 120)
 
 # line data: 4 smooth curves
 lines_y = [
-    np.sin(x) * np.exp(-0.08 * x) + 0.1 * np.random.randn(len(x)),
-    np.cos(x) * np.exp(-0.06 * x) + 0.1 * np.random.randn(len(x)),
-    np.sin(x + 1) * np.exp(-0.10 * x) + 0.08 * np.random.randn(len(x)),
-    np.cos(x + 1) * np.exp(-0.05 * x) + 0.08 * np.random.randn(len(x)),
+    np.sin(x) * np.exp(-0.08 * x) + 0.06 * np.random.randn(len(x)),
+    np.cos(x) * np.exp(-0.06 * x) + 0.06 * np.random.randn(len(x)),
+    np.sin(x + 1) * np.exp(-0.10 * x) + 0.06 * np.random.randn(len(x)),
+    np.cos(x + 1) * np.exp(-0.05 * x) + 0.06 * np.random.randn(len(x)),
 ]
 
 # bar data
@@ -31,7 +31,7 @@ stack_a = np.array([3.1, 2.5, 4.0, 3.6])
 stack_b = np.array([1.8, 2.2, 1.5, 2.1])
 stack_c = np.array([2.0, 1.7, 2.8, 1.9])
 
-# horizontal bar (sorted)
+# horizontal bar
 hbar_labels = ["Method A", "Method B", "Method C", "Method D"]
 hbar_values = np.array([0.87, 0.74, 0.91, 0.65])
 
@@ -47,27 +47,29 @@ def make_grid(style, outpath):
     from stylia import CategoricalPalette
     pal = CategoricalPalette(style if style == "ersilia" else "npg")
 
+    lw  = stylia.LINEWIDTH        # thin default
+    lwt = stylia.LINEWIDTH_THICK  # for emphasis only
+
     fig, axs = stylia.create_figure(2, 3, width=1.0, height=0.65)
 
     # ── panel A: multi-line ──────────────────────────────────────────────────
     ax = axs.next()
-    lw = stylia.LINEWIDTH_THICK
     colors = pal.get(4)
     for i, (yi, col) in enumerate(zip(lines_y, colors)):
         ax.plot(x, yi, color=col, linewidth=lw, alpha=0.9, label=f"Series {i+1}")
     ax.set_xlabel("Time / s")
     ax.set_ylabel("Amplitude")
     ax.legend(frameon=False, ncol=2)
-    stylia.label(ax, abc="a")
+    stylia.label(ax, title="Damped oscillations", abc="A")
 
     # ── panel B: bar + error bars ────────────────────────────────────────────
     ax = axs.next()
     colors_b = pal.get(len(bar_labels))
     ax.bar(bar_labels, bar_values, yerr=bar_err, color=colors_b,
-           error_kw=dict(linewidth=stylia.LINEWIDTH, capsize=2))
+           error_kw=dict(linewidth=lw, capsize=2, capthick=lw))
     ax.set_xlabel("Group")
     ax.set_ylabel("Score")
-    stylia.label(ax, abc="b")
+    stylia.label(ax, title="Group comparison", abc="B")
 
     # ── panel C: stacked bar ─────────────────────────────────────────────────
     ax = axs.next()
@@ -78,7 +80,7 @@ def make_grid(style, outpath):
     ax.set_xlabel("Month")
     ax.set_ylabel("Value")
     ax.legend(frameon=False)
-    stylia.label(ax, abc="c")
+    stylia.label(ax, title="Stacked composition", abc="C")
 
     # ── panel D: area / filled lines ─────────────────────────────────────────
     ax = axs.next()
@@ -86,9 +88,9 @@ def make_grid(style, outpath):
     ax.plot(area_x, area_y1, color=c2[0], linewidth=lw)
     ax.plot(area_x, area_y2, color=c2[1], linewidth=lw)
     ax.fill_between(area_x, area_y1, area_y2, color=c2[1], alpha=0.15)
-    ax.set_xlabel("X")
-    ax.set_ylabel("Y")
-    stylia.label(ax, abc="d")
+    ax.set_xlabel("Time / s")
+    ax.set_ylabel("Signal")
+    stylia.label(ax, title="Confidence band", abc="D")
 
     # ── panel E: horizontal bar ───────────────────────────────────────────────
     ax = axs.next()
@@ -96,9 +98,9 @@ def make_grid(style, outpath):
     ax.barh(hbar_labels, hbar_values, color=colors_h)
     ax.set_xlabel("AUC-ROC")
     ax.set_xlim(0.5, 1.0)
-    stylia.label(ax, abc="e")
+    stylia.label(ax, title="Model ranking", abc="E")
 
-    # ── panel F: step / histogram-style ──────────────────────────────────────
+    # ── panel F: step histogram ───────────────────────────────────────────────
     ax = axs.next()
     c4 = pal.get(3)
     for j, col in enumerate(c4):
@@ -108,7 +110,7 @@ def make_grid(style, outpath):
     ax.set_xlabel("Value")
     ax.set_ylabel("Count")
     ax.legend(frameon=False)
-    stylia.label(ax, abc="f")
+    stylia.label(ax, title="Distribution overlap", abc="F")
 
     stylia.save_figure(outpath)
     print(f"Saved {outpath}")
