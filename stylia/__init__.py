@@ -16,7 +16,7 @@ mpl.rcParams["font.family"] = "sans-serif"
 mpl.rcParams["font.sans-serif"] = FONT
 mpl.rcParams["pdf.fonttype"] = 42
 mpl.rcParams["ps.fonttype"] = 42
-mpl.rcParams.update({"axes.grid": True})
+mpl.rcParams.update({"axes.grid": True, "figure.autolayout": True})
 
 # Apply default format (paper) + style (article) settings
 from .config import _apply_settings, set_format, set_style, get_markersize
