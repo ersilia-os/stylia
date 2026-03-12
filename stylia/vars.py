@@ -1,7 +1,8 @@
 # Figure size — width basis for relative figure dimensions.
 # create_figure(width=0.5) means 50% of SIZE.
-# Actual SIZE depends on the active format; use stylia.get_size() at runtime.
-SIZE = 7.09  # print format (Nature two-column width, inches)
+# stylia.SIZE resolves to the correct value for the active format automatically.
+SIZE = 7.09        # print format (Nature two-column width, inches)
+SLIDE_SIZE = 13.0  # slide format (wide slide width, inches)
 
 # Font sizes — print format
 FONTSIZE_SMALL = 5

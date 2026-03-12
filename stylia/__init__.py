@@ -37,9 +37,37 @@ from .colors.colors import FadingColormap, SpectralColormap, DivergingColormap, 
 from .colors.colors import ContinuousColormap, ContinuousColorMap  # backward compat
 from .vars import *
 
+# Remove static bindings for format-sensitive names so __getattr__ can
+# resolve them dynamically whenever set_format() changes the active format.
+import sys as _sys
+for _n in (
+    "SIZE",
+    "FONTSIZE_SMALL", "FONTSIZE", "FONTSIZE_BIG",
+    "MARKERSIZE_SMALL", "MARKERSIZE", "MARKERSIZE_BIG",
+    "LINEWIDTH", "LINEWIDTH_THICK",
+):
+    try:
+        delattr(_sys.modules[__name__], _n)
+    except AttributeError:
+        pass
+del _sys, _n
+
 
 def __getattr__(name):
     if name == "NamedColors":
         from .config import get_named_colors_class
         return get_named_colors_class()
+    if name == "SIZE":
+        from .config import get_size
+        return get_size()
+    if name in ("FONTSIZE_SMALL", "FONTSIZE", "FONTSIZE_BIG",
+                "LINEWIDTH", "LINEWIDTH_THICK"):
+        from .config import get_format
+        from . import vars as _v
+        prefix = "SLIDE_" if get_format() == "slide" else ""
+        return getattr(_v, prefix + name)
+    if name in ("MARKERSIZE_SMALL", "MARKERSIZE", "MARKERSIZE_BIG"):
+        from .config import get_markersize
+        tier = {"MARKERSIZE_SMALL": "small", "MARKERSIZE": "normal", "MARKERSIZE_BIG": "big"}[name]
+        return get_markersize(tier)
     raise AttributeError(f"module 'stylia' has no attribute {name!r}")

@@ -249,12 +249,13 @@ stylia.save_figure("figure.pdf")
 
 ## Sizes and constants
 
-All parameters have `print` and `slide` variants applied automatically by `set_format()`.
+All constants resolve automatically to the correct value for the active format — just read `stylia.SIZE`, `stylia.FONTSIZE`, etc. after calling `set_format()`. The explicit `SLIDE_*` variants are also available if you need to reference both values at once.
 
-`SIZE` is the figure width basis — `7.09 in` for `print`, `13 in` for `slide`. Use `stylia.get_size()` to read it at runtime. `width` and `height` in `create_figure` are fractions of `SIZE`.
+`width` and `height` in `create_figure` are fractions of `SIZE`.
 
 | Constant | print | slide | Use |
 |---|---|---|---|
+| `SIZE` / `SLIDE_SIZE` | 7.09 in | 13 in | figure width basis |
 | `FONTSIZE_SMALL` / `SLIDE_FONTSIZE_SMALL` | 5 pt | 8 pt | tick labels, annotations |
 | `FONTSIZE` / `SLIDE_FONTSIZE` | 6 pt | 10 pt | axis labels, legend |
 | `FONTSIZE_BIG` / `SLIDE_FONTSIZE_BIG` | 8 pt | 13 pt | panel titles |
@@ -264,7 +265,7 @@ All parameters have `print` and `slide` variants applied automatically by `set_f
 | `LINEWIDTH` / `SLIDE_LINEWIDTH` | 0.5 | 0.75 | lines, spines |
 | `LINEWIDTH_THICK` / `SLIDE_LINEWIDTH_THICK` | 1 | 1.5 | emphasis lines |
 
-Use `stylia.get_markersize()` to get the format-aware value at runtime (`"small"`, `"normal"`, or `"big"`).
+Use `stylia.get_markersize()` to get the format-aware marker size at runtime (`"small"`, `"normal"`, or `"big"`).
 
 ---
 
