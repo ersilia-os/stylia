@@ -109,15 +109,11 @@ nc = stylia.NamedColors()   # ArticleColors or ErsiliaColors depending on set_st
 ```python
 from stylia import CategoricalPalette
 
-pal = CategoricalPalette()              # default: npg
-pal = CategoricalPalette("ersilia")
-pal = CategoricalPalette("okabe")       # colorblind-safe
-pal = CategoricalPalette("tol")         # colorblind-safe, ≤7
-pal = CategoricalPalette("pastel")
+pal = CategoricalPalette()       # "npg" (default), "ersilia", "okabe", "tol", "pastel"
 
-colors = pal.get(5)     # 5 maximally distinguishable colors
-colors = pal.get(20)    # >palette size: interpolated as a colormap
-color  = pal.next()     # draw one (advances internal counter)
+colors = pal.get(5)              # 5 maximally distinguishable colors
+colors = pal.get(20)             # >palette size: interpolated as a colormap
+color  = pal.next()              # draw one at a time (advances internal counter)
 ```
 
 **npg** — redesigned for maximum hue coverage

@@ -106,8 +106,8 @@ def make_grid(style, outpath):
     c4 = pal.get(3)
     for j, col in enumerate(c4):
         data = np.random.normal(loc=j * 0.8, scale=0.5, size=300)
-        ax.hist(data, bins=24, histtype="step", color=col,
-                linewidth=lw, label=f"Group {j+1}")
+        ax.hist(data, bins=24, histtype="stepfilled", color=col, alpha=0.25, linewidth=0)
+        ax.hist(data, bins=24, histtype="step", color=col, linewidth=lw, label=f"Group {j+1}")
     ax.set_xlabel("Value")
     ax.set_ylabel("Count")
     ax.legend(loc="upper right")
