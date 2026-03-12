@@ -49,7 +49,7 @@ _PAPER_ORDER = [
 ]
 
 
-class PaperColors:
+class ArticleColors:
     """Individual, semantically named colors for publication-quality figures.
 
     Colors are drawn from the NPG (Nature Publishing Group) palette and given
@@ -57,7 +57,7 @@ class PaperColors:
 
     Example
     -------
-    >>> nc = PaperColors()
+    >>> nc = ArticleColors()
     >>> ax.scatter(x, y, color=nc.crimson)
     >>> ax.scatter(x, y, color=nc.get("cobalt", alpha=0.6))
     """
@@ -160,7 +160,7 @@ class ErsiliaColors:
 
 
 # backward-compat alias
-NamedColors = PaperColors
+PaperColors = ArticleColors
 
 
 # ---------------------------------------------------------------------------

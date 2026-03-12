@@ -26,7 +26,14 @@ _apply_settings()
 
 from .figure import create_figure, save_figure
 from .figure.figure import label
-from .colors.colors import PaperColors, ErsiliaColors, NamedColors, CategoricalPalette
+from .colors.colors import ArticleColors, PaperColors, ErsiliaColors, CategoricalPalette
 from .colors.colors import FadingColormap, SpectralColormap, DivergingColormap, CyclicColormap
 from .colors.colors import ContinuousColormap, ContinuousColorMap  # backward compat
+
+
+def __getattr__(name):
+    if name == "NamedColors":
+        from .config import get_named_colors_class
+        return get_named_colors_class()
+    raise AttributeError(f"module 'stylia' has no attribute {name!r}")
 from .vars import *

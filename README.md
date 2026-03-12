@@ -63,9 +63,9 @@ Both settings update `matplotlib.rcParams` globally and can be changed at any po
 
 ## Named colors
 
-### PaperColors
+### ArticleColors
 
-NPG-derived palette with evocative names, suited for annotating specific plot elements in publications.
+NPG-derived palette with evocative names, suited for annotating specific plot elements in publications. Also aliased as `PaperColors`.
 
 | | Name | Hex |
 |---|---|---|
@@ -81,9 +81,9 @@ NPG-derived palette with evocative names, suited for annotating specific plot el
 | ![](https://placehold.co/40x18/B09C85/B09C85.png) | `sand` | `#B09C85` |
 
 ```python
-from stylia import PaperColors
+from stylia import ArticleColors
 
-nc = PaperColors()
+nc = ArticleColors()
 
 nc.crimson     # #E64B35
 nc.cobalt      # #3C5488
@@ -141,6 +141,20 @@ ec.yellow  # #FAD782
 ec.pink    # #DCA0DC
 ec.orange  # #FAA08C
 ec.gray    # #D2D2D0
+```
+
+### NamedColors (style-aware)
+
+`NamedColors` resolves dynamically to the palette that matches the active style — `ArticleColors` for `"article"`, `ErsiliaColors` for `"ersilia"`:
+
+```python
+import stylia
+
+stylia.set_style("article")
+nc = stylia.NamedColors()   # → ArticleColors
+
+stylia.set_style("ersilia")
+nc = stylia.NamedColors()   # → ErsiliaColors
 ```
 
 ---

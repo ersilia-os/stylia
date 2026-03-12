@@ -51,7 +51,7 @@ _current_style = "article"
 # ---------------------------------------------------------------------------
 
 def set_format(fmt):
-    """Set the output format: ``'paper'`` (default) or ``'slide'``."""
+    """Set the output format: ``'print'`` (default) or ``'slide'``."""
     global _current_format
     if fmt not in ("print", "slide"):
         raise ValueError("Format must be 'print' or 'slide'")
@@ -94,6 +94,12 @@ def get_linewidth():
     """Return the thin linewidth for the current format."""
     from .vars import LINEWIDTH, SLIDE_LINEWIDTH
     return SLIDE_LINEWIDTH if _current_format == "slide" else LINEWIDTH
+
+
+def get_named_colors_class():
+    """Return PaperColors for article style, ErsiliaColors for ersilia style."""
+    from .colors.colors import PaperColors, ErsiliaColors
+    return PaperColors if _current_style == "article" else ErsiliaColors
 
 
 def get_fg_color():
