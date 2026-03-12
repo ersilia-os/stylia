@@ -207,11 +207,11 @@ CategoricalPalette.available()
 
 ## Continuous colormaps
 
-Three colormap families, all built from PaperColors tones. Each supports the same `fit` / `transform` / `get` / `sample` interface.
+Four colormap families, all built from PaperColors tones. Each supports the same `fit` / `transform` / `get` / `sample` interface.
 
-### ContinuousColormap
+### FadingColormap
 
-Sequential — pale tint → full saturation of a single PaperColors hue.
+Fades from near-white to a single PaperColors hue — good for density, intensity, or any strictly positive value.
 
 | | Preset | Range |
 |---|---|---|
@@ -222,13 +222,27 @@ Sequential — pale tint → full saturation of a single PaperColors hue.
 | ![](https://placehold.co/20x18/F0EDE8/F0EDE8.png)![](https://placehold.co/20x18/B4A898/B4A898.png)![](https://placehold.co/20x18/7E6148/7E6148.png) | `umber` | warm cream → umber brown |
 
 ```python
-from stylia import ContinuousColormap
+from stylia import FadingColormap
 
-ccm = ContinuousColormap()              # default: "cobalt"
-ccm = ContinuousColormap("crimson")
-ccm = ContinuousColormap("jade")
-ccm = ContinuousColormap("sky")
-ccm = ContinuousColormap("umber")
+ccm = FadingColormap()              # default: "cobalt"
+ccm = FadingColormap("crimson")
+ccm = FadingColormap("jade")
+ccm = FadingColormap("sky")
+ccm = FadingColormap("umber")
+```
+
+### SpectralColormap
+
+Walks through multiple PaperColors hues warm → cool — good for ordered continuous data where the full range matters.
+
+| | Preset | Range |
+|---|---|---|
+| ![](https://placehold.co/20x18/E64B35/E64B35.png)![](https://placehold.co/20x18/F39B7F/F39B7F.png)![](https://placehold.co/20x18/91D1C2/91D1C2.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png)![](https://placehold.co/20x18/3C5488/3C5488.png) | `npg` | crimson → coral → seafoam → sky → cobalt |
+
+```python
+from stylia import SpectralColormap
+
+scm = SpectralColormap()   # default: "npg"
 ```
 
 ### DivergingColormap
@@ -263,18 +277,18 @@ ccm = CyclicColormap()   # default: "npg"
 
 ### Fitting to data
 
-All three classes share the same interface:
+All four classes share the same interface:
 
 ```python
 import numpy as np
-from stylia import ContinuousColormap, DivergingColormap
+from stylia import FadingColormap, DivergingColormap
 
 data = np.random.randn(200)
 
-ccm = ContinuousColormap("cobalt")                             # uniform quantile (default)
-ccm = ContinuousColormap("jade", transformation="normal")     # normal quantile
-ccm = ContinuousColormap("sky",  transformation=None)         # raw percentile clip
-dcm = DivergingColormap("crimson_cobalt", ascending=False)    # reversed
+ccm = FadingColormap("cobalt")                             # uniform quantile (default)
+ccm = FadingColormap("jade", transformation="normal")     # normal quantile
+ccm = FadingColormap("sky",  transformation=None)         # raw percentile clip
+dcm = DivergingColormap("crimson_cobalt", ascending=False)
 
 ccm.fit(data)
 colors   = ccm.transform(data)     # list of RGBA tuples, one per point

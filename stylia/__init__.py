@@ -27,6 +27,6 @@ _apply_settings()
 from .figure import create_figure, save_figure
 from .figure.figure import label
 from .colors.colors import PaperColors, ErsiliaColors, NamedColors, CategoricalPalette
-from .colors.colors import ContinuousColormap, DivergingColormap, CyclicColormap
-from .colors.colors import ContinuousColorMap  # backward compat
+from .colors.colors import FadingColormap, SpectralColormap, DivergingColormap, CyclicColormap
+from .colors.colors import ContinuousColormap, ContinuousColorMap  # backward compat
 from .vars import *

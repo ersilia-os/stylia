@@ -306,6 +306,14 @@ _DIVERGING_CMAPS = {
     "coral_sky":      _make_cmap(["#F39B7F", "#FAFAFA", "#4DBBD5"], "coral_sky"),       # coral ↔ sky teal
 }
 
+# Spectral: walks through PaperColors hues warm → cool, no wrap
+_SPECTRAL_CMAPS = {
+    "npg": _make_cmap(
+        ["#E64B35", "#F39B7F", "#91D1C2", "#4DBBD5", "#3C5488"],
+        "npg_spectral",
+    ),  # crimson → coral → seafoam → sky → cobalt
+}
+
 # Cyclic: cycles through PaperColors hues, ending where it started
 _CYCLIC_CMAPS = {
     "npg": _make_cmap(
@@ -395,8 +403,8 @@ class _ColormapBase:
 # Public colormap classes
 # ---------------------------------------------------------------------------
 
-class ContinuousColormap(_ColormapBase):
-    """Sequential colormap mapping low → high values in a single PaperColors hue.
+class FadingColormap(_ColormapBase):
+    """Sequential colormap fading from near-white to a single PaperColors hue.
 
     Presets
     -------
@@ -417,7 +425,7 @@ class ContinuousColormap(_ColormapBase):
 
     Example
     -------
-    >>> ccm = ContinuousColormap("cobalt")
+    >>> ccm = FadingColormap("cobalt")
     >>> ccm.fit(data)
     >>> colors = ccm.transform(data)
     """
@@ -426,6 +434,36 @@ class ContinuousColormap(_ColormapBase):
     _DEFAULT = "cobalt"
 
     def __init__(self, name="cobalt", transformation="uniform", ascending=True):
+        super().__init__(name, transformation, ascending)
+
+
+class SpectralColormap(_ColormapBase):
+    """Multi-hue colormap walking through PaperColors hues warm → cool.
+
+    Presets
+    -------
+    ``npg``   crimson → coral → seafoam → sky → cobalt   (default)
+
+    Parameters
+    ----------
+    name : str
+        Preset name (see above).
+    transformation : ``"uniform"`` | ``"normal"`` | ``None``
+        Quantile-normalise data before mapping.
+    ascending : bool
+        If ``False``, reverse the mapping direction.
+
+    Example
+    -------
+    >>> scm = SpectralColormap()
+    >>> scm.fit(data)
+    >>> colors = scm.transform(data)
+    """
+
+    _PRESETS = _SPECTRAL_CMAPS
+    _DEFAULT = "npg"
+
+    def __init__(self, name="npg", transformation="uniform", ascending=True):
         super().__init__(name, transformation, ascending)
 
 
@@ -495,5 +533,6 @@ class CyclicColormap(_ColormapBase):
 # ---------------------------------------------------------------------------
 Palette = CategoricalPalette
 CategoricalColorMap = CategoricalPalette
-ContinuousColorMap = ContinuousColormap
-NamedColorMaps = None  # removed; use ContinuousColormap/DivergingColormap/CyclicColormap
+ContinuousColormap = FadingColormap   # renamed; old name kept as alias
+ContinuousColorMap = FadingColormap
+NamedColorMaps = None  # removed; use FadingColormap/DivergingColormap/CyclicColormap/SpectralColormap
