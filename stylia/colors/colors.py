@@ -28,24 +28,24 @@ def _hex_to_rgb(hex_color):
 # ---------------------------------------------------------------------------
 
 _PAPER = {
-    "crimson":    "#E64B35",  # NPG vermillion-red
-    "cobalt":     "#3C5488",  # NPG deep navy-blue
-    "sky":        "#4DBBD5",  # NPG sky-teal
-    "jade":       "#00A087",  # NPG sea-green
-    "coral":      "#F39B7F",  # NPG soft coral
-    "periwinkle": "#8491B4",  # NPG muted blue-violet
-    "seafoam":    "#91D1C2",  # NPG pale seafoam
-    "scarlet":    "#DC0000",  # NPG vivid red
-    "umber":      "#7E6148",  # NPG warm brown
-    "sand":       "#B09C85",  # NPG light tan
+    "crimson":    "#E63946",  # vivid red
+    "tangerine":  "#F4845F",  # warm orange
+    "amber":      "#FCBF49",  # golden yellow
+    "lime":       "#6BBF59",  # fresh green
+    "turquoise":  "#2EC4B6",  # teal-cyan
+    "cobalt":     "#457B9D",  # steel blue
+    "periwinkle": "#6C5CE7",  # blue-violet
+    "orchid":     "#B05CC8",  # purple-pink
+    "fuchsia":    "#E91E8C",  # hot magenta
+    "silver":     "#A0A0A0",  # neutral gray
     # neutrals
     "white":      "#FFFFFF",
     "black":      "#2C3E50",  # soft off-black
 }
 
 _PAPER_ORDER = [
-    "crimson", "cobalt", "sky", "jade", "coral",
-    "periwinkle", "seafoam", "scarlet", "umber", "sand",
+    "crimson", "tangerine", "amber", "lime", "turquoise",
+    "cobalt", "periwinkle", "orchid", "fuchsia", "silver",
 ]
 
 
@@ -167,11 +167,21 @@ PaperColors = ArticleColors
 # Categorical palettes
 # ---------------------------------------------------------------------------
 
-# NPG – Nature Publishing Group (ggsci)
+# NPG – redesigned for maximum hue coverage and perceptual distinctness
+# Ordered around the hue wheel (red → orange → amber → green → teal →
+# steel → periwinkle → orchid → fuchsia → neutral) so the sequence also
+# works as a spectral colormap.
 _NPG = [
-    "#E64B35", "#4DBBD5", "#00A087", "#3C5488",
-    "#F39B7F", "#8491B4", "#91D1C2", "#DC0000",
-    "#7E6148", "#B09C85",
+    "#E63946",  # crimson    355°
+    "#F4845F",  # tangerine   18°
+    "#FCBF49",  # amber       42°
+    "#6BBF59",  # lime       100°
+    "#2EC4B6",  # turquoise  175°
+    "#457B9D",  # cobalt     205°
+    "#6C5CE7",  # periwinkle 255°
+    "#B05CC8",  # orchid     280°
+    "#E91E8C",  # fuchsia    325°
+    "#A0A0A0",  # silver     neutral
 ]
 
 # Okabe–Ito: rigorously colorblind-safe, widely used in Nature / Science
@@ -326,35 +336,35 @@ def _make_cmap(colors, name):
     return mcolors.LinearSegmentedColormap.from_list(name, colors, N=256)
 
 
-# Sequential: pale tint of the hue → full PaperColors saturation
+# Sequential: near-white tint → full saturation of the hue
 _SEQUENTIAL_CMAPS = {
-    "cobalt":  _make_cmap(["#E8EAF5", "#3C5488"], "cobalt"),   # pale blue → navy cobalt
-    "crimson": _make_cmap(["#FDECEA", "#E64B35"], "crimson"),  # blush → vermillion
-    "jade":    _make_cmap(["#E0F5F1", "#00A087"], "jade"),     # pale mint → deep jade
-    "sky":     _make_cmap(["#E5F6FB", "#4DBBD5"], "sky"),      # near-white → sky teal
-    "umber":   _make_cmap(["#F0EDE8", "#7E6148"], "umber"),    # warm cream → umber brown
+    "crimson":    _make_cmap(["#FDECEA", "#E63946"], "crimson"),    # blush → vivid red
+    "cobalt":     _make_cmap(["#E3ECF4", "#457B9D"], "cobalt"),     # pale sky → steel blue
+    "turquoise":  _make_cmap(["#E0F8F7", "#2EC4B6"], "turquoise"),  # pale mint → teal-cyan
+    "orchid":     _make_cmap(["#F5E8FA", "#B05CC8"], "orchid"),     # pale lavender → orchid
+    "lime":       _make_cmap(["#EDF6E9", "#6BBF59"], "lime"),       # pale green → lime
 }
 
-# Diverging: two PaperColors hues through a near-white center
+# Diverging: two hues through a near-white center
 _DIVERGING_CMAPS = {
-    "crimson_cobalt": _make_cmap(["#E64B35", "#F8F8F8", "#3C5488"], "crimson_cobalt"),  # warm red ↔ navy blue
-    "coral_sky":      _make_cmap(["#F39B7F", "#FAFAFA", "#4DBBD5"], "coral_sky"),       # coral ↔ sky teal
+    "crimson_cobalt":    _make_cmap(["#E63946", "#F8F8F8", "#457B9D"], "crimson_cobalt"),     # red ↔ steel blue
+    "amber_periwinkle":  _make_cmap(["#FCBF49", "#FAFAFA", "#6C5CE7"], "amber_periwinkle"),   # amber ↔ blue-violet
 }
 
-# Spectral: walks through PaperColors hues warm → cool, no wrap
+# Spectral: walks warm → cool through the hue wheel, no wrap
 _SPECTRAL_CMAPS = {
     "npg": _make_cmap(
-        ["#E64B35", "#F39B7F", "#91D1C2", "#4DBBD5", "#3C5488"],
+        ["#E63946", "#FCBF49", "#2EC4B6", "#6C5CE7", "#E91E8C"],
         "npg_spectral",
-    ),  # crimson → coral → seafoam → sky → cobalt
+    ),  # crimson → amber → turquoise → periwinkle → fuchsia
 }
 
-# Cyclic: cycles through PaperColors hues, ending where it started
+# Cyclic: evenly-spaced hues around the wheel, wraps back to start
 _CYCLIC_CMAPS = {
     "npg": _make_cmap(
-        ["#E64B35", "#8491B4", "#4DBBD5", "#00A087", "#F39B7F", "#E64B35"],
-        "npg",
-    ),  # crimson → periwinkle → sky → jade → coral → crimson
+        ["#E63946", "#F4845F", "#6BBF59", "#2EC4B6", "#B05CC8", "#E63946"],
+        "npg_cyclic",
+    ),  # crimson → tangerine → lime → turquoise → orchid → crimson
 }
 
 
@@ -439,15 +449,15 @@ class _ColormapBase:
 # ---------------------------------------------------------------------------
 
 class FadingColormap(_ColormapBase):
-    """Sequential colormap fading from near-white to a single PaperColors hue.
+    """Sequential colormap fading from near-white to a single ArticleColors hue.
 
     Presets
     -------
-    ``cobalt``   pale blue → deep navy cobalt   (default)
-    ``crimson``  blush → vermillion crimson
-    ``jade``     pale mint → deep jade green
-    ``sky``      near-white → bright sky teal
-    ``umber``    warm cream → umber brown
+    ``crimson``    blush → vivid red            (default)
+    ``cobalt``     pale sky → steel blue
+    ``turquoise``  pale mint → teal-cyan
+    ``orchid``     pale lavender → purple-pink
+    ``lime``       pale green → lime
 
     Parameters
     ----------
@@ -468,16 +478,16 @@ class FadingColormap(_ColormapBase):
     _PRESETS = _SEQUENTIAL_CMAPS
     _DEFAULT = "cobalt"
 
-    def __init__(self, name="cobalt", transformation="uniform", ascending=True):
+    def __init__(self, name="crimson", transformation="uniform", ascending=True):
         super().__init__(name, transformation, ascending)
 
 
 class SpectralColormap(_ColormapBase):
-    """Multi-hue colormap walking through PaperColors hues warm → cool.
+    """Multi-hue colormap walking through ArticleColors hues warm → cool.
 
     Presets
     -------
-    ``npg``   crimson → coral → seafoam → sky → cobalt   (default)
+    ``npg``   crimson → amber → turquoise → periwinkle → fuchsia   (default)
 
     Parameters
     ----------
@@ -503,12 +513,12 @@ class SpectralColormap(_ColormapBase):
 
 
 class DivergingColormap(_ColormapBase):
-    """Diverging colormap with two PaperColors hues through a light center.
+    """Diverging colormap with two ArticleColors hues through a light center.
 
     Presets
     -------
-    ``crimson_cobalt``  vermillion red ↔ navy blue through near-white   (default)
-    ``coral_sky``       soft coral ↔ sky teal through near-white
+    ``crimson_cobalt``    vivid red ↔ steel blue through near-white   (default)
+    ``amber_periwinkle``  warm amber ↔ blue-violet through near-white
 
     Parameters
     ----------
@@ -538,7 +548,7 @@ class CyclicColormap(_ColormapBase):
 
     Presets
     -------
-    ``npg``   crimson → periwinkle → sky → jade → coral → crimson   (default)
+    ``npg``   crimson → tangerine → lime → turquoise → orchid → crimson   (default)
 
     Parameters
     ----------

@@ -28,9 +28,8 @@ _PLUM = "#50285A"
 
 # Categorical color lists (hex) — kept local to avoid circular imports
 _ARTICLE_COLORS = [
-    "#E64B35", "#4DBBD5", "#00A087", "#3C5488",
-    "#F39B7F", "#8491B4", "#91D1C2", "#DC0000",
-    "#7E6148", "#B09C85",
+    "#E63946", "#F4845F", "#FCBF49", "#6BBF59", "#2EC4B6",
+    "#457B9D", "#6C5CE7", "#B05CC8", "#E91E8C", "#A0A0A0",
 ]
 
 _ERSILIA_COLORS = [
@@ -78,16 +77,20 @@ def get_style():
     return _current_style
 
 
+_PRINT_SIZE        = 7.09   # Nature two-column width, inches
+_SLIDE_SIZE        = 13.0   # Wide slide width, inches
+_PRINT_HEIGHT_RATIO = 0.5
+_SLIDE_HEIGHT_RATIO = 0.3
+
+
 def get_size():
-    """Return the current SIZE in inches (width basis for relative figure dims)."""
-    from .vars import SIZE, WIDE_SLIDE_WIDTH
-    return WIDE_SLIDE_WIDTH if _current_format == "slide" else SIZE
+    """Return SIZE for the current format (7.09 for print, 13 for slide)."""
+    return _SLIDE_SIZE if _current_format == "slide" else _PRINT_SIZE
 
 
 def get_default_height_ratio():
     """Return the default figure height as a fraction of SIZE."""
-    from .vars import PAPER_HEIGHT_RATIO, SLIDE_HEIGHT_RATIO
-    return SLIDE_HEIGHT_RATIO if _current_format == "slide" else PAPER_HEIGHT_RATIO
+    return _SLIDE_HEIGHT_RATIO if _current_format == "slide" else _PRINT_HEIGHT_RATIO
 
 
 def get_linewidth():

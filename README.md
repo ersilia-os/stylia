@@ -55,20 +55,20 @@ Both update `matplotlib.rcParams` globally and can be changed at any point.
 
 ### ArticleColors
 
-NPG-derived palette. Also aliased as `PaperColors`.
+Modern palette spanning the full hue wheel for maximum distinctness. Also aliased as `PaperColors`.
 
 | | Name | Hex |
 |---|---|---|
-| ![](https://placehold.co/40x18/E64B35/E64B35.png) | `crimson` | `#E64B35` |
-| ![](https://placehold.co/40x18/3C5488/3C5488.png) | `cobalt` | `#3C5488` |
-| ![](https://placehold.co/40x18/4DBBD5/4DBBD5.png) | `sky` | `#4DBBD5` |
-| ![](https://placehold.co/40x18/00A087/00A087.png) | `jade` | `#00A087` |
-| ![](https://placehold.co/40x18/F39B7F/F39B7F.png) | `coral` | `#F39B7F` |
-| ![](https://placehold.co/40x18/8491B4/8491B4.png) | `periwinkle` | `#8491B4` |
-| ![](https://placehold.co/40x18/91D1C2/91D1C2.png) | `seafoam` | `#91D1C2` |
-| ![](https://placehold.co/40x18/DC0000/DC0000.png) | `scarlet` | `#DC0000` |
-| ![](https://placehold.co/40x18/7E6148/7E6148.png) | `umber` | `#7E6148` |
-| ![](https://placehold.co/40x18/B09C85/B09C85.png) | `sand` | `#B09C85` |
+| ![](https://placehold.co/40x18/E63946/E63946.png) | `crimson` | `#E63946` |
+| ![](https://placehold.co/40x18/F4845F/F4845F.png) | `tangerine` | `#F4845F` |
+| ![](https://placehold.co/40x18/FCBF49/FCBF49.png) | `amber` | `#FCBF49` |
+| ![](https://placehold.co/40x18/6BBF59/6BBF59.png) | `lime` | `#6BBF59` |
+| ![](https://placehold.co/40x18/2EC4B6/2EC4B6.png) | `turquoise` | `#2EC4B6` |
+| ![](https://placehold.co/40x18/457B9D/457B9D.png) | `cobalt` | `#457B9D` |
+| ![](https://placehold.co/40x18/6C5CE7/6C5CE7.png) | `periwinkle` | `#6C5CE7` |
+| ![](https://placehold.co/40x18/B05CC8/B05CC8.png) | `orchid` | `#B05CC8` |
+| ![](https://placehold.co/40x18/E91E8C/E91E8C.png) | `fuchsia` | `#E91E8C` |
+| ![](https://placehold.co/40x18/A0A0A0/A0A0A0.png) | `silver` | `#A0A0A0` |
 
 ```python
 from stylia import ArticleColors
@@ -76,7 +76,7 @@ from stylia import ArticleColors
 nc = ArticleColors()
 ax.scatter(x, y, color=nc.crimson)
 ax.scatter(x, y, color=nc.get("cobalt", alpha=0.4))
-ax.scatter(x, y, color=nc.get("jade", lighten=0.3))
+ax.scatter(x, y, color=nc.get("turquoise", lighten=0.3))
 ```
 
 ### ErsiliaColors
@@ -120,9 +120,9 @@ colors = pal.get(20)    # >palette size: interpolated as a colormap
 color  = pal.next()     # draw one (advances internal counter)
 ```
 
-**npg** — Nature Publishing Group
+**npg** — redesigned for maximum hue coverage
 
-![](https://placehold.co/40x18/E64B35/E64B35.png) ![](https://placehold.co/40x18/4DBBD5/4DBBD5.png) ![](https://placehold.co/40x18/00A087/00A087.png) ![](https://placehold.co/40x18/3C5488/3C5488.png) ![](https://placehold.co/40x18/F39B7F/F39B7F.png) ![](https://placehold.co/40x18/8491B4/8491B4.png) ![](https://placehold.co/40x18/91D1C2/91D1C2.png) ![](https://placehold.co/40x18/DC0000/DC0000.png) ![](https://placehold.co/40x18/7E6148/7E6148.png) ![](https://placehold.co/40x18/B09C85/B09C85.png)
+![](https://placehold.co/40x18/E63946/E63946.png) ![](https://placehold.co/40x18/F4845F/F4845F.png) ![](https://placehold.co/40x18/FCBF49/FCBF49.png) ![](https://placehold.co/40x18/6BBF59/6BBF59.png) ![](https://placehold.co/40x18/2EC4B6/2EC4B6.png) ![](https://placehold.co/40x18/457B9D/457B9D.png) ![](https://placehold.co/40x18/6C5CE7/6C5CE7.png) ![](https://placehold.co/40x18/B05CC8/B05CC8.png) ![](https://placehold.co/40x18/E91E8C/E91E8C.png) ![](https://placehold.co/40x18/A0A0A0/A0A0A0.png)
 
 **ersilia** — Ersilia brand
 
@@ -152,11 +152,11 @@ Near-white → single hue. Good for density or strictly positive data.
 
 | | Preset | Range |
 |---|---|---|
-| ![](https://placehold.co/20x18/E8EAF5/E8EAF5.png)![](https://placehold.co/20x18/9BA8C9/9BA8C9.png)![](https://placehold.co/20x18/3C5488/3C5488.png) | `cobalt` | pale blue → deep navy |
-| ![](https://placehold.co/20x18/FDECEA/FDECEA.png)![](https://placehold.co/20x18/F29060/F29060.png)![](https://placehold.co/20x18/E64B35/E64B35.png) | `crimson` | blush → vermillion |
-| ![](https://placehold.co/20x18/E0F5F1/E0F5F1.png)![](https://placehold.co/20x18/50C8B8/50C8B8.png)![](https://placehold.co/20x18/00A087/00A087.png) | `jade` | pale mint → deep jade |
-| ![](https://placehold.co/20x18/E5F6FB/E5F6FB.png)![](https://placehold.co/20x18/79D5E5/79D5E5.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png) | `sky` | near-white → sky teal |
-| ![](https://placehold.co/20x18/F0EDE8/F0EDE8.png)![](https://placehold.co/20x18/B4A898/B4A898.png)![](https://placehold.co/20x18/7E6148/7E6148.png) | `umber` | warm cream → umber brown |
+| ![](https://placehold.co/20x18/FDECEA/FDECEA.png)![](https://placehold.co/20x18/F08090/F08090.png)![](https://placehold.co/20x18/E63946/E63946.png) | `crimson` | blush → vivid red (default) |
+| ![](https://placehold.co/20x18/E3ECF4/E3ECF4.png)![](https://placehold.co/20x18/8BAFC6/8BAFC6.png)![](https://placehold.co/20x18/457B9D/457B9D.png) | `cobalt` | pale sky → steel blue |
+| ![](https://placehold.co/20x18/E0F8F7/E0F8F7.png)![](https://placehold.co/20x18/87DCD6/87DCD6.png)![](https://placehold.co/20x18/2EC4B6/2EC4B6.png) | `turquoise` | pale mint → teal-cyan |
+| ![](https://placehold.co/20x18/F5E8FA/F5E8FA.png)![](https://placehold.co/20x18/D2A8E1/D2A8E1.png)![](https://placehold.co/20x18/B05CC8/B05CC8.png) | `orchid` | pale lavender → orchid |
+| ![](https://placehold.co/20x18/EDF6E9/EDF6E9.png)![](https://placehold.co/20x18/ADDA9C/ADDA9C.png)![](https://placehold.co/20x18/6BBF59/6BBF59.png) | `lime` | pale green → lime |
 
 ### SpectralColormap
 
@@ -164,7 +164,7 @@ Multi-hue warm → cool. Good for ordered data where the full range matters.
 
 | | Preset | Range |
 |---|---|---|
-| ![](https://placehold.co/20x18/E64B35/E64B35.png)![](https://placehold.co/20x18/F39B7F/F39B7F.png)![](https://placehold.co/20x18/91D1C2/91D1C2.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png)![](https://placehold.co/20x18/3C5488/3C5488.png) | `npg` | crimson → coral → seafoam → sky → cobalt |
+| ![](https://placehold.co/20x18/E63946/E63946.png)![](https://placehold.co/20x18/FCBF49/FCBF49.png)![](https://placehold.co/20x18/2EC4B6/2EC4B6.png)![](https://placehold.co/20x18/6C5CE7/6C5CE7.png)![](https://placehold.co/20x18/E91E8C/E91E8C.png) | `npg` | crimson → amber → turquoise → periwinkle → fuchsia |
 
 ### DivergingColormap
 
@@ -172,8 +172,8 @@ Two hues through a light center. Good for data diverging around a meaningful mid
 
 | | Preset | Range |
 |---|---|---|
-| ![](https://placehold.co/20x18/E64B35/E64B35.png)![](https://placehold.co/20x18/F8F8F8/F8F8F8.png)![](https://placehold.co/20x18/3C5488/3C5488.png) | `crimson_cobalt` | vermillion ↔ navy |
-| ![](https://placehold.co/20x18/F39B7F/F39B7F.png)![](https://placehold.co/20x18/FAFAFA/FAFAFA.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png) | `coral_sky` | coral ↔ sky teal |
+| ![](https://placehold.co/20x18/E63946/E63946.png)![](https://placehold.co/20x18/F8F8F8/F8F8F8.png)![](https://placehold.co/20x18/457B9D/457B9D.png) | `crimson_cobalt` | red ↔ steel blue |
+| ![](https://placehold.co/20x18/FCBF49/FCBF49.png)![](https://placehold.co/20x18/FAFAFA/FAFAFA.png)![](https://placehold.co/20x18/6C5CE7/6C5CE7.png) | `amber_periwinkle` | amber ↔ blue-violet |
 
 ### CyclicColormap
 
@@ -181,14 +181,14 @@ Wraps back to its starting color. Good for phase or angle data.
 
 | | Preset | Cycle |
 |---|---|---|
-| ![](https://placehold.co/20x18/E64B35/E64B35.png)![](https://placehold.co/20x18/8491B4/8491B4.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png)![](https://placehold.co/20x18/00A087/00A087.png)![](https://placehold.co/20x18/F39B7F/F39B7F.png) | `npg` | crimson → periwinkle → sky → jade → coral → crimson |
+| ![](https://placehold.co/20x18/E63946/E63946.png)![](https://placehold.co/20x18/F4845F/F4845F.png)![](https://placehold.co/20x18/6BBF59/6BBF59.png)![](https://placehold.co/20x18/2EC4B6/2EC4B6.png)![](https://placehold.co/20x18/B05CC8/B05CC8.png) | `npg` | crimson → tangerine → lime → turquoise → orchid → crimson |
 
 ### Usage
 
 ```python
 from stylia import FadingColormap, DivergingColormap
 
-ccm = FadingColormap("cobalt")
+ccm = FadingColormap("turquoise")
 ccm.fit(data)
 colors = ccm.transform(data)        # list of RGBA tuples
 colors = ccm.get(data, alpha=0.6)   # with alpha modifier
@@ -228,6 +228,8 @@ stylia.save_figure("figure.pdf")
 
 All parameters have `print` and `slide` variants applied automatically by `set_format()`.
 
+`SIZE` is the figure width basis — `7.09 in` for `print`, `13 in` for `slide`. Use `stylia.get_size()` to read it at runtime. `width` and `height` in `create_figure` are fractions of `SIZE`.
+
 | Constant | print | slide | Use |
 |---|---|---|---|
 | `FONTSIZE_SMALL` / `SLIDE_FONTSIZE_SMALL` | 5 pt | 8 pt | tick labels, annotations |
@@ -238,8 +240,6 @@ All parameters have `print` and `slide` variants applied automatically by `set_f
 | `MARKERSIZE_BIG` / `SLIDE_MARKERSIZE_BIG` | 30 | 45 | highlighted points (`s=`) |
 | `LINEWIDTH` / `SLIDE_LINEWIDTH` | 0.5 | 0.75 | lines, spines |
 | `LINEWIDTH_THICK` / `SLIDE_LINEWIDTH_THICK` | 1 | 1.5 | emphasis lines |
-| `ONE_COLUMN_WIDTH` | 3.45 in | — | single-column journal figure |
-| `TWO_COLUMNS_WIDTH` | 7.09 in | — | double-column journal figure |
 
 Use `stylia.get_markersize()` to get the format-aware value at runtime (`"small"`, `"normal"`, or `"big"`).
 

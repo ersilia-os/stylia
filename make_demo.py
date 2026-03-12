@@ -32,7 +32,7 @@ stack_b = np.array([1.8, 2.2, 1.5, 2.1])
 stack_c = np.array([2.0, 1.7, 2.8, 1.9])
 
 # horizontal bar
-hbar_labels = ["Method A", "Method B", "Method C", "Method D"]
+hbar_labels = ["A", "B", "C", "D"]
 hbar_values = np.array([0.87, 0.74, 0.91, 0.65])
 
 # area / filled lines
@@ -97,6 +97,7 @@ def make_grid(style, outpath):
     colors_h = pal.get(len(hbar_labels))
     ax.barh(hbar_labels, hbar_values, color=colors_h)
     ax.set_xlabel("AUC-ROC")
+    ax.set_ylabel("")
     ax.set_xlim(0.5, 1.0)
     stylia.label(ax, title="Model ranking", abc="E")
 

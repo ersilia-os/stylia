@@ -9,11 +9,8 @@ packages = [{ include = "stylia" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8"
-seaborn = ">=0.12.2"
 matplotlib = ">=3.7.1"
 scikit-learn = ">=1.2.2"
-cmcrameri = ">=1.7"
-palettable = ">=3.3.2"
 
 [build-system]
 requires = ["poetry-core"]
