@@ -1,17 +1,6 @@
 # Stylia: decent scientific plot styles
 
-Stylia provides predefined [Matplotlib](https://matplotlib.org/) styles, color palettes, and figure utilities for producing publication-quality scientific figures. It is designed for use across all projects within the [Ersilia Open Source Initiative](https://ersilia.io) but works for any scientific Python project.
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Quick start](#quick-start)
-- [Named colors](#named-colors)
-- [Categorical palettes](#categorical-palettes)
-- [Continuous colormaps](#continuous-colormaps)
-- [Figures](#figures)
-- [Sizes and constants](#sizes-and-constants)
-- [About Us](#about-us)
+Stylia provides predefined [Matplotlib](https://matplotlib.org/) styles, color palettes, and figure utilities for producing publication-quality scientific figures. Designed for the [Ersilia Open Source Initiative](https://ersilia.io), but works for any scientific Python project.
 
 ![demo](assets/demo.png)
 
@@ -39,78 +28,86 @@ import stylia
 
 ---
 
-## Quick start
+## Table of Contents
+
+- [Format and style](#format-and-style)
+- [Named colors](#named-colors)
+- [Categorical palettes](#categorical-palettes)
+- [Continuous colormaps](#continuous-colormaps)
+- [Figures](#figures)
+- [Sizes and constants](#sizes-and-constants)
+
+---
+
+## Format and style
+
+Two orthogonal settings control the global appearance of all figures.
+
+**Format** sets the size and density suited to the output medium:
 
 ```python
-import numpy as np
-import stylia
-from stylia import PaperColors, CategoricalPalette, ContinuousColorMap, NamedColorMaps
-from stylia import create_figure, save_figure
-
-nc  = PaperColors()
-pal = CategoricalPalette()        # NPG by default
-ncm = NamedColorMaps()
-
-fig, axes = create_figure(nrows=1, ncols=3)
-
-# scatter – single named color
-ax = axes[0]
-ax.scatter(np.random.randn(50), np.random.randn(50), color=nc.crimson)
-
-# bar – categorical palette
-ax = axes[1]
-groups = ["A", "B", "C", "D", "E"]
-values = np.random.rand(5)
-colors = pal.sample(len(groups))
-ax.bar(groups, values, color=colors)
-
-# heatmap – continuous colormap
-ax = axes[2]
-data = np.random.randn(20)
-ccm = ContinuousColorMap("spectral")
-ccm.fit(data)
-ax.scatter(range(len(data)), data, c=ccm.transform(data))
-
-save_figure(fig, "quickstart.pdf")
+stylia.set_format("paper")   # default — 7.09 in wide, compact fonts and thin lines
+stylia.set_format("slide")   # 13 in wide, slightly larger fonts for screen
 ```
+
+**Style** sets the color theme for structural elements (axes, ticks, text):
+
+```python
+stylia.set_style("article")  # default — all structural elements in black
+stylia.set_style("ersilia")  # structural elements in Ersilia plum (#50285A)
+```
+
+Both settings update `matplotlib.rcParams` globally and can be changed at any point.
 
 ---
 
 ## Named colors
 
-Two separate named-color palettes are provided. `PaperColors` (also aliased as `NamedColors`) is the default for publications — evocative names drawn from the Nature Publishing Group palette. `ErsiliaColors` contains the official [Ersilia brand colors](https://ersilia.gitbook.io/ersilia-book/styles/brand-guidelines).
-
 ### PaperColors
+
+NPG-derived palette with evocative names, suited for annotating specific plot elements in publications.
+
+| | Name | Hex |
+|---|---|---|
+| ![](https://placehold.co/40x18/E64B35/E64B35.png) | `crimson` | `#E64B35` |
+| ![](https://placehold.co/40x18/3C5488/3C5488.png) | `cobalt` | `#3C5488` |
+| ![](https://placehold.co/40x18/4DBBD5/4DBBD5.png) | `sky` | `#4DBBD5` |
+| ![](https://placehold.co/40x18/00A087/00A087.png) | `jade` | `#00A087` |
+| ![](https://placehold.co/40x18/F39B7F/F39B7F.png) | `coral` | `#F39B7F` |
+| ![](https://placehold.co/40x18/8491B4/8491B4.png) | `periwinkle` | `#8491B4` |
+| ![](https://placehold.co/40x18/91D1C2/91D1C2.png) | `seafoam` | `#91D1C2` |
+| ![](https://placehold.co/40x18/DC0000/DC0000.png) | `scarlet` | `#DC0000` |
+| ![](https://placehold.co/40x18/7E6148/7E6148.png) | `umber` | `#7E6148` |
+| ![](https://placehold.co/40x18/B09C85/B09C85.png) | `sand` | `#B09C85` |
 
 ```python
 from stylia import PaperColors
 
 nc = PaperColors()
 
-# access by name (RGB tuples)
-nc.crimson    # #E64B35
-nc.cobalt     # #3C5488
-nc.sky        # #4DBBD5
-nc.jade       # #00A087
-nc.coral      # #F39B7F
-nc.periwinkle # #8491B4
-nc.seafoam    # #91D1C2
-nc.scarlet    # #DC0000
-nc.umber      # #7E6148
-nc.sand       # #B09C85
-nc.white      # #FFFFFF
-nc.black      # #2C3E50
+nc.crimson     # #E64B35
+nc.cobalt      # #3C5488
+nc.sky         # #4DBBD5
+nc.jade        # #00A087
+nc.coral       # #F39B7F
+nc.periwinkle  # #8491B4
+nc.seafoam     # #91D1C2
+nc.scarlet     # #DC0000
+nc.umber       # #7E6148
+nc.sand        # #B09C85
+nc.white       # #FFFFFF
+nc.black       # #2C3E50
 
-# access by index or slice (palette order, excludes white/black)
-nc[0]         # crimson
-nc[-1]        # sand
-nc[0:3]       # [crimson, cobalt, sky]
-len(nc)       # 10
-list(nc)      # all 10 as a list
+# index or slice (palette order, excludes white/black)
+nc[0]          # crimson
+nc[-1]         # sand
+nc[0:3]        # [crimson, cobalt, sky]
+len(nc)        # 10
+list(nc)       # all 10 as a list
 
-# get with modifiers
+# modifiers
 nc.get("crimson", alpha=0.4)    # semi-transparent
-nc.get("cobalt", lighten=0.3)   # lightened
+nc.get("cobalt",  lighten=0.3)  # lightened
 
 # all hex values
 nc.hex   # {'crimson': '#E64B35', 'cobalt': '#3C5488', ...}
@@ -118,72 +115,50 @@ nc.hex   # {'crimson': '#E64B35', 'cobalt': '#3C5488', ...}
 
 ### ErsiliaColors
 
+Official [Ersilia brand palette](https://ersilia.gitbook.io/ersilia-book/styles/brand-guidelines).
+
+| | Name | Hex |
+|---|---|---|
+| ![](https://placehold.co/40x18/50285A/50285A.png) | `plum` | `#50285A` |
+| ![](https://placehold.co/40x18/AA96FA/AA96FA.png) | `purple` | `#AA96FA` |
+| ![](https://placehold.co/40x18/BEE6B4/BEE6B4.png) | `mint` | `#BEE6B4` |
+| ![](https://placehold.co/40x18/8CC8FA/8CC8FA.png) | `blue` | `#8CC8FA` |
+| ![](https://placehold.co/40x18/FAD782/FAD782.png) | `yellow` | `#FAD782` |
+| ![](https://placehold.co/40x18/DCA0DC/DCA0DC.png) | `pink` | `#DCA0DC` |
+| ![](https://placehold.co/40x18/FAA08C/FAA08C.png) | `orange` | `#FAA08C` |
+| ![](https://placehold.co/40x18/D2D2D0/D2D2D0.png) | `gray` | `#D2D2D0` |
+
 ```python
 from stylia import ErsiliaColors
 
 ec = ErsiliaColors()
 
-ec.plum     # #50285A – Ersilia primary
-ec.purple   # #AA96FA – Ersilia accent
-ec.mint     # #BEE6B4
-ec.blue     # #8CC8FA
-ec.yellow   # #FAD782
-ec.pink     # #DCA0DC
-ec.orange   # #FAA08C
-ec.gray     # #D2D2D0
+ec.plum    # #50285A – Ersilia primary
+ec.purple  # #AA96FA – Ersilia accent
+ec.mint    # #BEE6B4
+ec.blue    # #8CC8FA
+ec.yellow  # #FAD782
+ec.pink    # #DCA0DC
+ec.orange  # #FAA08C
+ec.gray    # #D2D2D0
 ```
-
-![named colors](assets/named_colors.png)
-
-**PaperColors** (NPG-derived, evocative names)
-
-| Name | Hex |
-|---|---|
-| `crimson` | `#E64B35` |
-| `cobalt` | `#3C5488` |
-| `sky` | `#4DBBD5` |
-| `jade` | `#00A087` |
-| `coral` | `#F39B7F` |
-| `periwinkle` | `#8491B4` |
-| `seafoam` | `#91D1C2` |
-| `scarlet` | `#DC0000` |
-| `umber` | `#7E6148` |
-| `sand` | `#B09C85` |
-
-**ErsiliaColors** (official Ersilia brand palette)
-
-| Name | Hex |
-|---|---|
-| `plum` | `#50285A` |
-| `purple` | `#AA96FA` |
-| `mint` | `#BEE6B4` |
-| `blue` | `#8CC8FA` |
-| `yellow` | `#FAD782` |
-| `pink` | `#DCA0DC` |
-| `orange` | `#FAA08C` |
-| `gray` | `#D2D2D0` |
 
 ---
 
 ## Categorical palettes
 
-`CategoricalPalette` cycles through a set of distinct colors for categorical data. Use `.sample(n)` to get `n` colors, or `.next()` to draw one at a time.
+`CategoricalPalette` cycles through a set of distinct colors for categorical data.
 
 ```python
 from stylia import CategoricalPalette
 
-# default: NPG (Nature Publishing Group)
-pal = CategoricalPalette()
-pal = CategoricalPalette("npg")       # same
-pal = CategoricalPalette("ersilia")   # Ersilia brand colors
-pal = CategoricalPalette("okabe")     # Okabe–Ito (colorblind-safe)
-pal = CategoricalPalette("tol")       # Paul Tol Bright (colorblind-safe, ≤7)
-pal = CategoricalPalette("tol_muted") # Paul Tol Muted (colorblind-safe, ≤10)
-pal = CategoricalPalette("pastel")    # soft pastels
-
-# list all presets
-CategoricalPalette.available()
-# ['npg', 'ersilia', 'okabe', 'tol', 'tol_muted', 'pastel']
+pal = CategoricalPalette()             # default: npg
+pal = CategoricalPalette("npg")
+pal = CategoricalPalette("ersilia")
+pal = CategoricalPalette("okabe")      # colorblind-safe
+pal = CategoricalPalette("tol")        # colorblind-safe, ≤7
+pal = CategoricalPalette("tol_muted") # colorblind-safe, ≤10
+pal = CategoricalPalette("pastel")
 
 # usage
 colors = pal.sample(5)    # list of 5 RGB tuples
@@ -193,13 +168,37 @@ pal.reset()               # restart counter
 # shuffle order on creation
 pal = CategoricalPalette("npg", shuffle=True)
 
-# pass a custom list of hex colors
+# custom list of hex colors
 pal = CategoricalPalette(["#E64B35", "#4DBBD5", "#00A087"])
+
+# list all presets
+CategoricalPalette.available()
+# ['npg', 'ersilia', 'okabe', 'tol', 'tol_muted', 'pastel']
 ```
 
-![categorical palettes](assets/categorical_palettes.png)
+**npg** — Nature Publishing Group
 
-**Palette overview**
+![](https://placehold.co/40x18/E64B35/E64B35.png) ![](https://placehold.co/40x18/4DBBD5/4DBBD5.png) ![](https://placehold.co/40x18/00A087/00A087.png) ![](https://placehold.co/40x18/3C5488/3C5488.png) ![](https://placehold.co/40x18/F39B7F/F39B7F.png) ![](https://placehold.co/40x18/8491B4/8491B4.png) ![](https://placehold.co/40x18/91D1C2/91D1C2.png) ![](https://placehold.co/40x18/DC0000/DC0000.png) ![](https://placehold.co/40x18/7E6148/7E6148.png) ![](https://placehold.co/40x18/B09C85/B09C85.png)
+
+**ersilia** — Ersilia brand
+
+![](https://placehold.co/40x18/50285A/50285A.png) ![](https://placehold.co/40x18/BEE6B4/BEE6B4.png) ![](https://placehold.co/40x18/AA96FA/AA96FA.png) ![](https://placehold.co/40x18/FAA08C/FAA08C.png) ![](https://placehold.co/40x18/8CC8FA/8CC8FA.png) ![](https://placehold.co/40x18/FAD782/FAD782.png) ![](https://placehold.co/40x18/DCA0DC/DCA0DC.png) ![](https://placehold.co/40x18/D2D2D0/D2D2D0.png)
+
+**okabe** — Okabe–Ito (colorblind-safe)
+
+![](https://placehold.co/40x18/E69F00/E69F00.png) ![](https://placehold.co/40x18/56B4E9/56B4E9.png) ![](https://placehold.co/40x18/009E73/009E73.png) ![](https://placehold.co/40x18/F0E442/F0E442.png) ![](https://placehold.co/40x18/0072B2/0072B2.png) ![](https://placehold.co/40x18/D55E00/D55E00.png) ![](https://placehold.co/40x18/CC79A7/CC79A7.png) ![](https://placehold.co/40x18/999999/999999.png)
+
+**tol** — Paul Tol Bright (colorblind-safe)
+
+![](https://placehold.co/40x18/4477AA/4477AA.png) ![](https://placehold.co/40x18/EE6677/EE6677.png) ![](https://placehold.co/40x18/228833/228833.png) ![](https://placehold.co/40x18/CCBB44/CCBB44.png) ![](https://placehold.co/40x18/66CCEE/66CCEE.png) ![](https://placehold.co/40x18/AA3377/AA3377.png) ![](https://placehold.co/40x18/BBBBBB/BBBBBB.png)
+
+**tol_muted** — Paul Tol Muted (colorblind-safe)
+
+![](https://placehold.co/40x18/332288/332288.png) ![](https://placehold.co/40x18/88CCEE/88CCEE.png) ![](https://placehold.co/40x18/44AA99/44AA99.png) ![](https://placehold.co/40x18/117733/117733.png) ![](https://placehold.co/40x18/999933/999933.png) ![](https://placehold.co/40x18/DDCC77/DDCC77.png) ![](https://placehold.co/40x18/CC6677/CC6677.png) ![](https://placehold.co/40x18/882255/882255.png) ![](https://placehold.co/40x18/AA4499/AA4499.png) ![](https://placehold.co/40x18/DDDDDD/DDDDDD.png)
+
+**pastel** — soft pastels
+
+![](https://placehold.co/40x18/AEC6CF/AEC6CF.png) ![](https://placehold.co/40x18/FFD1DC/FFD1DC.png) ![](https://placehold.co/40x18/B5EAD7/B5EAD7.png) ![](https://placehold.co/40x18/FFDAC1/FFDAC1.png) ![](https://placehold.co/40x18/C7CEEA/C7CEEA.png) ![](https://placehold.co/40x18/E2F0CB/E2F0CB.png) ![](https://placehold.co/40x18/F3E5F5/F3E5F5.png) ![](https://placehold.co/40x18/FFF9C4/FFF9C4.png)
 
 | Preset | Colors | Notes |
 |---|---|---|
@@ -210,34 +209,23 @@ pal = CategoricalPalette(["#E64B35", "#4DBBD5", "#00A087"])
 | `tol_muted` | 10 | Colorblind-safe (Paul Tol Muted) |
 | `pastel` | 8 | Soft pastels for low-emphasis use |
 
-**Example – grouped bar chart**
-
-```python
-import numpy as np
-import stylia
-from stylia import CategoricalPalette, create_figure, save_figure
-
-pal = CategoricalPalette("npg")
-groups = ["Control", "Treatment A", "Treatment B", "Treatment C"]
-values = [0.45, 0.72, 0.61, 0.88]
-colors = pal.sample(len(groups))
-
-fig, axes = create_figure(nrows=1, ncols=1)
-axes[0].bar(groups, values, color=colors, edgecolor="none")
-save_figure(fig, "bars.pdf")
-```
-
 ---
 
 ## Continuous colormaps
 
-Three colormap classes are provided, all built from PaperColors tones. Each supports the same `fit` / `transform` / `get` / `sample` interface.
-
-![colormaps](assets/colormaps.png)
+Three colormap families, all built from PaperColors tones. Each supports the same `fit` / `transform` / `get` / `sample` interface.
 
 ### ContinuousColormap
 
-Sequential — maps low → high values through a single PaperColors hue.
+Sequential — pale tint → full saturation of a single PaperColors hue.
+
+| | Preset | Range |
+|---|---|---|
+| ![](https://placehold.co/20x18/E8EAF5/E8EAF5.png)![](https://placehold.co/20x18/9BA8C9/9BA8C9.png)![](https://placehold.co/20x18/3C5488/3C5488.png) | `cobalt` | pale blue → deep navy |
+| ![](https://placehold.co/20x18/FDECEA/FDECEA.png)![](https://placehold.co/20x18/F29060/F29060.png)![](https://placehold.co/20x18/E64B35/E64B35.png) | `crimson` | blush → vermillion |
+| ![](https://placehold.co/20x18/E0F5F1/E0F5F1.png)![](https://placehold.co/20x18/50C8B8/50C8B8.png)![](https://placehold.co/20x18/00A087/00A087.png) | `jade` | pale mint → deep jade |
+| ![](https://placehold.co/20x18/E5F6FB/E5F6FB.png)![](https://placehold.co/20x18/79D5E5/79D5E5.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png) | `sky` | near-white → sky teal |
+| ![](https://placehold.co/20x18/F0EDE8/F0EDE8.png)![](https://placehold.co/20x18/B4A898/B4A898.png)![](https://placehold.co/20x18/7E6148/7E6148.png) | `umber` | warm cream → umber brown |
 
 ```python
 from stylia import ContinuousColormap
@@ -247,22 +235,17 @@ ccm = ContinuousColormap("crimson")
 ccm = ContinuousColormap("jade")
 ccm = ContinuousColormap("sky")
 ccm = ContinuousColormap("umber")
-
-ContinuousColormap.available()
-# ['cobalt', 'crimson', 'jade', 'sky', 'umber']
 ```
-
-| Preset | Range |
-|---|---|
-| `cobalt` | pale blue → deep navy cobalt |
-| `crimson` | blush → vermillion red |
-| `jade` | pale mint → deep jade green |
-| `sky` | near-white → bright sky teal |
-| `umber` | warm cream → umber brown |
 
 ### DivergingColormap
 
-Two PaperColors hues through a light center — suited for data that diverges around a meaningful midpoint (e.g. zero, baseline).
+Two PaperColors hues through a light center — suited for data that diverges around a meaningful midpoint.
+
+| | Preset | Range |
+|---|---|---|
+| ![](https://placehold.co/20x18/E64B35/E64B35.png)![](https://placehold.co/20x18/F8F8F8/F8F8F8.png)![](https://placehold.co/20x18/3C5488/3C5488.png) | `crimson_cobalt` | vermillion ↔ navy through near-white |
+| ![](https://placehold.co/20x18/F39B7F/F39B7F.png)![](https://placehold.co/20x18/FAFAFA/FAFAFA.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png) | `coral_sky` | coral ↔ sky teal through near-white |
+| ![](https://placehold.co/20x18/7E6148/7E6148.png)![](https://placehold.co/20x18/F5F2EF/F5F2EF.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png) | `umber_sky` | warm brown ↔ sky teal through warm cream |
 
 ```python
 from stylia import DivergingColormap
@@ -270,33 +253,21 @@ from stylia import DivergingColormap
 dcm = DivergingColormap()                      # default: "crimson_cobalt"
 dcm = DivergingColormap("coral_sky")
 dcm = DivergingColormap("umber_sky")
-
-DivergingColormap.available()
-# ['crimson_cobalt', 'coral_sky', 'umber_sky']
 ```
-
-| Preset | Range |
-|---|---|
-| `crimson_cobalt` | vermillion red ↔ navy cobalt through near-white |
-| `coral_sky` | soft coral ↔ sky teal through near-white |
-| `umber_sky` | warm brown ↔ sky teal through warm cream |
 
 ### CyclicColormap
 
 Wraps smoothly back to its starting color — for phase, angle, or periodic data.
 
+| | Preset | Cycle |
+|---|---|---|
+| ![](https://placehold.co/20x18/E64B35/E64B35.png)![](https://placehold.co/20x18/8491B4/8491B4.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png)![](https://placehold.co/20x18/00A087/00A087.png)![](https://placehold.co/20x18/F39B7F/F39B7F.png) | `paper` | crimson → periwinkle → sky → jade → coral → crimson |
+
 ```python
 from stylia import CyclicColormap
 
 ccm = CyclicColormap()   # default: "paper"
-
-CyclicColormap.available()
-# ['paper']
 ```
-
-| Preset | Cycle |
-|---|---|
-| `paper` | crimson → periwinkle → sky → jade → coral → crimson |
 
 ### Fitting to data
 
@@ -308,35 +279,15 @@ from stylia import ContinuousColormap, DivergingColormap
 
 data = np.random.randn(200)
 
-# fit then transform
-ccm = ContinuousColormap("cobalt")           # uniform quantile transform (default)
-ccm = ContinuousColormap("jade", transformation="normal")  # normal quantile
-ccm = ContinuousColormap("sky",  transformation=None)      # raw percentile clip
-ccm = DivergingColormap("crimson_cobalt", ascending=False) # reversed
+ccm = ContinuousColormap("cobalt")                             # uniform quantile (default)
+ccm = ContinuousColormap("jade", transformation="normal")     # normal quantile
+ccm = ContinuousColormap("sky",  transformation=None)         # raw percentile clip
+dcm = DivergingColormap("crimson_cobalt", ascending=False)    # reversed
 
 ccm.fit(data)
-colors   = ccm.transform(data)          # list of RGBA tuples, one per point
-colors   = ccm.get(data, alpha=0.6)     # with alpha modifier
-swatches = ccm.sample(8)               # 8 evenly-spaced swatches
-```
-
-**Example – scatter with diverging color**
-
-```python
-import numpy as np
-import stylia
-from stylia import DivergingColormap, create_figure, save_figure
-
-x = np.random.randn(300)
-y = np.random.randn(300)
-z = x - y   # diverges around zero
-
-dcm = DivergingColormap("crimson_cobalt")
-dcm.fit(z)
-
-fig, axes = create_figure()
-axes[0].scatter(x, y, c=dcm.transform(z), s=20, linewidths=0)
-save_figure(fig, "scatter.pdf")
+colors   = ccm.transform(data)     # list of RGBA tuples, one per point
+colors   = ccm.get(data, alpha=0.6)
+swatches = ccm.sample(8)           # 8 evenly-spaced swatches
 ```
 
 ---
@@ -345,7 +296,7 @@ save_figure(fig, "scatter.pdf")
 
 ### Creating a figure
 
-`create_figure` returns a styled `(fig, axes)` pair. Axes are automatically formatted with the Stylia style.
+`create_figure` returns a styled `(fig, axes)` pair with Stylia rcParams applied.
 
 ```python
 from stylia import create_figure, save_figure
@@ -356,12 +307,11 @@ ax = axes[0]
 
 # multi-panel
 fig, axes = create_figure(nrows=1, ncols=3)
-ax0, ax1, ax2 = axes[0], axes[1], axes[2]
 
 # two-column width (7.09 in) instead of one-column (3.45 in)
 fig, axes = create_figure(ncols=2, one_column=False)
 
-# custom width/height ratios
+# custom width ratios
 fig, axes = create_figure(ncols=3, width_ratios=[2, 1, 1])
 ```
 
@@ -383,9 +333,42 @@ save_figure(fig, "figure1.png")
 
 ---
 
-## Sizes and constants
+## Quick start
 
-Import constants directly for consistent sizing across all figures in a project.
+```python
+import numpy as np
+import stylia
+from stylia import PaperColors, CategoricalPalette, ContinuousColormap
+from stylia import create_figure, save_figure
+
+nc  = PaperColors()
+pal = CategoricalPalette()        # NPG by default
+
+fig, axes = create_figure(nrows=1, ncols=3)
+
+# scatter – single named color
+ax = axes[0]
+ax.scatter(np.random.randn(50), np.random.randn(50), color=nc.crimson)
+
+# bar – categorical palette
+ax = axes[1]
+groups = ["A", "B", "C", "D", "E"]
+values = np.random.rand(5)
+ax.bar(groups, values, color=pal.sample(len(groups)))
+
+# scatter – continuous colormap
+ax = axes[2]
+data = np.random.randn(200)
+ccm  = ContinuousColormap("cobalt")
+ccm.fit(data)
+ax.scatter(range(len(data)), data, c=ccm.transform(data))
+
+save_figure(fig, "quickstart.pdf")
+```
+
+---
+
+## Sizes and constants
 
 ```python
 from stylia import (

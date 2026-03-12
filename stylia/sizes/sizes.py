@@ -1,3 +1,6 @@
+"""Size classes kept for backward compatibility. Settings are now managed
+centrally by stylia.config._apply_settings()."""
+
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np

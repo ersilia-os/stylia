@@ -1,35 +1,41 @@
-from ..colors.colors import Palette
-from ..vars import LINEWIDTH, FONTSIZE_BIG
+from ..config import get_linewidth, get_fg_color, get_color_cycle, get_fontsize_big
 
 
 def stylize(ax):
-    ax.set_prop_cycle("color", Palette().colors)
+    lw = get_linewidth()
+    fg = get_fg_color()
+
+    ax.set_prop_cycle("color", get_color_cycle())
     ax.set_xlabel("X-axis / Units")
     ax.set_ylabel("Y-axis / Units")
     ax.set_title("Plot title")
+
     # Light grid so it doesn't compete with data
     try:
-        ax.grid(b=True, linewidth=LINEWIDTH, color="#DDDDDD", alpha=0.8)
-    except:
-        ax.grid(visible=True, linewidth=LINEWIDTH, color="#DDDDDD", alpha=0.8)
-    # Full frame: all four spines visible, default weight
+        ax.grid(visible=True, linewidth=lw, color="#DDDDDD", alpha=0.8)
+    except TypeError:
+        ax.grid(b=True, linewidth=lw, color="#DDDDDD", alpha=0.8)
+
+    # Full frame with style-aware color
     for spine in ax.spines.values():
         spine.set_visible(True)
-        spine.set_linewidth(LINEWIDTH)
-    ax.xaxis.set_tick_params(width=LINEWIDTH)
-    ax.yaxis.set_tick_params(width=LINEWIDTH)
+        spine.set_linewidth(lw)
+        spine.set_color(fg)
+
+    ax.xaxis.set_tick_params(width=lw, colors=fg)
+    ax.yaxis.set_tick_params(width=lw, colors=fg)
     return ax
 
 
 def label(ax, xlabel=None, ylabel=None, title=None, abc=None):
     if xlabel is not None:
         ax.set_xlabel(xlabel)
-    if xlabel is not None:
+    if ylabel is not None:
         ax.set_ylabel(ylabel)
     if title is not None:
         ax.set_title(title)
     if abc is not None:
-        ax.set_title(abc, loc="left", fontweight="bold", fontsize=FONTSIZE_BIG)
+        ax.set_title(abc, loc="left", fontweight="bold", fontsize=get_fontsize_big())
 
 
 class AxisManager(object):

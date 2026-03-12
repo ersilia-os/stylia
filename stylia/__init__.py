@@ -14,15 +14,13 @@ shutil.rmtree(mpl.get_cachedir())
 
 mpl.rcParams["font.family"] = "sans-serif"
 mpl.rcParams["font.sans-serif"] = FONT
-mpl.rcParams.update({"font.size": 10})
 mpl.rcParams["pdf.fonttype"] = 42
 mpl.rcParams["ps.fonttype"] = 42
 mpl.rcParams.update({"axes.grid": True})
 
-from .sizes.sizes import FontSize, MarkerSize
-
-FontSize()
-MarkerSize()
+# Apply default format (paper) + style (article) settings
+from .config import _apply_settings, set_format, set_style
+_apply_settings()
 
 # Relative imports
 
