@@ -13,6 +13,7 @@ mpl.rcParams["pdf.fonttype"] = 42
 mpl.rcParams["ps.fonttype"] = 42
 mpl.rcParams.update({
     "axes.grid": True,
+    "axes.axisbelow": True,
     "figure.autolayout": True,
     "axes.spines.top": True,
     "axes.spines.right": True,

@@ -9,11 +9,12 @@ def stylize(ax):
     ax.set_xlabel("X-axis / Units")
     ax.set_ylabel("Y-axis / Units")
 
-    # Light grid so it doesn't compete with data
+    # Thin, light grid — always behind data
+    ax.set_axisbelow(True)
     try:
-        ax.grid(visible=True, linewidth=lw, color="#DDDDDD", alpha=0.8)
+        ax.grid(visible=True, linewidth=lw * 0.5, color="#DDDDDD", alpha=0.6)
     except TypeError:
-        ax.grid(b=True, linewidth=lw, color="#DDDDDD", alpha=0.8)
+        ax.grid(b=True, linewidth=lw * 0.5, color="#DDDDDD", alpha=0.6)
 
     # Full frame with style-aware color
     for spine in ax.spines.values():
