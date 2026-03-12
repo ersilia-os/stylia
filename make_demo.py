@@ -79,7 +79,7 @@ def make_grid(style, outpath):
     ax.bar(stack_labels, stack_c, bottom=stack_a + stack_b, color=c3[2], label="Component C")
     ax.set_xlabel("Month")
     ax.set_ylabel("Value")
-    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.28), ncol=3)
+    ax.legend(loc="upper right")
     stylia.label(ax, title="Stacked composition", abc="C")
 
     # ── panel D: area / filled lines ─────────────────────────────────────────

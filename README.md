@@ -249,6 +249,12 @@ Use `stylia.get_markersize()` to get the format-aware value at runtime (`"small"
 
 Stylia is designed for internal use across Ersilia projects and is shared openly in case it is useful to others. It is not a general-purpose plotting library — for that, see [Matplotlib](https://matplotlib.org/) or [seaborn](https://seaborn.pydata.org/).
 
+---
+
 ## About Us
 
-Learn about the [Ersilia Open Source Initiative](https://ersilia.io)!
+<a href="https://ersilia.io" target="_blank"><img src="https://raw.githubusercontent.com/ersilia-os/ersilia/master/assets/Ersilia_Plum.png" height="80" alt="Ersilia logo"/></a>
+
+Stylia is developed and maintained by the [Ersilia Open Source Initiative](https://ersilia.io), a non-profit organisation dedicated to providing open-source AI/ML tools for infectious disease research in the Global South.
+
+[Visit us](https://ersilia.io) · [GitHub](https://github.com/ersilia-os) · [Twitter](https://twitter.com/ersiliaio)
