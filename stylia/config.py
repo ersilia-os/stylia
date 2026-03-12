@@ -184,11 +184,12 @@ def _apply_settings():
         "xtick.color":      fg,
         "ytick.color":      fg,
         "axes.edgecolor":   fg,
-        # Legend — framed with semi-transparent white background
+        # Legend — framed with semi-transparent white background, top-right by default
         "legend.frameon":      True,
         "legend.facecolor":    "white",
         "legend.framealpha":   0.8,
         "legend.edgecolor":    "none",
+        "legend.loc":          "upper right",
         # Color cycle
         "axes.prop_cycle":  mpl.cycler("color", cycle_hex),
     }
