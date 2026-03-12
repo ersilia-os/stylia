@@ -391,33 +391,33 @@ save_figure(fig, "quickstart.pdf")
 
 ## Sizes and constants
 
-```python
-from stylia import (
-    FONTSIZE_SMALL,    # 5 pt
-    FONTSIZE,          # 6 pt
-    FONTSIZE_BIG,      # 8 pt
-    MARKERSIZE_SMALL,  # 5
-    MARKERSIZE,        # 10
-    MARKERSIZE_BIG,    # 30
-    LINEWIDTH,         # 0.5
-    LINEWIDTH_THICK,   # 1
-    ONE_COLUMN_WIDTH,  # 3.45 in
-    TWO_COLUMNS_WIDTH, # 7.09 in
-)
-```
+All parameters have explicit `print` and `slide` variants. `set_format()` applies the correct set globally. You can also read the format-aware value at runtime with helpers like `get_markersize()`.
 
-| Constant | Value | Use |
-|---|---|---|
-| `FONTSIZE_SMALL` | 5 pt | axis tick labels, annotations |
-| `FONTSIZE` | 6 pt | axis labels, legend |
-| `FONTSIZE_BIG` | 8 pt | panel titles |
-| `MARKERSIZE_SMALL` | 5 | dense scatter |
-| `MARKERSIZE` | 10 | standard scatter |
-| `MARKERSIZE_BIG` | 30 | highlighted points |
-| `LINEWIDTH` | 0.5 | standard lines, spines |
-| `LINEWIDTH_THICK` | 1 | emphasis lines |
-| `ONE_COLUMN_WIDTH` | 3.45 in | single-column journal figure |
-| `TWO_COLUMNS_WIDTH` | 7.09 in | double-column journal figure |
+| Constant | print | slide | Use |
+|---|---|---|---|
+| `FONTSIZE_SMALL` / `SLIDE_FONTSIZE_SMALL` | 5 pt | 8 pt | tick labels, annotations |
+| `FONTSIZE` / `SLIDE_FONTSIZE` | 6 pt | 10 pt | axis labels, legend |
+| `FONTSIZE_BIG` / `SLIDE_FONTSIZE_BIG` | 8 pt | 13 pt | panel titles |
+| `MARKERSIZE_SMALL` / `SLIDE_MARKERSIZE_SMALL` | 5 | 8 | dense scatter (`s=`) |
+| `MARKERSIZE` / `SLIDE_MARKERSIZE` | 10 | 15 | standard scatter (`s=`) |
+| `MARKERSIZE_BIG` / `SLIDE_MARKERSIZE_BIG` | 30 | 45 | highlighted points (`s=`) |
+| `LINEWIDTH` / `SLIDE_LINEWIDTH` | 0.5 | 0.75 | lines, spines |
+| `LINEWIDTH_THICK` / `SLIDE_LINEWIDTH_THICK` | 1 | 1.5 | emphasis lines |
+| `ONE_COLUMN_WIDTH` | 3.45 in | — | single-column journal figure |
+| `TWO_COLUMNS_WIDTH` | 7.09 in | — | double-column journal figure |
+
+```python
+import stylia
+
+stylia.set_format("slide")
+
+# get the right markersize for the current format
+s = stylia.get_markersize()          # "normal" → 15
+s = stylia.get_markersize("small")   # → 8
+s = stylia.get_markersize("big")     # → 45
+
+ax.scatter(x, y, s=s)
+```
 
 ---
 

@@ -19,7 +19,7 @@ mpl.rcParams["ps.fonttype"] = 42
 mpl.rcParams.update({"axes.grid": True})
 
 # Apply default format (paper) + style (article) settings
-from .config import _apply_settings, set_format, set_style
+from .config import _apply_settings, set_format, set_style, get_markersize
 _apply_settings()
 
 # Relative imports

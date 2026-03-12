@@ -122,22 +122,41 @@ def get_fontsize_big():
 # Internal: apply all rcParams for current format + style
 # ---------------------------------------------------------------------------
 
+def get_markersize(size="normal"):
+    """Return the marker size for the current format.
+
+    Parameters
+    ----------
+    size : ``"small"`` | ``"normal"`` | ``"big"``
+        Which size tier to return (for use as ``s=`` in scatter calls).
+    """
+    from .vars import (
+        MARKERSIZE_SMALL, MARKERSIZE, MARKERSIZE_BIG,
+        SLIDE_MARKERSIZE_SMALL, SLIDE_MARKERSIZE, SLIDE_MARKERSIZE_BIG,
+    )
+    if _current_format == "slide":
+        return {"small": SLIDE_MARKERSIZE_SMALL, "normal": SLIDE_MARKERSIZE, "big": SLIDE_MARKERSIZE_BIG}[size]
+    return {"small": MARKERSIZE_SMALL, "normal": MARKERSIZE, "big": MARKERSIZE_BIG}[size]
+
+
 def _apply_settings():
     from .vars import (
         FONTSIZE_SMALL, FONTSIZE,
         SLIDE_FONTSIZE_SMALL, SLIDE_FONTSIZE,
         LINEWIDTH, SLIDE_LINEWIDTH,
-        MARKERSIZE,
+        MARKERSIZE, SLIDE_MARKERSIZE,
     )
 
     if _current_format == "slide":
         fs_small = SLIDE_FONTSIZE_SMALL
         fs = SLIDE_FONTSIZE
         lw = SLIDE_LINEWIDTH
+        ms = SLIDE_MARKERSIZE
     else:
         fs_small = FONTSIZE_SMALL
         fs = FONTSIZE
         lw = LINEWIDTH
+        ms = MARKERSIZE
 
     fg = _PLUM if _current_style == "ersilia" else "black"
     cycle_hex = get_color_cycle()
@@ -154,7 +173,7 @@ def _apply_settings():
         # Line / marker widths
         "axes.linewidth":   lw,
         "lines.linewidth":  lw,
-        "lines.markersize": np.sqrt(MARKERSIZE),
+        "lines.markersize": np.sqrt(ms),
         # Foreground colors
         "text.color":       fg,
         "axes.labelcolor":  fg,
