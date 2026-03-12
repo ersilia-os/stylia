@@ -34,6 +34,7 @@ import stylia
 - [Categorical palettes](#categorical-palettes)
 - [Figures](#figures)
 - [Sizes and constants](#sizes-and-constants)
+- [Tutorial notebook](#tutorial-notebook)
 
 ---
 
@@ -106,11 +107,13 @@ nc = stylia.NamedColors()   # ArticleColors or ErsiliaColors depending on set_st
 
 ## Continuous colormaps
 
-Four families, all built from ArticleColors tones. All share `fit(data)` / `transform(data, alpha=, lighten=)` / `sample(n)`.
+Four families, each with presets for the **article** (NPG) and **ersilia** palettes. All share `fit(data)` / `transform(data, alpha=, lighten=)` / `sample(n)`.
 
 ### FadingColormap
 
 Near-white → single hue. Good for density or strictly positive data.
+
+**Article presets** (NPG colors)
 
 | | Preset | Range |
 |---|---|---|
@@ -119,6 +122,11 @@ Near-white → single hue. Good for density or strictly positive data.
 | ![](https://placehold.co/20x18/E0F8F7/E0F8F7.png)![](https://placehold.co/20x18/87DCD6/87DCD6.png)![](https://placehold.co/20x18/2EC4B6/2EC4B6.png) | `turquoise` | pale mint → teal-cyan |
 | ![](https://placehold.co/20x18/F5E8FA/F5E8FA.png)![](https://placehold.co/20x18/D2A8E1/D2A8E1.png)![](https://placehold.co/20x18/B05CC8/B05CC8.png) | `orchid` | pale lavender → orchid |
 | ![](https://placehold.co/20x18/EDF6E9/EDF6E9.png)![](https://placehold.co/20x18/ADDA9C/ADDA9C.png)![](https://placehold.co/20x18/6BBF59/6BBF59.png) | `lime` | pale green → lime |
+
+**Ersilia preset**
+
+| | Preset | Range |
+|---|---|---|
 | ![](https://placehold.co/20x18/F0EBF1/F0EBF1.png)![](https://placehold.co/20x18/A87AAF/A87AAF.png)![](https://placehold.co/20x18/50285A/50285A.png) | `plum` | pale lilac → deep plum |
 
 ### SpectralColormap
@@ -127,17 +135,24 @@ Multi-hue warm → cool. Good for ordered data where the full range matters.
 
 | | Preset | Range |
 |---|---|---|
-| ![](https://placehold.co/20x18/E63946/E63946.png)![](https://placehold.co/20x18/FCBF49/FCBF49.png)![](https://placehold.co/20x18/2EC4B6/2EC4B6.png)![](https://placehold.co/20x18/6C5CE7/6C5CE7.png)![](https://placehold.co/20x18/E91E8C/E91E8C.png) | `npg` | crimson → amber → turquoise → periwinkle → fuchsia |
+| ![](https://placehold.co/20x18/E63946/E63946.png)![](https://placehold.co/20x18/FCBF49/FCBF49.png)![](https://placehold.co/20x18/2EC4B6/2EC4B6.png)![](https://placehold.co/20x18/6C5CE7/6C5CE7.png)![](https://placehold.co/20x18/E91E8C/E91E8C.png) | `npg` *(article)* | crimson → amber → turquoise → periwinkle → fuchsia |
 | ![](https://placehold.co/20x18/FAA08C/FAA08C.png)![](https://placehold.co/20x18/FAD782/FAD782.png)![](https://placehold.co/20x18/BEE6B4/BEE6B4.png)![](https://placehold.co/20x18/8CC8FA/8CC8FA.png)![](https://placehold.co/20x18/AA96FA/AA96FA.png) | `ersilia` | orange → yellow → mint → blue → purple |
 
 ### DivergingColormap
 
 Two hues through a light center. Good for data diverging around a meaningful midpoint.
 
+**Article presets** (NPG colors)
+
 | | Preset | Range |
 |---|---|---|
 | ![](https://placehold.co/20x18/E63946/E63946.png)![](https://placehold.co/20x18/F8F8F8/F8F8F8.png)![](https://placehold.co/20x18/457B9D/457B9D.png) | `crimson_cobalt` | red ↔ steel blue |
 | ![](https://placehold.co/20x18/FCBF49/FCBF49.png)![](https://placehold.co/20x18/FAFAFA/FAFAFA.png)![](https://placehold.co/20x18/6C5CE7/6C5CE7.png) | `amber_periwinkle` | amber ↔ blue-violet |
+
+**Ersilia presets**
+
+| | Preset | Range |
+|---|---|---|
 | ![](https://placehold.co/20x18/50285A/50285A.png)![](https://placehold.co/20x18/FAFAFA/FAFAFA.png)![](https://placehold.co/20x18/BEE6B4/BEE6B4.png) | `plum_mint` | deep plum ↔ mint |
 | ![](https://placehold.co/20x18/AA96FA/AA96FA.png)![](https://placehold.co/20x18/FAFAFA/FAFAFA.png)![](https://placehold.co/20x18/FAA08C/FAA08C.png) | `purple_orange` | lavender ↔ peach |
 
@@ -147,7 +162,7 @@ Wraps back to its starting color. Good for phase or angle data.
 
 | | Preset | Cycle |
 |---|---|---|
-| ![](https://placehold.co/20x18/E63946/E63946.png)![](https://placehold.co/20x18/F4845F/F4845F.png)![](https://placehold.co/20x18/6BBF59/6BBF59.png)![](https://placehold.co/20x18/2EC4B6/2EC4B6.png)![](https://placehold.co/20x18/B05CC8/B05CC8.png) | `npg` | crimson → tangerine → lime → turquoise → orchid → crimson |
+| ![](https://placehold.co/20x18/E63946/E63946.png)![](https://placehold.co/20x18/F4845F/F4845F.png)![](https://placehold.co/20x18/6BBF59/6BBF59.png)![](https://placehold.co/20x18/2EC4B6/2EC4B6.png)![](https://placehold.co/20x18/B05CC8/B05CC8.png) | `npg` *(article)* | crimson → tangerine → lime → turquoise → orchid → crimson |
 | ![](https://placehold.co/20x18/FAA08C/FAA08C.png)![](https://placehold.co/20x18/FAD782/FAD782.png)![](https://placehold.co/20x18/BEE6B4/BEE6B4.png)![](https://placehold.co/20x18/8CC8FA/8CC8FA.png)![](https://placehold.co/20x18/AA96FA/AA96FA.png)![](https://placehold.co/20x18/DCA0DC/DCA0DC.png) | `ersilia` | orange → yellow → mint → blue → purple → pink → orange |
 
 ### Usage
@@ -253,6 +268,12 @@ Use `stylia.get_markersize()` to get the format-aware value at runtime (`"small"
 
 ---
 
+## Tutorial notebook
+
+An end-to-end walkthrough of all stylia features is available in [`notebooks/stylia_tutorial.ipynb`](notebooks/stylia_tutorial.ipynb). It covers format and style setup, named colors, all four colormap families, categorical palettes, and figure creation.
+
+---
+
 ## Disclaimer
 
 Stylia is designed for internal use across Ersilia projects and is shared openly in case it is useful to others. It is not a general-purpose plotting library — for that, see [Matplotlib](https://matplotlib.org/) or [seaborn](https://seaborn.pydata.org/).
@@ -265,4 +286,4 @@ Stylia is designed for internal use across Ersilia projects and is shared openly
 
 Stylia is developed and maintained by the [Ersilia Open Source Initiative](https://ersilia.io), a non-profit organisation dedicated to providing open-source AI/ML tools for infectious disease research in the Global South.
 
-[Visit us](https://ersilia.io) · [GitHub](https://github.com/ersilia-os) · [Twitter](https://twitter.com/ersiliaio)
+[Visit us](https://ersilia.io) · [GitHub](https://github.com/ersilia-os)
