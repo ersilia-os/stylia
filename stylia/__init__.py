@@ -28,5 +28,5 @@ MarkerSize()
 
 from .figure import create_figure, save_figure
 from .figure.figure import label
-from .colors.colors import NamedColors, ContinuousColorMap, NamedColorMaps
+from .colors.colors import NamedColors, CategoricalPalette, ContinuousColorMap, NamedColorMaps
 from .vars import *
