@@ -6,6 +6,7 @@ authors = ["Miquel Duran-Frigola <miquel@ersilia.io>"]
 license = "MIT"
 readme = "README.md"
 packages = [{ include = "stylia" }]
+include = ["stylia/fonts/*"]
 
 [tool.poetry.dependencies]
 python = ">=3.8"

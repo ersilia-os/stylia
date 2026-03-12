@@ -30,8 +30,8 @@ import stylia
 
 - [Format and style](#format-and-style)
 - [Named colors](#named-colors)
-- [Categorical palettes](#categorical-palettes)
 - [Continuous colormaps](#continuous-colormaps)
+- [Categorical palettes](#categorical-palettes)
 - [Figures](#figures)
 - [Sizes and constants](#sizes-and-constants)
 
@@ -55,7 +55,7 @@ Both update `matplotlib.rcParams` globally and can be changed at any point.
 
 ### ArticleColors
 
-Modern palette spanning the full hue wheel for maximum distinctness. Also aliased as `PaperColors`.
+Modern palette spanning the full hue wheel for maximum distinctness.
 
 | | Name | Hex |
 |---|---|---|
@@ -101,40 +101,6 @@ Official [Ersilia brand palette](https://ersilia.gitbook.io/ersilia-book/styles/
 ```python
 nc = stylia.NamedColors()   # ArticleColors or ErsiliaColors depending on set_style()
 ```
-
----
-
-## Categorical palettes
-
-```python
-from stylia import CategoricalPalette
-
-pal = CategoricalPalette()       # "npg" (default), "ersilia", "okabe", "tol", "pastel"
-
-colors = pal.get(5)              # 5 maximally distinguishable colors
-colors = pal.get(20)             # >palette size: interpolated as a colormap
-color  = pal.next()              # draw one at a time (advances internal counter)
-```
-
-**npg** — redesigned for maximum hue coverage
-
-![](https://placehold.co/40x18/E63946/E63946.png) ![](https://placehold.co/40x18/F4845F/F4845F.png) ![](https://placehold.co/40x18/FCBF49/FCBF49.png) ![](https://placehold.co/40x18/6BBF59/6BBF59.png) ![](https://placehold.co/40x18/2EC4B6/2EC4B6.png) ![](https://placehold.co/40x18/457B9D/457B9D.png) ![](https://placehold.co/40x18/6C5CE7/6C5CE7.png) ![](https://placehold.co/40x18/B05CC8/B05CC8.png) ![](https://placehold.co/40x18/E91E8C/E91E8C.png) ![](https://placehold.co/40x18/A0A0A0/A0A0A0.png)
-
-**ersilia** — Ersilia brand
-
-![](https://placehold.co/40x18/50285A/50285A.png) ![](https://placehold.co/40x18/BEE6B4/BEE6B4.png) ![](https://placehold.co/40x18/AA96FA/AA96FA.png) ![](https://placehold.co/40x18/FAA08C/FAA08C.png) ![](https://placehold.co/40x18/8CC8FA/8CC8FA.png) ![](https://placehold.co/40x18/FAD782/FAD782.png) ![](https://placehold.co/40x18/DCA0DC/DCA0DC.png) ![](https://placehold.co/40x18/D2D2D0/D2D2D0.png)
-
-**okabe** — Okabe–Ito (colorblind-safe)
-
-![](https://placehold.co/40x18/E69F00/E69F00.png) ![](https://placehold.co/40x18/56B4E9/56B4E9.png) ![](https://placehold.co/40x18/009E73/009E73.png) ![](https://placehold.co/40x18/F0E442/F0E442.png) ![](https://placehold.co/40x18/0072B2/0072B2.png) ![](https://placehold.co/40x18/D55E00/D55E00.png) ![](https://placehold.co/40x18/CC79A7/CC79A7.png) ![](https://placehold.co/40x18/999999/999999.png)
-
-**tol** — Paul Tol Bright (colorblind-safe)
-
-![](https://placehold.co/40x18/4477AA/4477AA.png) ![](https://placehold.co/40x18/EE6677/EE6677.png) ![](https://placehold.co/40x18/228833/228833.png) ![](https://placehold.co/40x18/CCBB44/CCBB44.png) ![](https://placehold.co/40x18/66CCEE/66CCEE.png) ![](https://placehold.co/40x18/AA3377/AA3377.png) ![](https://placehold.co/40x18/BBBBBB/BBBBBB.png)
-
-**pastel** — soft pastels
-
-![](https://placehold.co/40x18/AEC6CF/AEC6CF.png) ![](https://placehold.co/40x18/FFD1DC/FFD1DC.png) ![](https://placehold.co/40x18/B5EAD7/B5EAD7.png) ![](https://placehold.co/40x18/FFDAC1/FFDAC1.png) ![](https://placehold.co/40x18/C7CEEA/C7CEEA.png) ![](https://placehold.co/40x18/E2F0CB/E2F0CB.png) ![](https://placehold.co/40x18/F3E5F5/F3E5F5.png) ![](https://placehold.co/40x18/FFF9C4/FFF9C4.png)
 
 ---
 
@@ -200,6 +166,46 @@ dcm = DivergingColormap("crimson_cobalt", ascending=False)
 dcm.fit(data)
 colors = dcm.transform(data)
 ```
+
+---
+
+## Categorical palettes
+
+Two built-in palettes match the default styles. Three additional **bonus** palettes are available for specific needs (colorblind accessibility, soft aesthetics).
+
+```python
+from stylia import CategoricalPalette
+
+pal = CategoricalPalette()       # "npg" (default) or "ersilia"
+
+colors = pal.get(5)              # 5 maximally distinguishable colors
+colors = pal.get(20)             # >palette size: interpolated as a colormap
+color  = pal.next()              # draw one at a time (advances internal counter)
+```
+
+**Default palettes**
+
+**npg** — redesigned for maximum hue coverage (article style default)
+
+![](https://placehold.co/40x18/E63946/E63946.png) ![](https://placehold.co/40x18/F4845F/F4845F.png) ![](https://placehold.co/40x18/FCBF49/FCBF49.png) ![](https://placehold.co/40x18/6BBF59/6BBF59.png) ![](https://placehold.co/40x18/2EC4B6/2EC4B6.png) ![](https://placehold.co/40x18/457B9D/457B9D.png) ![](https://placehold.co/40x18/6C5CE7/6C5CE7.png) ![](https://placehold.co/40x18/B05CC8/B05CC8.png) ![](https://placehold.co/40x18/E91E8C/E91E8C.png) ![](https://placehold.co/40x18/A0A0A0/A0A0A0.png)
+
+**ersilia** — Ersilia brand (ersilia style default)
+
+![](https://placehold.co/40x18/50285A/50285A.png) ![](https://placehold.co/40x18/BEE6B4/BEE6B4.png) ![](https://placehold.co/40x18/AA96FA/AA96FA.png) ![](https://placehold.co/40x18/FAA08C/FAA08C.png) ![](https://placehold.co/40x18/8CC8FA/8CC8FA.png) ![](https://placehold.co/40x18/FAD782/FAD782.png) ![](https://placehold.co/40x18/DCA0DC/DCA0DC.png) ![](https://placehold.co/40x18/D2D2D0/D2D2D0.png)
+
+**Bonus palettes**
+
+**okabe** — Okabe–Ito (colorblind-safe)
+
+![](https://placehold.co/40x18/E69F00/E69F00.png) ![](https://placehold.co/40x18/56B4E9/56B4E9.png) ![](https://placehold.co/40x18/009E73/009E73.png) ![](https://placehold.co/40x18/F0E442/F0E442.png) ![](https://placehold.co/40x18/0072B2/0072B2.png) ![](https://placehold.co/40x18/D55E00/D55E00.png) ![](https://placehold.co/40x18/CC79A7/CC79A7.png) ![](https://placehold.co/40x18/999999/999999.png)
+
+**tol** — Paul Tol Bright (colorblind-safe)
+
+![](https://placehold.co/40x18/4477AA/4477AA.png) ![](https://placehold.co/40x18/EE6677/EE6677.png) ![](https://placehold.co/40x18/228833/228833.png) ![](https://placehold.co/40x18/CCBB44/CCBB44.png) ![](https://placehold.co/40x18/66CCEE/66CCEE.png) ![](https://placehold.co/40x18/AA3377/AA3377.png) ![](https://placehold.co/40x18/BBBBBB/BBBBBB.png)
+
+**pastel** — soft pastels
+
+![](https://placehold.co/40x18/AEC6CF/AEC6CF.png) ![](https://placehold.co/40x18/FFD1DC/FFD1DC.png) ![](https://placehold.co/40x18/B5EAD7/B5EAD7.png) ![](https://placehold.co/40x18/FFDAC1/FFDAC1.png) ![](https://placehold.co/40x18/C7CEEA/C7CEEA.png) ![](https://placehold.co/40x18/E2F0CB/E2F0CB.png) ![](https://placehold.co/40x18/F3E5F5/F3E5F5.png) ![](https://placehold.co/40x18/FFF9C4/FFF9C4.png)
 
 ---
 

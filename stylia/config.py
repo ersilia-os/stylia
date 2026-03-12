@@ -100,9 +100,9 @@ def get_linewidth():
 
 
 def get_named_colors_class():
-    """Return PaperColors for article style, ErsiliaColors for ersilia style."""
-    from .colors.colors import PaperColors, ErsiliaColors
-    return PaperColors if _current_style == "article" else ErsiliaColors
+    """Return ArticleColors for article style, ErsiliaColors for ersilia style."""
+    from .colors.colors import ArticleColors, ErsiliaColors
+    return ArticleColors if _current_style == "article" else ErsiliaColors
 
 
 def get_fg_color():

@@ -24,7 +24,7 @@ def _hex_to_rgb(hex_color):
 # NPG fills in hues the brand palette does not cover (red, teal, green, brown).
 
 # ---------------------------------------------------------------------------
-# PaperColors — NPG-derived palette with evocative names for publications
+# ArticleColors — NPG-derived palette with evocative names for publications
 # ---------------------------------------------------------------------------
 
 _PAPER = {
@@ -159,8 +159,6 @@ class ErsiliaColors:
             yield getattr(self, name)
 
 
-# backward-compat alias
-PaperColors = ArticleColors
 
 
 # ---------------------------------------------------------------------------
@@ -323,7 +321,7 @@ class CategoricalPalette:
 
 
 # ---------------------------------------------------------------------------
-# Colormap definitions — built from PaperColors tones
+# Colormap definitions — built from ArticleColors tones
 # ---------------------------------------------------------------------------
 #
 # Three colormap families, each with named presets derived from PaperColors:
