@@ -231,93 +231,111 @@ save_figure(fig, "bars.pdf")
 
 ## Continuous colormaps
 
-`NamedColorMaps` gives direct access to colormaps by name. `ContinuousColorMap` maps a numeric array to colors, with optional quantile normalisation for better contrast.
-
-### Named colormaps
-
-All colormaps are chosen so that **every data value is visible on a white
-background**. The key problem with conventional diverging maps (Spectral,
-coolwarm) is a near-white center that makes mid-range values invisible.
-Stylia uses dark-center diverging maps to solve this.
-
-```python
-from stylia import NamedColorMaps
-
-ncm = NamedColorMaps()                  # scientific cmcrameri colormaps (default)
-ncm = NamedColorMaps(scientific=False)  # standard Matplotlib colormaps
-
-# sequential — dark start, no white endpoints
-ncm.viridis   # dark blue → bright yellow-green    (cmcrameri: imola)
-ncm.heat      # near-black brown → orange-red       (cmcrameri: lajolla, clipped)
-ncm.ocean     # dark navy → steel blue              (cmcrameri: oslo, clipped)
-ncm.earth     # cold blue → warm yellow-green       (cmcrameri: nuuk)
-
-# diverging — DARK CENTER so mid-range values are never invisible on white
-ncm.spectral  # periwinkle-blue <-> salmon-red, center ~black   (cmcrameri: berlin)
-ncm.coolwarm  # golden-yellow <-> sky-cyan, center ~dark purple  (cmcrameri: managua)
-
-# cyclic (phase / angle data)
-ncm.cyclic    # smooth cyclic wrap  (cmcrameri: romaO)
-
-# access by string
-ncm.get("spectral")
-ncm.available  # ['viridis', 'heat', 'ocean', 'earth', 'spectral', 'coolwarm', 'cyclic']
-
-# use directly with Matplotlib
-ax.scatter(x, y, c=values, cmap=ncm.spectral)
-```
+Three colormap classes are provided, all built from PaperColors tones. Each supports the same `fit` / `transform` / `get` / `sample` interface.
 
 ![colormaps](assets/colormaps.png)
 
-**Why dark-center diverging maps?**
+### ContinuousColormap
 
-| Colormap | Old (center lightness) | New (center lightness) |
-|---|---|---|
-| `spectral` | roma – 0.84, near-white | berlin – **0.07**, near-black |
-| `coolwarm` | vik – 0.90, near-white | managua – **0.25**, dark purple |
+Sequential — maps low → high values through a single PaperColors hue.
+
+```python
+from stylia import ContinuousColormap
+
+ccm = ContinuousColormap()              # default: "cobalt"
+ccm = ContinuousColormap("crimson")
+ccm = ContinuousColormap("jade")
+ccm = ContinuousColormap("sky")
+ccm = ContinuousColormap("umber")
+
+ContinuousColormap.available()
+# ['cobalt', 'crimson', 'jade', 'sky', 'umber']
+```
+
+| Preset | Range |
+|---|---|
+| `cobalt` | pale blue → deep navy cobalt |
+| `crimson` | blush → vermillion red |
+| `jade` | pale mint → deep jade green |
+| `sky` | near-white → bright sky teal |
+| `umber` | warm cream → umber brown |
+
+### DivergingColormap
+
+Two PaperColors hues through a light center — suited for data that diverges around a meaningful midpoint (e.g. zero, baseline).
+
+```python
+from stylia import DivergingColormap
+
+dcm = DivergingColormap()                      # default: "crimson_cobalt"
+dcm = DivergingColormap("coral_sky")
+dcm = DivergingColormap("umber_sky")
+
+DivergingColormap.available()
+# ['crimson_cobalt', 'coral_sky', 'umber_sky']
+```
+
+| Preset | Range |
+|---|---|
+| `crimson_cobalt` | vermillion red ↔ navy cobalt through near-white |
+| `coral_sky` | soft coral ↔ sky teal through near-white |
+| `umber_sky` | warm brown ↔ sky teal through warm cream |
+
+### CyclicColormap
+
+Wraps smoothly back to its starting color — for phase, angle, or periodic data.
+
+```python
+from stylia import CyclicColormap
+
+ccm = CyclicColormap()   # default: "paper"
+
+CyclicColormap.available()
+# ['paper']
+```
+
+| Preset | Cycle |
+|---|---|
+| `paper` | crimson → periwinkle → sky → jade → coral → crimson |
 
 ### Fitting to data
 
-`ContinuousColorMap` fits a quantile transformation to the data so low-density regions of the value distribution still show distinct colors.
+All three classes share the same interface:
 
 ```python
-from stylia import ContinuousColorMap
 import numpy as np
+from stylia import ContinuousColormap, DivergingColormap
 
 data = np.random.randn(200)
 
-ccm = ContinuousColorMap("spectral")                          # uniform quantile transform (default)
-ccm = ContinuousColorMap("heat",    transformation="normal") # normal quantile transform
-ccm = ContinuousColorMap("viridis", transformation=None)     # raw values, percentile clip only
-ccm = ContinuousColorMap("coolwarm", ascending=False)        # reverse mapping direction
+# fit then transform
+ccm = ContinuousColormap("cobalt")           # uniform quantile transform (default)
+ccm = ContinuousColormap("jade", transformation="normal")  # normal quantile
+ccm = ContinuousColormap("sky",  transformation=None)      # raw percentile clip
+ccm = DivergingColormap("crimson_cobalt", ascending=False) # reversed
 
 ccm.fit(data)
-colors = ccm.transform(data)   # list of RGBA tuples, one per data point
-
-# with modifiers
-colors = ccm.get(data, alpha=0.6, lighten=0.2)
-
-# evenly-spaced color samples (e.g. for a legend)
-swatches = ccm.sample(8)
-swatches = ccm.sample(8, shuffle=True)
+colors   = ccm.transform(data)          # list of RGBA tuples, one per point
+colors   = ccm.get(data, alpha=0.6)     # with alpha modifier
+swatches = ccm.sample(8)               # 8 evenly-spaced swatches
 ```
 
-**Example – scatter with continuous color**
+**Example – scatter with diverging color**
 
 ```python
 import numpy as np
 import stylia
-from stylia import ContinuousColorMap, NamedColorMaps, create_figure, save_figure
+from stylia import DivergingColormap, create_figure, save_figure
 
 x = np.random.randn(300)
 y = np.random.randn(300)
-z = x ** 2 + y ** 2   # color by distance from origin
+z = x - y   # diverges around zero
 
-ccm = ContinuousColorMap("spectral", ascending=False)
-ccm.fit(z)
+dcm = DivergingColormap("crimson_cobalt")
+dcm.fit(z)
 
 fig, axes = create_figure()
-axes[0].scatter(x, y, c=ccm.transform(z), s=20, linewidths=0)
+axes[0].scatter(x, y, c=dcm.transform(z), s=20, linewidths=0)
 save_figure(fig, "scatter.pdf")
 ```
 

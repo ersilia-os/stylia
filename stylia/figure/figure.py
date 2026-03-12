@@ -7,10 +7,15 @@ def stylize(ax):
     ax.set_xlabel("X-axis / Units")
     ax.set_ylabel("Y-axis / Units")
     ax.set_title("Plot title")
+    # Light grid so it doesn't compete with data
     try:
-        ax.grid(b=True, linewidth=LINEWIDTH)
+        ax.grid(b=True, linewidth=LINEWIDTH, color="#DDDDDD", alpha=0.8)
     except:
-        ax.grid(visible=True, linewidth=LINEWIDTH)
+        ax.grid(visible=True, linewidth=LINEWIDTH, color="#DDDDDD", alpha=0.8)
+    # Full frame: all four spines visible, default weight
+    for spine in ax.spines.values():
+        spine.set_visible(True)
+        spine.set_linewidth(LINEWIDTH)
     ax.xaxis.set_tick_params(width=LINEWIDTH)
     ax.yaxis.set_tick_params(width=LINEWIDTH)
     return ax

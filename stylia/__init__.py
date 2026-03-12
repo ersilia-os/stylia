@@ -3,7 +3,7 @@ import seaborn as sns
 import shutil
 import os
 
-sns.set_style("ticks")
+sns.set_style("ticks", {"axes.spines.top": True, "axes.spines.right": True})
 
 os.environ["LC_CTYPE"] = "en_US.UTF-8"
 import matplotlib.font_manager
@@ -28,5 +28,7 @@ MarkerSize()
 
 from .figure import create_figure, save_figure
 from .figure.figure import label
-from .colors.colors import PaperColors, ErsiliaColors, NamedColors, CategoricalPalette, ContinuousColorMap, NamedColorMaps
+from .colors.colors import PaperColors, ErsiliaColors, NamedColors, CategoricalPalette
+from .colors.colors import ContinuousColormap, DivergingColormap, CyclicColormap
+from .colors.colors import ContinuousColorMap  # backward compat
 from .vars import *

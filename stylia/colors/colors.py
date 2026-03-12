@@ -2,8 +2,6 @@ import random
 import numpy as np
 
 import matplotlib as mpl
-from matplotlib import cm
-from cmcrameri import cm as cms
 from matplotlib import colors as mcolors
 
 from sklearn.preprocessing import QuantileTransformer
@@ -289,176 +287,70 @@ class CategoricalPalette:
 
 
 # ---------------------------------------------------------------------------
-# Named colormaps (continuous)
+# Colormap definitions — built from PaperColors tones
 # ---------------------------------------------------------------------------
 #
-# All colormaps are chosen so that every data value is visible on a white
-# background.  The main failure mode of the old set (roma/vik/broc) was a
-# near-white center on diverging maps, making zero-valued points invisible.
-#
-# Design principles applied here:
-#   Sequential  – avoid pure-white endpoints; clip problematic cmaps.
-#   Diverging   – use DARK-CENTER maps (center L ≈ 0.07–0.25) so mid-range
-#                 values appear as dark/saturated colors, always visible.
-#   Cyclic      – wrap smoothly with consistent mid-range lightness.
+# Three colormap families, each with named presets derived from PaperColors:
+#   ContinuousColormap  – sequential, pale → saturated
+#   DivergingColormap   – two hues through a light center
+#   CyclicColormap      – wraps smoothly back to start
 
 
-def _clip_cmap(cmap, lo=0.0, hi=1.0, name=None):
-    """Return a new colormap that uses only the [lo, hi] fraction of *cmap*.
-
-    Used to trim near-white endpoints from otherwise good sequential maps.
-    """
-    colors = [cmap(x) for x in np.linspace(lo, hi, 256)]
-    return mcolors.LinearSegmentedColormap.from_list(
-        name or getattr(cmap, "name", "cmap"), colors
-    )
+def _make_cmap(colors, name):
+    return mcolors.LinearSegmentedColormap.from_list(name, colors, N=256)
 
 
-# Sequential – built once at import time so NamedColorMaps is cheap to
-# instantiate.
-#
-#   viridis : imola         dark blue  → bright yellow-green  (L 0.40→0.70)
-#   heat    : lajolla[0,78] near-black → orange-red           (L 0.05→0.62)
-#             clipping removes the invisible cream-white end (#fffecb)
-#   ocean   : oslo[0,72]    dark navy  → steel blue           (L 0.00→0.55)
-#             clipping removes the invisible white end (#ffffff)
-#   earth   : nuuk          cold blue  → warm yellow-green    (L 0.28→0.85)
-#
-_CMAP_VIRIDIS = cms.imola
-_CMAP_HEAT    = _clip_cmap(cms.lajolla, 0.0, 0.78, "heat")
-_CMAP_OCEAN   = _clip_cmap(cms.oslo,   0.0, 0.72, "ocean")
-_CMAP_EARTH   = cms.nuuk
-
-# Diverging – dark-center maps so mid-range (≈0) values are never invisible.
-#
-#   spectral : berlin    periwinkle-blue ↔ salmon-red through near-black
-#              center L = 0.07 (was 0.84 with roma – nearly invisible!)
-#   coolwarm : managua   golden-yellow   ↔ sky-cyan  through dark-purple
-#              center L = 0.25 (was 0.90 with vik – nearly invisible!)
-#
-_CMAP_SPECTRAL = cms.berlin
-_CMAP_COOLWARM = cms.managua
-
-# Cyclic
-_CMAP_CYCLIC = cms.romaO
-
-
-_CMAP_NAMES = ["viridis", "heat", "ocean", "earth",
-               "spectral", "coolwarm", "cyclic"]
-
-_SCIENTIFIC_CMAPS_OBJ = {
-    "viridis":  _CMAP_VIRIDIS,
-    "heat":     _CMAP_HEAT,
-    "ocean":    _CMAP_OCEAN,
-    "earth":    _CMAP_EARTH,
-    "spectral": _CMAP_SPECTRAL,
-    "coolwarm": _CMAP_COOLWARM,
-    "cyclic":   _CMAP_CYCLIC,
+# Sequential: pale tint of the hue → full PaperColors saturation
+_SEQUENTIAL_CMAPS = {
+    "cobalt":  _make_cmap(["#E8EAF5", "#3C5488"], "cobalt"),   # pale blue → navy cobalt
+    "crimson": _make_cmap(["#FDECEA", "#E64B35"], "crimson"),  # blush → vermillion
+    "jade":    _make_cmap(["#E0F5F1", "#00A087"], "jade"),     # pale mint → deep jade
+    "sky":     _make_cmap(["#E5F6FB", "#4DBBD5"], "sky"),      # near-white → sky teal
+    "umber":   _make_cmap(["#F0EDE8", "#7E6148"], "umber"),    # warm cream → umber brown
 }
 
-_STANDARD_CMAPS = {
-    "viridis":  "viridis",
-    "heat":     "hot",
-    "ocean":    "Blues",
-    "earth":    "YlGn",
-    "spectral": "Spectral",
-    "coolwarm": "coolwarm",
-    "cyclic":   "hsv",
+# Diverging: two PaperColors hues through a near-white center
+_DIVERGING_CMAPS = {
+    "crimson_cobalt": _make_cmap(["#E64B35", "#F8F8F8", "#3C5488"], "crimson_cobalt"),  # warm red ↔ navy blue
+    "coral_sky":      _make_cmap(["#F39B7F", "#FAFAFA", "#4DBBD5"], "coral_sky"),       # coral ↔ sky teal
+    "umber_sky":      _make_cmap(["#7E6148", "#F5F2EF", "#4DBBD5"], "umber_sky"),       # warm brown ↔ cool sky
+}
+
+# Cyclic: cycles through PaperColors hues, ending where it started
+_CYCLIC_CMAPS = {
+    "paper": _make_cmap(
+        ["#E64B35", "#8491B4", "#4DBBD5", "#00A087", "#F39B7F", "#E64B35"],
+        "paper",
+    ),  # crimson → periwinkle → sky → jade → coral → crimson
 }
 
 
-class NamedColorMaps:
-    """Continuous colormaps accessible by semantic name.
-
-    All colormaps are chosen so that **every data value is visible on a white
-    background**.  In particular, diverging maps use a dark center (near-black)
-    rather than the conventional white center, so mid-range values are never
-    invisible.
-
-    Parameters
-    ----------
-    scientific : bool
-        Use perceptually-uniform cmcrameri colormaps (default ``True``).
-        Set ``False`` for standard Matplotlib colormaps.
-
-    Attributes
-    ----------
-    Sequential
-        ``viridis``   dark blue → bright yellow-green  (cmcrameri: imola)
-        ``heat``      near-black → orange-red           (cmcrameri: lajolla, clipped)
-        ``ocean``     dark navy → steel blue            (cmcrameri: oslo, clipped)
-        ``earth``     cold blue → warm yellow-green     (cmcrameri: nuuk)
-
-    Diverging  *(dark-center — mid-range values are always visible)*
-        ``spectral``  periwinkle-blue ↔ salmon-red, center ≈ black  (cmcrameri: berlin)
-        ``coolwarm``  golden-yellow ↔ sky-cyan, center ≈ dark purple (cmcrameri: managua)
-
-    Cyclic
-        ``cyclic``    smooth wrap for phase / angle data  (cmcrameri: romaO)
-
-    Example
-    -------
-    >>> ncm = NamedColorMaps()
-    >>> ax.scatter(x, y, c=values, cmap=ncm.spectral)
-    >>> ax.scatter(x, y, c=values, cmap=ncm.get("coolwarm"))
-    """
-
-    def __init__(self, scientific=True):
-        self._scientific = scientific
-        if scientific:
-            for name, cmap in _SCIENTIFIC_CMAPS_OBJ.items():
-                setattr(self, name, cmap)
-        else:
-            for name, cmap_id in _STANDARD_CMAPS.items():
-                setattr(self, name, cm.get_cmap(cmap_id))
-
-        # legacy aliases
-        self.imola = self.viridis
-        self.roma  = self.spectral
-        self.vik   = self.coolwarm
-
-    def get(self, name):
-        if not hasattr(self, name):
-            raise ValueError(
-                f"Unknown colormap '{name}'. Available: {self.available}"
-            )
-        return getattr(self, name)
-
-    @property
-    def available(self):
-        return list(_CMAP_NAMES)
-
-
 # ---------------------------------------------------------------------------
-# Continuous colormap (fit/transform over data)
+# Shared fit/transform base class
 # ---------------------------------------------------------------------------
 
-class ContinuousColorMap:
-    """Map a data array to colors using a continuous colormap.
+class _ColormapBase:
+    _PRESETS = {}
+    _DEFAULT = None
 
-    Parameters
-    ----------
-    cmap : str or colormap
-        Named colormap (see ``NamedColorMaps``) or a raw matplotlib colormap.
-    transformation : ``"uniform"`` | ``"normal"`` | ``None``
-        Quantile-normalise data before mapping.
-    ascending : bool
-        If ``False``, reverse the mapping direction.
-
-    Example
-    -------
-    >>> ccm = ContinuousColorMap("spectral")
-    >>> ccm.fit(data)
-    >>> colors = ccm.transform(data)
-    """
-
-    def __init__(self, cmap="spectral", transformation="uniform", ascending=True):
-        if isinstance(cmap, str):
-            self.cmap = NamedColorMaps().get(cmap)
+    def __init__(self, name=None, transformation="uniform", ascending=True):
+        if name is None:
+            name = self._DEFAULT
+        if isinstance(name, str):
+            if name not in self._PRESETS:
+                raise ValueError(
+                    f"Unknown colormap '{name}'. "
+                    f"Available: {list(self._PRESETS)}"
+                )
+            self.cmap = self._PRESETS[name]
         else:
-            self.cmap = cmap
+            self.cmap = name  # raw matplotlib colormap object
         self.transformation = transformation
         self.ascending = ascending
+
+    @classmethod
+    def available(cls):
+        return list(cls._PRESETS)
 
     def fit(self, data):
         data = np.array(data)
@@ -510,7 +402,109 @@ class ContinuousColorMap:
 
 
 # ---------------------------------------------------------------------------
+# Public colormap classes
+# ---------------------------------------------------------------------------
+
+class ContinuousColormap(_ColormapBase):
+    """Sequential colormap mapping low → high values in a single PaperColors hue.
+
+    Presets
+    -------
+    ``cobalt``   pale blue → deep navy cobalt   (default)
+    ``crimson``  blush → vermillion crimson
+    ``jade``     pale mint → deep jade green
+    ``sky``      near-white → bright sky teal
+    ``umber``    warm cream → umber brown
+
+    Parameters
+    ----------
+    name : str
+        Preset name (see above).
+    transformation : ``"uniform"`` | ``"normal"`` | ``None``
+        Quantile-normalise data before mapping.
+    ascending : bool
+        If ``False``, reverse the mapping direction.
+
+    Example
+    -------
+    >>> ccm = ContinuousColormap("cobalt")
+    >>> ccm.fit(data)
+    >>> colors = ccm.transform(data)
+    """
+
+    _PRESETS = _SEQUENTIAL_CMAPS
+    _DEFAULT = "cobalt"
+
+    def __init__(self, name="cobalt", transformation="uniform", ascending=True):
+        super().__init__(name, transformation, ascending)
+
+
+class DivergingColormap(_ColormapBase):
+    """Diverging colormap with two PaperColors hues through a light center.
+
+    Presets
+    -------
+    ``crimson_cobalt``  vermillion red ↔ navy blue through near-white   (default)
+    ``coral_sky``       soft coral ↔ sky teal through near-white
+    ``umber_sky``       warm brown ↔ sky teal through warm cream
+
+    Parameters
+    ----------
+    name : str
+        Preset name (see above).
+    transformation : ``"uniform"`` | ``"normal"`` | ``None``
+        Quantile-normalise data before mapping.
+    ascending : bool
+        If ``False``, reverse the mapping direction.
+
+    Example
+    -------
+    >>> dcm = DivergingColormap("crimson_cobalt")
+    >>> dcm.fit(data)
+    >>> colors = dcm.transform(data)
+    """
+
+    _PRESETS = _DIVERGING_CMAPS
+    _DEFAULT = "crimson_cobalt"
+
+    def __init__(self, name="crimson_cobalt", transformation="uniform", ascending=True):
+        super().__init__(name, transformation, ascending)
+
+
+class CyclicColormap(_ColormapBase):
+    """Cyclic colormap for phase or angle data, wrapping smoothly.
+
+    Presets
+    -------
+    ``paper``   crimson → periwinkle → sky → jade → coral → crimson   (default)
+
+    Parameters
+    ----------
+    name : str
+        Preset name (see above).
+    transformation : ``"uniform"`` | ``"normal"`` | ``None``
+        Quantile-normalise data before mapping.
+    ascending : bool
+        If ``False``, reverse the mapping direction.
+
+    Example
+    -------
+    >>> ccm = CyclicColormap()
+    >>> ccm.fit(angles)
+    >>> colors = ccm.transform(angles)
+    """
+
+    _PRESETS = _CYCLIC_CMAPS
+    _DEFAULT = "paper"
+
+    def __init__(self, name="paper", transformation="uniform", ascending=True):
+        super().__init__(name, transformation, ascending)
+
+
+# ---------------------------------------------------------------------------
 # Backward-compat aliases
 # ---------------------------------------------------------------------------
 Palette = CategoricalPalette
 CategoricalColorMap = CategoricalPalette
+ContinuousColorMap = ContinuousColormap
+NamedColorMaps = None  # removed; use ContinuousColormap/DivergingColormap/CyclicColormap
