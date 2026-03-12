@@ -337,18 +337,25 @@ def _make_cmap(colors, name):
 
 
 # Sequential: near-white tint → full saturation of the hue
+# npg presets
 _SEQUENTIAL_CMAPS = {
     "crimson":    _make_cmap(["#FDECEA", "#E63946"], "crimson"),    # blush → vivid red
     "cobalt":     _make_cmap(["#E3ECF4", "#457B9D"], "cobalt"),     # pale sky → steel blue
     "turquoise":  _make_cmap(["#E0F8F7", "#2EC4B6"], "turquoise"),  # pale mint → teal-cyan
     "orchid":     _make_cmap(["#F5E8FA", "#B05CC8"], "orchid"),     # pale lavender → orchid
     "lime":       _make_cmap(["#EDF6E9", "#6BBF59"], "lime"),       # pale green → lime
+    # ersilia presets
+    "plum":       _make_cmap(["#F0EBF1", "#50285A"], "plum"),       # pale lilac → deep plum
 }
 
 # Diverging: two hues through a near-white center
 _DIVERGING_CMAPS = {
+    # npg presets
     "crimson_cobalt":    _make_cmap(["#E63946", "#F8F8F8", "#457B9D"], "crimson_cobalt"),     # red ↔ steel blue
     "amber_periwinkle":  _make_cmap(["#FCBF49", "#FAFAFA", "#6C5CE7"], "amber_periwinkle"),   # amber ↔ blue-violet
+    # ersilia presets
+    "plum_mint":         _make_cmap(["#50285A", "#FAFAFA", "#BEE6B4"], "plum_mint"),          # deep plum ↔ mint
+    "purple_orange":     _make_cmap(["#AA96FA", "#FAFAFA", "#FAA08C"], "purple_orange"),      # lavender ↔ peach
 }
 
 # Spectral: walks warm → cool through the hue wheel, no wrap
@@ -357,6 +364,10 @@ _SPECTRAL_CMAPS = {
         ["#E63946", "#FCBF49", "#2EC4B6", "#6C5CE7", "#E91E8C"],
         "npg_spectral",
     ),  # crimson → amber → turquoise → periwinkle → fuchsia
+    "ersilia": _make_cmap(
+        ["#FAA08C", "#FAD782", "#BEE6B4", "#8CC8FA", "#AA96FA"],
+        "ersilia_spectral",
+    ),  # orange → yellow → mint → blue → purple
 }
 
 # Cyclic: evenly-spaced hues around the wheel, wraps back to start
@@ -365,6 +376,10 @@ _CYCLIC_CMAPS = {
         ["#E63946", "#F4845F", "#6BBF59", "#2EC4B6", "#B05CC8", "#E63946"],
         "npg_cyclic",
     ),  # crimson → tangerine → lime → turquoise → orchid → crimson
+    "ersilia": _make_cmap(
+        ["#FAA08C", "#FAD782", "#BEE6B4", "#8CC8FA", "#AA96FA", "#DCA0DC", "#FAA08C"],
+        "ersilia_cyclic",
+    ),  # orange → yellow → mint → blue → purple → pink → orange
 }
 
 
@@ -446,15 +461,19 @@ class _ColormapBase:
 # ---------------------------------------------------------------------------
 
 class FadingColormap(_ColormapBase):
-    """Sequential colormap fading from near-white to a single ArticleColors hue.
+    """Sequential colormap fading from near-white to a single hue.
 
-    Presets
-    -------
+    npg presets
+    -----------
     ``crimson``    blush → vivid red            (default)
     ``cobalt``     pale sky → steel blue
     ``turquoise``  pale mint → teal-cyan
     ``orchid``     pale lavender → purple-pink
     ``lime``       pale green → lime
+
+    ersilia presets
+    ---------------
+    ``plum``       pale lilac → deep plum
 
     Parameters
     ----------
@@ -480,11 +499,12 @@ class FadingColormap(_ColormapBase):
 
 
 class SpectralColormap(_ColormapBase):
-    """Multi-hue colormap walking through ArticleColors hues warm → cool.
+    """Multi-hue colormap walking through palette hues warm → cool.
 
     Presets
     -------
-    ``npg``   crimson → amber → turquoise → periwinkle → fuchsia   (default)
+    ``npg``      crimson → amber → turquoise → periwinkle → fuchsia   (default)
+    ``ersilia``  orange → yellow → mint → blue → purple
 
     Parameters
     ----------
@@ -510,12 +530,17 @@ class SpectralColormap(_ColormapBase):
 
 
 class DivergingColormap(_ColormapBase):
-    """Diverging colormap with two ArticleColors hues through a light center.
+    """Diverging colormap with two hues through a light center.
 
-    Presets
-    -------
+    npg presets
+    -----------
     ``crimson_cobalt``    vivid red ↔ steel blue through near-white   (default)
     ``amber_periwinkle``  warm amber ↔ blue-violet through near-white
+
+    ersilia presets
+    ---------------
+    ``plum_mint``         deep plum ↔ mint through near-white
+    ``purple_orange``     lavender ↔ peach through near-white
 
     Parameters
     ----------
@@ -545,7 +570,8 @@ class CyclicColormap(_ColormapBase):
 
     Presets
     -------
-    ``npg``   crimson → tangerine → lime → turquoise → orchid → crimson   (default)
+    ``npg``      crimson → tangerine → lime → turquoise → orchid → crimson   (default)
+    ``ersilia``  orange → yellow → mint → blue → purple → pink → orange
 
     Parameters
     ----------
