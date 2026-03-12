@@ -304,14 +304,13 @@ _SEQUENTIAL_CMAPS = {
 _DIVERGING_CMAPS = {
     "crimson_cobalt": _make_cmap(["#E64B35", "#F8F8F8", "#3C5488"], "crimson_cobalt"),  # warm red ↔ navy blue
     "coral_sky":      _make_cmap(["#F39B7F", "#FAFAFA", "#4DBBD5"], "coral_sky"),       # coral ↔ sky teal
-    "umber_sky":      _make_cmap(["#7E6148", "#F5F2EF", "#4DBBD5"], "umber_sky"),       # warm brown ↔ cool sky
 }
 
 # Cyclic: cycles through PaperColors hues, ending where it started
 _CYCLIC_CMAPS = {
-    "paper": _make_cmap(
+    "npg": _make_cmap(
         ["#E64B35", "#8491B4", "#4DBBD5", "#00A087", "#F39B7F", "#E64B35"],
-        "paper",
+        "npg",
     ),  # crimson → periwinkle → sky → jade → coral → crimson
 }
 
@@ -437,7 +436,6 @@ class DivergingColormap(_ColormapBase):
     -------
     ``crimson_cobalt``  vermillion red ↔ navy blue through near-white   (default)
     ``coral_sky``       soft coral ↔ sky teal through near-white
-    ``umber_sky``       warm brown ↔ sky teal through warm cream
 
     Parameters
     ----------
@@ -467,7 +465,7 @@ class CyclicColormap(_ColormapBase):
 
     Presets
     -------
-    ``paper``   crimson → periwinkle → sky → jade → coral → crimson   (default)
+    ``npg``   crimson → periwinkle → sky → jade → coral → crimson   (default)
 
     Parameters
     ----------
@@ -486,9 +484,9 @@ class CyclicColormap(_ColormapBase):
     """
 
     _PRESETS = _CYCLIC_CMAPS
-    _DEFAULT = "paper"
+    _DEFAULT = "npg"
 
-    def __init__(self, name="paper", transformation="uniform", ascending=True):
+    def __init__(self, name="npg", transformation="uniform", ascending=True):
         super().__init__(name, transformation, ascending)
 
 

@@ -239,14 +239,12 @@ Two PaperColors hues through a light center — suited for data that diverges ar
 |---|---|---|
 | ![](https://placehold.co/20x18/E64B35/E64B35.png)![](https://placehold.co/20x18/F8F8F8/F8F8F8.png)![](https://placehold.co/20x18/3C5488/3C5488.png) | `crimson_cobalt` | vermillion ↔ navy through near-white |
 | ![](https://placehold.co/20x18/F39B7F/F39B7F.png)![](https://placehold.co/20x18/FAFAFA/FAFAFA.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png) | `coral_sky` | coral ↔ sky teal through near-white |
-| ![](https://placehold.co/20x18/7E6148/7E6148.png)![](https://placehold.co/20x18/F5F2EF/F5F2EF.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png) | `umber_sky` | warm brown ↔ sky teal through warm cream |
 
 ```python
 from stylia import DivergingColormap
 
 dcm = DivergingColormap()                      # default: "crimson_cobalt"
 dcm = DivergingColormap("coral_sky")
-dcm = DivergingColormap("umber_sky")
 ```
 
 ### CyclicColormap
@@ -255,12 +253,12 @@ Wraps smoothly back to its starting color — for phase, angle, or periodic data
 
 | | Preset | Cycle |
 |---|---|---|
-| ![](https://placehold.co/20x18/E64B35/E64B35.png)![](https://placehold.co/20x18/8491B4/8491B4.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png)![](https://placehold.co/20x18/00A087/00A087.png)![](https://placehold.co/20x18/F39B7F/F39B7F.png) | `paper` | crimson → periwinkle → sky → jade → coral → crimson |
+| ![](https://placehold.co/20x18/E64B35/E64B35.png)![](https://placehold.co/20x18/8491B4/8491B4.png)![](https://placehold.co/20x18/4DBBD5/4DBBD5.png)![](https://placehold.co/20x18/00A087/00A087.png)![](https://placehold.co/20x18/F39B7F/F39B7F.png) | `npg` | crimson → periwinkle → sky → jade → coral → crimson |
 
 ```python
 from stylia import CyclicColormap
 
-ccm = CyclicColormap()   # default: "paper"
+ccm = CyclicColormap()   # default: "npg"
 ```
 
 ### Fitting to data
