@@ -170,17 +170,22 @@ def _apply_settings():
         "ytick.labelsize":  fs,
         "legend.fontsize":  fs,
         "figure.titlesize": fs,
-        # Line / marker widths
+        # Line / marker / patch widths
         "axes.linewidth":   lw,
         "lines.linewidth":  lw,
         "lines.markersize": np.sqrt(ms),
+        "patch.linewidth":  0,          # no border on bars/patches
         # Foreground colors
         "text.color":       fg,
         "axes.labelcolor":  fg,
         "xtick.color":      fg,
         "ytick.color":      fg,
         "axes.edgecolor":   fg,
-        "legend.edgecolor": fg,
+        # Legend — framed with semi-transparent white background
+        "legend.frameon":      True,
+        "legend.facecolor":    "white",
+        "legend.framealpha":   0.8,
+        "legend.edgecolor":    "none",
         # Color cycle
         "axes.prop_cycle":  mpl.cycler("color", cycle_hex),
     }

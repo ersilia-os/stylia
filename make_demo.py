@@ -59,7 +59,7 @@ def make_grid(style, outpath):
         ax.plot(x, yi, color=col, linewidth=lw, alpha=0.9, label=f"Series {i+1}")
     ax.set_xlabel("Time / s")
     ax.set_ylabel("Amplitude")
-    ax.legend(frameon=False, loc="lower right")
+    ax.legend(loc="lower right")
     stylia.label(ax, title="Damped oscillations", abc="A")
 
     # ── panel B: bar + error bars ────────────────────────────────────────────
@@ -79,8 +79,7 @@ def make_grid(style, outpath):
     ax.bar(stack_labels, stack_c, bottom=stack_a + stack_b, color=c3[2], label="Component C")
     ax.set_xlabel("Month")
     ax.set_ylabel("Value")
-    ax.legend(frameon=False, loc="upper center",
-              bbox_to_anchor=(0.5, -0.28), ncol=3)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.28), ncol=3)
     stylia.label(ax, title="Stacked composition", abc="C")
 
     # ── panel D: area / filled lines ─────────────────────────────────────────
@@ -110,7 +109,7 @@ def make_grid(style, outpath):
                 linewidth=lw, label=f"Group {j+1}")
     ax.set_xlabel("Value")
     ax.set_ylabel("Count")
-    ax.legend(frameon=False, loc="upper right")
+    ax.legend(loc="upper right")
     stylia.label(ax, title="Distribution overlap", abc="F")
 
     stylia.save_figure(outpath)
