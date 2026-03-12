@@ -25,53 +25,53 @@ def _hex_to_rgb(hex_color):
 # Ersilia brand colors (from ersilia.io brand guidelines) take precedence;
 # NPG fills in hues the brand palette does not cover (red, teal, green, brown).
 
-_NAMED = {
-    # Ersilia brand colors
-    "plum":   "#50285A",  # Ersilia primary – deep plum purple
-    "purple": "#AA96FA",  # Ersilia accent – soft lavender purple
-    "mint":   "#BEE6B4",  # Ersilia mint green
-    "blue":   "#8CC8FA",  # Ersilia sky blue
-    "yellow": "#FAD782",  # Ersilia warm yellow
-    "pink":   "#DCA0DC",  # Ersilia mauve pink
-    "orange": "#FAA08C",  # Ersilia soft orange
-    "gray":   "#D2D2D0",  # Ersilia light gray
-    # NPG fill-ins (hues not present in Ersilia brand palette)
-    "red":    "#E64B35",  # NPG vermillion-red
-    "teal":   "#4DBBD5",  # NPG sky-teal
-    "green":  "#00A087",  # NPG sea-green
-    "brown":  "#7E6148",  # NPG warm brown
+# ---------------------------------------------------------------------------
+# PaperColors — NPG-derived palette with evocative names for publications
+# ---------------------------------------------------------------------------
+
+_PAPER = {
+    "crimson":    "#E64B35",  # NPG vermillion-red
+    "cobalt":     "#3C5488",  # NPG deep navy-blue
+    "sky":        "#4DBBD5",  # NPG sky-teal
+    "jade":       "#00A087",  # NPG sea-green
+    "coral":      "#F39B7F",  # NPG soft coral
+    "periwinkle": "#8491B4",  # NPG muted blue-violet
+    "seafoam":    "#91D1C2",  # NPG pale seafoam
+    "scarlet":    "#DC0000",  # NPG vivid red
+    "umber":      "#7E6148",  # NPG warm brown
+    "sand":       "#B09C85",  # NPG light tan
     # neutrals
-    "white":  "#FFFFFF",
-    "black":  "#2C3E50",  # soft off-black
+    "white":      "#FFFFFF",
+    "black":      "#2C3E50",  # soft off-black
 }
 
-_COLOR_ORDER = [
-    "plum", "purple", "mint", "blue", "yellow",
-    "pink", "orange", "gray", "red", "teal", "green", "brown",
+_PAPER_ORDER = [
+    "crimson", "cobalt", "sky", "jade", "coral",
+    "periwinkle", "seafoam", "scarlet", "umber", "sand",
 ]
 
 
-class NamedColors:
-    """Individual, semantically named colors for common plot elements.
+class PaperColors:
+    """Individual, semantically named colors for publication-quality figures.
 
-    Colors are drawn from the NPG (Nature Publishing Group) palette and
-    supplemented with clean modern neutrals.
+    Colors are drawn from the NPG (Nature Publishing Group) palette and given
+    evocative names suited for annotating specific plot elements.
 
     Example
     -------
-    >>> nc = NamedColors()
-    >>> ax.scatter(x, y, color=nc.red)
-    >>> ax.scatter(x, y, color=nc.get("blue", alpha=0.6))
+    >>> nc = PaperColors()
+    >>> ax.scatter(x, y, color=nc.crimson)
+    >>> ax.scatter(x, y, color=nc.get("cobalt", alpha=0.6))
     """
 
     def __init__(self):
-        for name, hex_val in _NAMED.items():
+        for name, hex_val in _PAPER.items():
             setattr(self, name, _hex_to_rgb(hex_val))
 
     @property
     def hex(self):
         """Return all colors as a dict of hex strings."""
-        return dict(_NAMED)
+        return dict(_PAPER)
 
     def get(self, color_name, alpha=None, lighten=None):
         color = getattr(self, color_name)
@@ -84,16 +84,85 @@ class NamedColors:
     def __getitem__(self, idx):
         """Access colors by index or slice, in palette order (excludes white/black)."""
         if isinstance(idx, slice):
-            return [getattr(self, name) for name in _COLOR_ORDER[idx]]
-        return getattr(self, _COLOR_ORDER[idx])
+            return [getattr(self, name) for name in _PAPER_ORDER[idx]]
+        return getattr(self, _PAPER_ORDER[idx])
 
     def __len__(self):
-        return len(_COLOR_ORDER)
+        return len(_PAPER_ORDER)
 
     def __iter__(self):
         """Yield colors in palette order (excludes white/black)."""
-        for name in _COLOR_ORDER:
+        for name in _PAPER_ORDER:
             yield getattr(self, name)
+
+
+# ---------------------------------------------------------------------------
+# ErsiliaColors — official Ersilia brand palette
+# ---------------------------------------------------------------------------
+
+_ERSILIA_NAMED = {
+    "plum":   "#50285A",  # Ersilia primary – deep plum purple
+    "purple": "#AA96FA",  # Ersilia accent – soft lavender purple
+    "mint":   "#BEE6B4",  # Ersilia mint green
+    "blue":   "#8CC8FA",  # Ersilia sky blue
+    "yellow": "#FAD782",  # Ersilia warm yellow
+    "pink":   "#DCA0DC",  # Ersilia mauve pink
+    "orange": "#FAA08C",  # Ersilia soft orange
+    "gray":   "#D2D2D0",  # Ersilia light gray
+    # neutrals
+    "white":  "#FFFFFF",
+    "black":  "#2C3E50",  # soft off-black
+}
+
+_ERSILIA_ORDER = ["plum", "purple", "mint", "blue", "yellow", "pink", "orange", "gray"]
+
+
+class ErsiliaColors:
+    """Official Ersilia brand colors for use in Ersilia-branded figures.
+
+    Colors follow the Ersilia brand guidelines (ersilia.gitbook.io/ersilia-book).
+
+    Example
+    -------
+    >>> ec = ErsiliaColors()
+    >>> ax.scatter(x, y, color=ec.plum)
+    >>> ax.scatter(x, y, color=ec.get("blue", alpha=0.6))
+    """
+
+    def __init__(self):
+        for name, hex_val in _ERSILIA_NAMED.items():
+            setattr(self, name, _hex_to_rgb(hex_val))
+
+    @property
+    def hex(self):
+        """Return all colors as a dict of hex strings."""
+        return dict(_ERSILIA_NAMED)
+
+    def get(self, color_name, alpha=None, lighten=None):
+        color = getattr(self, color_name)
+        if lighten is not None:
+            color = lighten_color(color, factor=lighten)
+        if alpha is not None:
+            color = set_transparency(color, alpha)
+        return color
+
+    def __getitem__(self, idx):
+        """Access colors by index or slice, in palette order (excludes white/black)."""
+        if isinstance(idx, slice):
+            return [getattr(self, name) for name in _ERSILIA_ORDER[idx]]
+        return getattr(self, _ERSILIA_ORDER[idx])
+
+    def __len__(self):
+        return len(_ERSILIA_ORDER)
+
+    def __iter__(self):
+        """Yield colors in palette order (excludes white/black)."""
+        for name in _ERSILIA_ORDER:
+            yield getattr(self, name)
+
+
+# backward-compat alias
+NamedColors = PaperColors
 
 
 # ---------------------------------------------------------------------------

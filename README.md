@@ -44,10 +44,10 @@ import stylia
 ```python
 import numpy as np
 import stylia
-from stylia import NamedColors, CategoricalPalette, ContinuousColorMap, NamedColorMaps
+from stylia import PaperColors, CategoricalPalette, ContinuousColorMap, NamedColorMaps
 from stylia import create_figure, save_figure
 
-nc  = NamedColors()
+nc  = PaperColors()
 pal = CategoricalPalette()        # NPG by default
 ncm = NamedColorMaps()
 
@@ -55,7 +55,7 @@ fig, axes = create_figure(nrows=1, ncols=3)
 
 # scatter – single named color
 ax = axes[0]
-ax.scatter(np.random.randn(50), np.random.randn(50), color=nc.plum)
+ax.scatter(np.random.randn(50), np.random.randn(50), color=nc.crimson)
 
 # bar – categorical palette
 ax = axes[1]
@@ -78,69 +78,90 @@ save_figure(fig, "quickstart.pdf")
 
 ## Named colors
 
-`NamedColors` gives you individual, semantically named colors for annotating specific plot elements. The palette leads with the official [Ersilia brand colors](https://ersilia.gitbook.io/ersilia-book/styles/brand-guidelines) and fills in missing hues from the Nature Publishing Group (NPG) palette.
+Two separate named-color palettes are provided. `PaperColors` (also aliased as `NamedColors`) is the default for publications — evocative names drawn from the Nature Publishing Group palette. `ErsiliaColors` contains the official [Ersilia brand colors](https://ersilia.gitbook.io/ersilia-book/styles/brand-guidelines).
+
+### PaperColors
 
 ```python
-from stylia import NamedColors
+from stylia import PaperColors
 
-nc = NamedColors()
+nc = PaperColors()
 
 # access by name (RGB tuples)
-nc.plum     # #50285A – Ersilia primary
-nc.purple   # #AA96FA – Ersilia accent
-nc.mint     # #BEE6B4
-nc.blue     # #8CC8FA
-nc.yellow   # #FAD782
-nc.pink     # #DCA0DC
-nc.orange   # #FAA08C
-nc.gray     # #D2D2D0
-nc.red      # #E64B35  (NPG fill-in)
-nc.teal     # #4DBBD5  (NPG fill-in)
-nc.green    # #00A087  (NPG fill-in)
-nc.brown    # #7E6148  (NPG fill-in)
-nc.white    # #FFFFFF
-nc.black    # #2C3E50
+nc.crimson    # #E64B35
+nc.cobalt     # #3C5488
+nc.sky        # #4DBBD5
+nc.jade       # #00A087
+nc.coral      # #F39B7F
+nc.periwinkle # #8491B4
+nc.seafoam    # #91D1C2
+nc.scarlet    # #DC0000
+nc.umber      # #7E6148
+nc.sand       # #B09C85
+nc.white      # #FFFFFF
+nc.black      # #2C3E50
 
 # access by index or slice (palette order, excludes white/black)
-nc[0]       # plum
-nc[1]       # purple
-nc[-1]      # brown
-nc[0:3]     # [plum, purple, mint]
-nc[::2]     # every other color
-len(nc)     # 12
-list(nc)    # all 12 as a list
+nc[0]         # crimson
+nc[-1]        # sand
+nc[0:3]       # [crimson, cobalt, sky]
+len(nc)       # 10
+list(nc)      # all 10 as a list
 
 # get with modifiers
-nc.get("plum", alpha=0.4)     # semi-transparent
-nc.get("blue", lighten=0.3)   # lightened
+nc.get("crimson", alpha=0.4)    # semi-transparent
+nc.get("cobalt", lighten=0.3)   # lightened
 
 # all hex values
-nc.hex   # {'plum': '#50285A', 'purple': '#AA96FA', ...}
+nc.hex   # {'crimson': '#E64B35', 'cobalt': '#3C5488', ...}
+```
+
+### ErsiliaColors
+
+```python
+from stylia import ErsiliaColors
+
+ec = ErsiliaColors()
+
+ec.plum     # #50285A – Ersilia primary
+ec.purple   # #AA96FA – Ersilia accent
+ec.mint     # #BEE6B4
+ec.blue     # #8CC8FA
+ec.yellow   # #FAD782
+ec.pink     # #DCA0DC
+ec.orange   # #FAA08C
+ec.gray     # #D2D2D0
 ```
 
 ![named colors](assets/named_colors.png)
 
-**Ersilia brand colors**
-
-| Name | Hex | RGB |
-|---|---|---|
-| `plum` | `#50285A` | (80, 40, 90) |
-| `purple` | `#AA96FA` | (170, 150, 250) |
-| `mint` | `#BEE6B4` | (190, 230, 180) |
-| `blue` | `#8CC8FA` | (140, 200, 250) |
-| `yellow` | `#FAD782` | (250, 215, 130) |
-| `pink` | `#DCA0DC` | (220, 160, 220) |
-| `orange` | `#FAA08C` | (250, 160, 140) |
-| `gray` | `#D2D2D0` | (210, 210, 208) |
-
-**NPG fill-ins** (hues not present in the Ersilia brand palette)
+**PaperColors** (NPG-derived, evocative names)
 
 | Name | Hex |
 |---|---|
-| `red` | `#E64B35` |
-| `teal` | `#4DBBD5` |
-| `green` | `#00A087` |
-| `brown` | `#7E6148` |
+| `crimson` | `#E64B35` |
+| `cobalt` | `#3C5488` |
+| `sky` | `#4DBBD5` |
+| `jade` | `#00A087` |
+| `coral` | `#F39B7F` |
+| `periwinkle` | `#8491B4` |
+| `seafoam` | `#91D1C2` |
+| `scarlet` | `#DC0000` |
+| `umber` | `#7E6148` |
+| `sand` | `#B09C85` |
+
+**ErsiliaColors** (official Ersilia brand palette)
+
+| Name | Hex |
+|---|---|
+| `plum` | `#50285A` |
+| `purple` | `#AA96FA` |
+| `mint` | `#BEE6B4` |
+| `blue` | `#8CC8FA` |
+| `yellow` | `#FAD782` |
+| `pink` | `#DCA0DC` |
+| `orange` | `#FAA08C` |
+| `gray` | `#D2D2D0` |
 
 ---
 
