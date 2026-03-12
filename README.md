@@ -144,7 +144,7 @@ color  = pal.next()     # draw one (advances internal counter)
 
 ## Continuous colormaps
 
-Four families, all built from ArticleColors tones. All share `fit(data)` / `transform(data)` / `get(data, alpha=)` / `sample(n)`.
+Four families, all built from ArticleColors tones. All share `fit(data)` / `transform(data, alpha=, lighten=)` / `sample(n)`.
 
 ### FadingColormap
 
@@ -190,9 +190,10 @@ from stylia import FadingColormap, DivergingColormap
 
 ccm = FadingColormap("turquoise")
 ccm.fit(data)
-colors = ccm.transform(data)        # list of RGBA tuples
-colors = ccm.get(data, alpha=0.6)   # with alpha modifier
-swatches = ccm.sample(8)            # 8 evenly-spaced swatches
+colors = ccm.transform(data)                 # list of RGBA tuples
+colors = ccm.transform(data, alpha=0.6)     # with alpha
+colors = ccm.transform(data, lighten=0.3)   # lightened
+swatches = ccm.sample(8)                    # 8 evenly-spaced swatches
 
 dcm = DivergingColormap("crimson_cobalt", ascending=False)
 dcm.fit(data)

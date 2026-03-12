@@ -418,7 +418,7 @@ class _ColormapBase:
             self.vmax = np.percentile(data, CONTINUOUS_CMAP_PERCENTILE_CUTS[1])
         self.color_normalizer = mpl.colors.Normalize(vmin=self.vmin, vmax=self.vmax)
 
-    def transform(self, data):
+    def transform(self, data, alpha=None, lighten=None):
         data = np.array(data)
         if not self.ascending:
             data = -data
@@ -426,10 +426,7 @@ class _ColormapBase:
             values = self.transformer.transform(data.reshape(-1, 1)).ravel()
         else:
             values = data
-        return [self.cmap(self.color_normalizer(v)) for v in values]
-
-    def get(self, data, alpha=None, lighten=None):
-        result = self.transform(data)
+        result = [self.cmap(self.color_normalizer(v)) for v in values]
         if lighten is not None:
             result = [lighten_color(c, factor=lighten) for c in result]
         if alpha is not None:
