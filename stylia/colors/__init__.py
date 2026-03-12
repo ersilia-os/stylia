@@ -1,4 +1,4 @@
-from .colors import PaperColors, ErsiliaColors, NamedColors
+from .colors import ArticleColors, PaperColors, ErsiliaColors
 from .colors import CategoricalPalette
-from .colors import ContinuousColormap, DivergingColormap, CyclicColormap
-from .colors import ContinuousColorMap  # backward compat
+from .colors import FadingColormap, SpectralColormap, DivergingColormap, CyclicColormap
+from .colors import ContinuousColormap, ContinuousColorMap  # backward compat

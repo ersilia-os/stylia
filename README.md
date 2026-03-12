@@ -2,7 +2,13 @@
 
 Stylia provides predefined [Matplotlib](https://matplotlib.org/) styles, color palettes, and figure utilities for producing publication-quality scientific figures. Designed for the [Ersilia Open Source Initiative](https://ersilia.io), but works for any scientific Python project.
 
-![demo](assets/demo.png)
+**Article style** (default — NPG palette, black structural elements)
+
+![article style demo](assets/demo_article.png)
+
+**Ersilia style** (Ersilia brand palette, plum structural elements)
+
+![ersilia style demo](assets/demo_ersilia.png)
 
 ---
 
