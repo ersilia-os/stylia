@@ -4,12 +4,12 @@ Global format and style configuration for stylia.
 Usage
 -----
     import stylia
-    stylia.set_format("slide")   # or "paper" (default)
+    stylia.set_format("slide")   # or "print" (default)
     stylia.set_style("ersilia")  # or "article" (default)
 
 Formats
 -------
-paper  : SIZE = 7.09" (Nature two-column width). Default height ratio 0.5.
+print  : SIZE = 7.09" (Nature two-column width). Default height ratio 0.5.
          Compact fonts and thin lines suited for print.
 slide  : SIZE = 13" (wide slide width). Default height ratio 0.3.
          Slightly larger fonts and lines for screen presentation.
@@ -42,7 +42,7 @@ _ERSILIA_COLORS = [
 # Module-level state
 # ---------------------------------------------------------------------------
 
-_current_format = "paper"
+_current_format = "print"
 _current_style = "article"
 
 
@@ -53,8 +53,8 @@ _current_style = "article"
 def set_format(fmt):
     """Set the output format: ``'paper'`` (default) or ``'slide'``."""
     global _current_format
-    if fmt not in ("paper", "slide"):
-        raise ValueError("Format must be 'paper' or 'slide'")
+    if fmt not in ("print", "slide"):
+        raise ValueError("Format must be 'print' or 'slide'")
     _current_format = fmt
     _apply_settings()
 

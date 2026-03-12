@@ -46,7 +46,7 @@ Two orthogonal settings control the global appearance of all figures.
 **Format** sets the size and density suited to the output medium:
 
 ```python
-stylia.set_format("paper")   # default — 7.09 in wide, compact fonts and thin lines
+stylia.set_format("print")   # default — 7.09 in wide, compact fonts and thin lines
 stylia.set_format("slide")   # 13 in wide, slightly larger fonts for screen
 ```
 
@@ -155,9 +155,8 @@ from stylia import CategoricalPalette
 pal = CategoricalPalette()             # default: npg
 pal = CategoricalPalette("npg")
 pal = CategoricalPalette("ersilia")
-pal = CategoricalPalette("okabe")      # colorblind-safe
-pal = CategoricalPalette("tol")        # colorblind-safe, ≤7
-pal = CategoricalPalette("tol_muted") # colorblind-safe, ≤10
+pal = CategoricalPalette("okabe")   # colorblind-safe
+pal = CategoricalPalette("tol")     # colorblind-safe, ≤7
 pal = CategoricalPalette("pastel")
 
 # usage
@@ -173,7 +172,7 @@ pal = CategoricalPalette(["#E64B35", "#4DBBD5", "#00A087"])
 
 # list all presets
 CategoricalPalette.available()
-# ['npg', 'ersilia', 'okabe', 'tol', 'tol_muted', 'pastel']
+# ['npg', 'ersilia', 'okabe', 'tol', 'pastel']
 ```
 
 **npg** — Nature Publishing Group
@@ -192,10 +191,6 @@ CategoricalPalette.available()
 
 ![](https://placehold.co/40x18/4477AA/4477AA.png) ![](https://placehold.co/40x18/EE6677/EE6677.png) ![](https://placehold.co/40x18/228833/228833.png) ![](https://placehold.co/40x18/CCBB44/CCBB44.png) ![](https://placehold.co/40x18/66CCEE/66CCEE.png) ![](https://placehold.co/40x18/AA3377/AA3377.png) ![](https://placehold.co/40x18/BBBBBB/BBBBBB.png)
 
-**tol_muted** — Paul Tol Muted (colorblind-safe)
-
-![](https://placehold.co/40x18/332288/332288.png) ![](https://placehold.co/40x18/88CCEE/88CCEE.png) ![](https://placehold.co/40x18/44AA99/44AA99.png) ![](https://placehold.co/40x18/117733/117733.png) ![](https://placehold.co/40x18/999933/999933.png) ![](https://placehold.co/40x18/DDCC77/DDCC77.png) ![](https://placehold.co/40x18/CC6677/CC6677.png) ![](https://placehold.co/40x18/882255/882255.png) ![](https://placehold.co/40x18/AA4499/AA4499.png) ![](https://placehold.co/40x18/DDDDDD/DDDDDD.png)
-
 **pastel** — soft pastels
 
 ![](https://placehold.co/40x18/AEC6CF/AEC6CF.png) ![](https://placehold.co/40x18/FFD1DC/FFD1DC.png) ![](https://placehold.co/40x18/B5EAD7/B5EAD7.png) ![](https://placehold.co/40x18/FFDAC1/FFDAC1.png) ![](https://placehold.co/40x18/C7CEEA/C7CEEA.png) ![](https://placehold.co/40x18/E2F0CB/E2F0CB.png) ![](https://placehold.co/40x18/F3E5F5/F3E5F5.png) ![](https://placehold.co/40x18/FFF9C4/FFF9C4.png)
@@ -206,7 +201,6 @@ CategoricalPalette.available()
 | `ersilia` | 8 | Official Ersilia brand palette |
 | `okabe` | 8 | Colorblind-safe (Okabe–Ito) |
 | `tol` | 7 | Colorblind-safe (Paul Tol Bright) |
-| `tol_muted` | 10 | Colorblind-safe (Paul Tol Muted) |
 | `pastel` | 8 | Soft pastels for low-emphasis use |
 
 ---

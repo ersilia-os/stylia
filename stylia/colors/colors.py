@@ -186,13 +186,6 @@ _TOL_BRIGHT = [
     "#66CCEE", "#AA3377", "#BBBBBB",
 ]
 
-# Paul Tol "Muted" – softer, good for filled areas (≤ 10 categories)
-_TOL_MUTED = [
-    "#332288", "#88CCEE", "#44AA99", "#117733",
-    "#999933", "#DDCC77", "#CC6677", "#882255",
-    "#AA4499", "#DDDDDD",
-]
-
 # Flat pastels – subtle, nice for backgrounds or low-emphasis categories
 _PASTEL = [
     "#AEC6CF", "#FFD1DC", "#B5EAD7", "#FFDAC1",
@@ -213,12 +206,11 @@ _ERSILIA = [
 ]
 
 _CATEGORICAL_PRESETS = {
-    "ersilia":   _ERSILIA,
-    "npg":       _NPG,
-    "okabe":     _OKABE_ITO,
-    "tol":       _TOL_BRIGHT,
-    "tol_muted": _TOL_MUTED,
-    "pastel":    _PASTEL,
+    "ersilia": _ERSILIA,
+    "npg":     _NPG,
+    "okabe":   _OKABE_ITO,
+    "tol":     _TOL_BRIGHT,
+    "pastel":  _PASTEL,
 }
 
 
@@ -227,12 +219,11 @@ class CategoricalPalette:
 
     Presets
     -------
-    ``npg``        Nature Publishing Group – 10 colors (default)
-    ``ersilia``    Official Ersilia brand palette – 8 colors
-    ``okabe``      Okabe–Ito, colorblind-safe – 8 colors
-    ``tol``        Paul Tol Bright, colorblind-safe – 7 colors
-    ``tol_muted``  Paul Tol Muted, colorblind-safe – 10 colors
-    ``pastel``     Flat pastels – 8 colors
+    ``npg``      Nature Publishing Group – 10 colors (default)
+    ``ersilia``  Official Ersilia brand palette – 8 colors
+    ``okabe``    Okabe–Ito, colorblind-safe – 8 colors
+    ``tol``      Paul Tol Bright, colorblind-safe – 7 colors
+    ``pastel``   Flat pastels – 8 colors
 
     Parameters
     ----------
